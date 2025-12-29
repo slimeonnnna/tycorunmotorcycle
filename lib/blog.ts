@@ -9,6 +9,8 @@ export type BlogPost = {
   slug: string[];
   tags: string[];
   cover?: string;
+  author?: string;
+  category?: string;
   content: string;
 };
 
@@ -104,6 +106,14 @@ function parsePost(filePath: string): BlogPost {
       : typeof data.image === "string"
         ? data.image
         : undefined;
+  const author =
+    typeof data.author === "string" && data.author.trim().length > 0
+      ? data.author.trim()
+      : undefined;
+  const category =
+    typeof data.category === "string" && data.category.trim().length > 0
+      ? data.category.trim()
+      : undefined;
 
   return {
     title,
@@ -112,6 +122,8 @@ function parsePost(filePath: string): BlogPost {
     slug,
     tags,
     cover,
+    author,
+    category,
     content,
   };
 }

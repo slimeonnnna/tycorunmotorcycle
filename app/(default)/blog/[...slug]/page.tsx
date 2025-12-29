@@ -17,6 +17,38 @@ type BlogPostPageProps = {
   };
 };
 
+type TocItem = {
+  level: 2 | 3;
+  text: string;
+};
+
+function extractToc(markdown: string): TocItem[] {
+  const lines = markdown.split(/\r?\n/);
+  const items: TocItem[] = [];
+  let inCodeBlock = false;
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("```")) {
+      inCodeBlock = !inCodeBlock;
+      return;
+    }
+    if (inCodeBlock) return;
+
+    const h2Match = /^##\s+(.+)/.exec(trimmed);
+    if (h2Match) {
+      items.push({ level: 2, text: h2Match[1].replace(/#+$/, "").trim() });
+      return;
+    }
+    const h3Match = /^###\s+(.+)/.exec(trimmed);
+    if (h3Match) {
+      items.push({ level: 3, text: h3Match[1].replace(/#+$/, "").trim() });
+    }
+  });
+
+  return items;
+}
+
 export async function generateStaticParams() {
   const posts = getBlogList();
   return posts.map((post) => ({ slug: post.slug }));
@@ -42,6 +74,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const tocItems = extractToc(post.content);
   const processedContent = await remark().use(html).process(post.content);
   const contentHtml = processedContent.toString();
 
@@ -58,8 +91,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
 
           <div className="mt-6">
-            <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+            <h1 className="mt-4 font-nacelle text-3xl font-semibold text-gray-100 md:text-4xl">
+              {post.title}
+            </h1>
+            <p className="mt-4 text-lg text-gray-400">{post.description}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-500">
               <time dateTime={post.date}>{formatDateLabel(post.date)}</time>
+              {post.category ? <span>Category: {post.category}</span> : null}
+              {post.author ? <span>Author: {post.author}</span> : null}
               {post.tags.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
@@ -73,10 +112,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               ) : null}
             </div>
-            <h1 className="mt-4 font-nacelle text-3xl font-semibold text-gray-100 md:text-4xl">
-              {post.title}
-            </h1>
-            <p className="mt-4 text-lg text-gray-400">{post.description}</p>
           </div>
 
           {post.cover ? (
@@ -86,6 +121,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 alt={post.title}
                 className="h-64 w-full object-cover"
               />
+            </div>
+          ) : null}
+
+          {tocItems.length > 0 ? (
+            <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
+              <div className="text-xs uppercase tracking-widest text-gray-500">
+                Table of Contents
+              </div>
+              <div className="mt-3 space-y-2 text-sm text-gray-300">
+                {tocItems.map((item, index) => (
+                  <div
+                    key={`${item.text}-${index}`}
+                    className={item.level === 3 ? "pl-4 text-gray-400" : ""}
+                  >
+                    {item.text}
+                  </div>
+                ))}
+              </div>
             </div>
           ) : null}
 
