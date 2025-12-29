@@ -20,11 +20,22 @@ type BlogPostPageProps = {
 type TocItem = {
   level: 2 | 3;
   text: string;
+  id: string;
 };
+
+function slugifyHeading(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
 
 function extractToc(markdown: string): TocItem[] {
   const lines = markdown.split(/\r?\n/);
   const items: TocItem[] = [];
+  const idCounts = new Map<string, number>();
   let inCodeBlock = false;
 
   lines.forEach((line) => {
@@ -37,16 +48,42 @@ function extractToc(markdown: string): TocItem[] {
 
     const h2Match = /^##\s+(.+)/.exec(trimmed);
     if (h2Match) {
-      items.push({ level: 2, text: h2Match[1].replace(/#+$/, "").trim() });
+      const text = h2Match[1].replace(/#+$/, "").trim();
+      const baseId = slugifyHeading(text);
+      const count = idCounts.get(baseId) ?? 0;
+      idCounts.set(baseId, count + 1);
+      const id = count === 0 ? baseId : `${baseId}-${count + 1}`;
+      items.push({ level: 2, text, id });
       return;
     }
     const h3Match = /^###\s+(.+)/.exec(trimmed);
     if (h3Match) {
-      items.push({ level: 3, text: h3Match[1].replace(/#+$/, "").trim() });
+      const text = h3Match[1].replace(/#+$/, "").trim();
+      const baseId = slugifyHeading(text);
+      const count = idCounts.get(baseId) ?? 0;
+      idCounts.set(baseId, count + 1);
+      const id = count === 0 ? baseId : `${baseId}-${count + 1}`;
+      items.push({ level: 3, text, id });
     }
   });
 
   return items;
+}
+
+function addHeadingIds(contentHtml: string, tocItems: TocItem[]) {
+  if (tocItems.length === 0) return contentHtml;
+  const items = tocItems.filter((item) => item.level === 2 || item.level === 3);
+  let index = 0;
+  return contentHtml.replace(/<h([23])>(.*?)<\/h[23]>/g, (match, level) => {
+    if (index >= items.length) return match;
+    const current = items[index];
+    if (Number(level) !== current.level) return match;
+    index += 1;
+    return `<h${level} id="${current.id}">${match.replace(
+      /<\/?h[23]>/g,
+      "",
+    )}</h${level}>`;
+  });
 }
 
 export async function generateStaticParams() {
@@ -76,7 +113,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const tocItems = extractToc(post.content);
   const processedContent = await remark().use(html).process(post.content);
-  const contentHtml = processedContent.toString();
+  const contentHtml = addHeadingIds(processedContent.toString(), tocItems);
 
   return (
     <>
@@ -135,7 +172,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     key={`${item.text}-${index}`}
                     className={item.level === 3 ? "pl-4 text-gray-400" : ""}
                   >
-                    {item.text}
+                    <a
+                      href={`#${item.id}`}
+                      className="transition hover:text-blue-300"
+                    >
+                      {item.text}
+                    </a>
                   </div>
                 ))}
               </div>
