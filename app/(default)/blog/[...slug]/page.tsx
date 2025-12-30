@@ -131,20 +131,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             isTemplate ? "max-w-6xl" : "max-w-3xl"
           }`}
         >
-          <Link
-            href="/blog"
-            className="text-sm text-gray-400 transition hover:text-blue-400"
-          >
-            &larr; Back to Blog
-          </Link>
-
           {!isTemplate ? (
             <div className="mt-6">
-              <h1 className="mt-4 font-nacelle text-3xl font-semibold text-gray-100 md:text-4xl">
+              <h1 className="mt-4 font-nacelle text-3xl font-semibold text-gray-100 sm:text-4xl md:text-5xl">
                 {post.title}
               </h1>
-              <p className="mt-4 text-lg text-gray-400">{post.description}</p>
-              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-500">
+              <p className="mt-4 text-base text-gray-400 sm:text-lg">
+                {post.description}
+              </p>
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-500 sm:text-sm">
                 <time dateTime={post.date}>{formatDateLabel(post.date)}</time>
                 {post.category ? <span>Category: {post.category}</span> : null}
                 {post.author ? <span>Author: {post.author}</span> : null}
@@ -174,37 +169,63 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           ) : null}
 
-          {!isTemplate && tocItems.length > 0 ? (
-            <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
-              <div className="text-xs uppercase tracking-widest text-gray-500">
-                Table of Contents
-              </div>
-              <div className="mt-3 space-y-2 text-sm text-gray-300">
-                {tocItems.map((item, index) => (
-                  <div
-                    key={`${item.text}-${index}`}
-                    className={item.level === 3 ? "pl-4 text-gray-400" : ""}
-                  >
+          <div className={isTemplate ? "mt-10 text-base text-gray-200 sm:text-lg" : "mt-10"}>
+            {!isTemplate ? (
+              <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)_220px]">
+                <aside className="order-2 lg:order-none">
+                  <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
+                    <div className="text-xs uppercase tracking-widest text-gray-500">
+                      Need a spec review?
+                    </div>
+                    <p className="mt-3 text-sm text-gray-300">
+                      Share your voltage, thermal, and duty cycle targets. We will
+                      map a buildable pack architecture within 48 hours.
+                    </p>
                     <a
-                      href={`#${item.id}`}
-                      className="transition hover:text-blue-300"
+                      className="btn-sm mt-4 inline-flex bg-linear-to-t from-blue-600 to-blue-500 text-white"
+                      href="/contact"
                     >
-                      {item.text}
+                      Contact Engineering
                     </a>
                   </div>
-                ))}
-              </div>
-            </div>
-          ) : null}
+                </aside>
 
-          <div
-            className={
-              isTemplate
-                ? "mt-10 text-gray-200"
-                : "prose prose-invert mt-10 max-w-none text-gray-200"
-            }
-            dangerouslySetInnerHTML={{ __html: contentHtml }}
-          />
+                <article className="order-1 lg:order-none">
+                  <div
+                    className="prose prose-invert max-w-none text-gray-200"
+                    dangerouslySetInnerHTML={{ __html: contentHtml }}
+                  />
+                </article>
+
+                {tocItems.length > 0 ? (
+                  <aside className="order-3">
+                    <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5 lg:sticky lg:top-28">
+                      <div className="text-xs uppercase tracking-widest text-gray-500">
+                        Table of Contents
+                      </div>
+                      <div className="mt-3 space-y-2 text-sm text-gray-300">
+                        {tocItems.map((item, index) => (
+                          <div
+                            key={`${item.text}-${index}`}
+                            className={item.level === 3 ? "pl-4 text-gray-400" : ""}
+                          >
+                            <a
+                              href={`#${item.id}`}
+                              className="transition hover:text-blue-300"
+                            >
+                              {item.text}
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </aside>
+                ) : null}
+              </div>
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            )}
+          </div>
         </div>
       </section>
       <Cta />
