@@ -33,7 +33,7 @@ function slugifyHeading(value: string) {
 }
 
 function extractToc(markdown: string): TocItem[] {
-  const lines = markdown.split(/\r?\n/);
+  const lines = markdown.split(/\\r?\\n/);
   const items: TocItem[] = [];
   const idCounts = new Map<string, number>();
   let inCodeBlock = false;
@@ -112,7 +112,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const tocItems = extractToc(post.content);
-  const processedContent = await remark().use(html).process(post.content);
+  const processedContent = await remark()
+    .use(html, { sanitize: false })
+    .process(post.content);
   const contentHtml = addHeadingIds(processedContent.toString(), tocItems);
 
   return (
@@ -194,3 +196,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     </>
   );
 }
+
+
+
+
+
