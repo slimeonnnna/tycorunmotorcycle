@@ -33,7 +33,7 @@ function slugifyHeading(value: string) {
 }
 
 function extractToc(markdown: string): TocItem[] {
-  const lines = markdown.split(/\\r?\\n/);
+  const lines = markdown.split(/\r?\n/);
   const items: TocItem[] = [];
   const idCounts = new Map<string, number>();
   let inCodeBlock = false;
@@ -111,17 +111,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const tocItems = extractToc(post.content);
-  const processedContent = await remark()
-    .use(html, { sanitize: false })
-    .process(post.content);
-  const contentHtml = addHeadingIds(processedContent.toString(), tocItems);
+  const isTemplate = post.content.includes("blog-article");
+  const tocItems = isTemplate ? [] : extractToc(post.content);
+
+  let contentHtml = post.content;
+  if (!isTemplate) {
+    const processedContent = await remark()
+      .use(html, { sanitize: false })
+      .process(post.content);
+    contentHtml = addHeadingIds(processedContent.toString(), tocItems);
+  }
 
   return (
     <>
       <PageIllustration />
       <section className="pt-32 pb-12 md:pt-40 md:pb-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+        <div
+          className={`mx-auto px-4 sm:px-6 ${
+            isTemplate ? "max-w-6xl" : "max-w-3xl"
+          }`}
+        >
           <Link
             href="/blog"
             className="text-sm text-gray-400 transition hover:text-blue-400"
@@ -129,31 +138,33 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             &larr; Back to Blog
           </Link>
 
-          <div className="mt-6">
-            <h1 className="mt-4 font-nacelle text-3xl font-semibold text-gray-100 md:text-4xl">
-              {post.title}
-            </h1>
-            <p className="mt-4 text-lg text-gray-400">{post.description}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-500">
-              <time dateTime={post.date}>{formatDateLabel(post.date)}</time>
-              {post.category ? <span>Category: {post.category}</span> : null}
-              {post.author ? <span>Author: {post.author}</span> : null}
-              {post.tags.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={`${post.slug.join("/")}-${tag}`}
-                      className="rounded-full border border-gray-800 bg-gray-900/60 px-2 py-0.5 text-[11px] text-gray-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
+          {!isTemplate ? (
+            <div className="mt-6">
+              <h1 className="mt-4 font-nacelle text-3xl font-semibold text-gray-100 md:text-4xl">
+                {post.title}
+              </h1>
+              <p className="mt-4 text-lg text-gray-400">{post.description}</p>
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-500">
+                <time dateTime={post.date}>{formatDateLabel(post.date)}</time>
+                {post.category ? <span>Category: {post.category}</span> : null}
+                {post.author ? <span>Author: {post.author}</span> : null}
+                {post.tags.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={`${post.slug.join("/")}-${tag}`}
+                        className="rounded-full border border-gray-800 bg-gray-900/60 px-2 py-0.5 text-[11px] text-gray-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
+          ) : null}
 
-          {post.cover ? (
+          {!isTemplate && post.cover ? (
             <div className="mt-8 overflow-hidden rounded-2xl border border-gray-800 bg-gray-950">
               <img
                 src={post.cover}
@@ -163,7 +174,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           ) : null}
 
-          {tocItems.length > 0 ? (
+          {!isTemplate && tocItems.length > 0 ? (
             <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
               <div className="text-xs uppercase tracking-widest text-gray-500">
                 Table of Contents
@@ -187,7 +198,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           ) : null}
 
           <div
-            className="prose prose-invert mt-10 max-w-none text-gray-200"
+            className={
+              isTemplate
+                ? "mt-10 text-gray-200"
+                : "prose prose-invert mt-10 max-w-none text-gray-200"
+            }
             dangerouslySetInnerHTML={{ __html: contentHtml }}
           />
         </div>
@@ -196,8 +211,3 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     </>
   );
 }
-
-
-
-
-
