@@ -125,7 +125,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       <PageIllustration />
-      <section className="pt-32 pb-12 md:pt-40 md:pb-20">
+      <section className="blog-post pt-32 pb-12 md:pt-40 md:pb-20">
         <div
           className={`mx-auto px-4 sm:px-6 ${
             isTemplate ? "max-w-6xl" : "max-w-3xl"
@@ -171,7 +171,33 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           <div className={isTemplate ? "mt-10 text-base text-gray-200 sm:text-lg" : "mt-10"}>
             {!isTemplate ? (
-              <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)_220px]">
+              <>
+                {tocItems.length > 0 ? (
+                  <div className="md:hidden sticky top-20 z-20">
+                    <details className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
+                      <summary className="cursor-pointer text-xs uppercase tracking-widest text-gray-400">
+                        Table of Contents
+                      </summary>
+                      <div className="mt-3 space-y-2 text-sm text-gray-300">
+                        {tocItems.map((item, index) => (
+                          <div
+                            key={`${item.text}-${index}`}
+                            className={item.level === 3 ? "pl-4 text-gray-400" : ""}
+                          >
+                            <a
+                              href={`#${item.id}`}
+                              className="transition hover:text-blue-300"
+                            >
+                              {item.text}
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    </details>
+                  </div>
+                ) : null}
+
+                <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)_220px]">
                 <aside className="order-2 lg:order-none">
                   <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
                     <div className="text-xs uppercase tracking-widest text-gray-500">
@@ -198,7 +224,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </article>
 
                 {tocItems.length > 0 ? (
-                  <aside className="order-3">
+                  <aside className="order-3 hidden md:block">
                     <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5 lg:sticky lg:top-28">
                       <div className="text-xs uppercase tracking-widest text-gray-500">
                         Table of Contents
@@ -222,6 +248,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </aside>
                 ) : null}
               </div>
+            </>
             ) : (
               <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
             )}
@@ -232,3 +259,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     </>
   );
 }
+
+
+

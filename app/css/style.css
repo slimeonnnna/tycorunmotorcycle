@@ -465,37 +465,99 @@
   margin-top: 2.5rem;
 }
 
-.blog-article .content h2 {
-  font-size: 1.5rem;
-  line-height: 1.3;
-  margin-top: 2rem;
-  color: var(--color-gray-100);
-}
-
-.blog-article .content h3 {
-  font-size: 1.2rem;
-  line-height: 1.4;
-  margin-top: 1.5rem;
-  color: var(--color-gray-200);
-}
-
-.blog-article .content h4 {
-  font-size: 1rem;
-  line-height: 1.4;
-  margin-top: 1.25rem;
-  color: var(--color-gray-300);
-}
-
 .blog-article .content p {
   margin-top: 0.75rem;
   color: var(--color-gray-300);
 }
 
-@media (min-width: 1024px) {
-  .blog-article .content h2 {
-    font-size: 1.8rem;
+/* Blog heading scale (global for all blog posts) */
+.blog-post h1,
+.blog-post h2,
+.blog-post h3,
+.blog-post h4,
+.blog-post h5,
+.blog-post h6 {
+  font-family: var(--font-nacelle);
+  letter-spacing: -0.01em;
+  color: var(--color-gray-100);
+}
+
+.blog-post h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.blog-post h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin-top: 2rem;
+}
+
+.blog-post h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  color: var(--color-gray-200);
+}
+
+.blog-post h4 {
+  font-size: 1.125rem;
+  line-height: 1.45;
+  margin-top: 1.25rem;
+  color: var(--color-gray-300);
+}
+
+.blog-post h5 {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-top: 1.1rem;
+  color: var(--color-gray-300);
+}
+
+.blog-post h6 {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-top: 1rem;
+  color: var(--color-gray-400);
+}
+
+@media (min-width: 768px) {
+  .blog-post h1 {
+    font-size: 2.5rem;
   }
-  .blog-article .content h3 {
-    font-size: 1.35rem;
+  .blog-post h2 {
+    font-size: 1.75rem;
+  }
+  .blog-post h3 {
+    font-size: 1.4rem;
+  }
+  .blog-post h4 {
+    font-size: 1.2rem;
+  }
+  .blog-post h5 {
+    font-size: 1.05rem;
   }
 }
+
+@media (min-width: 1024px) {
+  .blog-post h1 {
+    font-size: 3rem;
+  }
+  .blog-post h2 {
+    font-size: 2rem;
+  }
+  .blog-post h3 {
+    font-size: 1.5rem;
+  }
+  .blog-post h4 {
+    font-size: 1.25rem;
+  }
+  .blog-post h5 {
+    font-size: 1.1rem;
+  }
+  .blog-post h6 {
+    font-size: 1rem;
+  }
+}
+
