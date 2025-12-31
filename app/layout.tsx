@@ -50,18 +50,18 @@ const nacelle = localFont({
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Tycorun - Custom Industrial Battery Manufacturing",
+  title: "Tycorun - High-Performance Electric Motorcycles",
   description:
-    "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
+    "High-performance electric motorcycles for city riding and light adventure, tuned for torque, handling, and real-world range.",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/TYCORUN-Favicon.png",
   },
   openGraph: {
     type: "website",
     siteName: "Tycorun",
-    title: "Tycorun - Custom Industrial Battery Manufacturing",
+    title: "Tycorun - High-Performance Electric Motorcycles",
     description:
-      "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
+      "High-performance electric motorcycles for city riding and light adventure, tuned for torque, handling, and real-world range.",
     url: "/",
     images: [
       {
@@ -71,9 +71,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tycorun - Custom Industrial Battery Manufacturing",
+    title: "Tycorun - High-Performance Electric Motorcycles",
     description:
-      "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
+      "High-performance electric motorcycles for city riding and light adventure, tuned for torque, handling, and real-world range.",
     images: ["/tycorun-logo.webp"],
   },
 };

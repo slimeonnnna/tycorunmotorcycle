@@ -59,7 +59,7 @@ export default function Cta() {
                     </svg>
                   </div>
                   <div className="font-nacelle text-2xl font-semibold text-gray-200">
-                    Tycorun Industrial
+                    Tycorun Motorcycles
                   </div>
                   <div className="mt-2 text-xs font-medium uppercase tracking-[0.2em] text-blue-500">
                     Interactive
@@ -69,10 +69,10 @@ export default function Cta() {
                 {/* Hover State: CTA Content (Always visible on Mobile, reveal on hover for Desktop) */}
                 <div className="flex max-w-2xl flex-col items-center justify-center transition-all duration-500 opacity-100 translate-y-0 md:opacity-0 md:translate-y-8 group-hover:translate-y-0 group-hover:opacity-100 md:group-hover:delay-500">
                   <h2 className="mb-4 font-nacelle text-3xl font-semibold text-gray-100 md:text-4xl">
-                    Ready to Engineer Your Advantage?
+                    Ready for your next ride?
                   </h2>
                   <p className="mb-8 text-lg text-gray-400">
-                    Start your custom battery project with our rapid prototyping track.
+                    Book a test ride or explore fleet partnerships with Tycorun.
                   </p>
                   
                   <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
@@ -91,7 +91,7 @@ export default function Cta() {
                       className="btn relative bg-gray-800 text-gray-300 hover:bg-gray-700"
                       href="#0"
                     >
-                      Download Datasheet
+                      Download Brochure
                     </a>
                   </div>
                 </div>

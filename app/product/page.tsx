@@ -7,7 +7,7 @@ import Footer from "@/components/ui/footer";
 export const metadata = {
   title: "Product & Technology | Tycorun",
   description:
-    "Explore our modular battery architecture, intelligent BMS, and cloud-connected fleet management systems.",
+    "Explore our electric motorcycle lineup, powertrain technology, and rider-focused design details.",
 };
 
 export default function Product() {

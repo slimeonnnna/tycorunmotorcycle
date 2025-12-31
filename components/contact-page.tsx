@@ -1,49 +1,49 @@
 import Link from "next/link";
 
 const quickSpec = [
-  { label: "Chemistry", value: "NMC / LFP" },
-  { label: "Voltage", value: "12V - 800V" },
-  { label: "Prototype Lead", value: "7-10 days" },
-  { label: "MOQ", value: "Flexible" },
+  { label: "Ride Focus", value: "City + Light Adventure" },
+  { label: "Range Target", value: "120 to 180 km" },
+  { label: "Charge Time", value: "45 to 90 min (20-80%)" },
+  { label: "Test Rides", value: "Available" },
 ];
 
 const requirementCards = [
   {
-    title: "Electrical Requirements",
-    items: ["Voltage window", "Capacity (Ah / kWh)", "Peak current"],
+    title: "Rider Profile",
+    items: ["Commute distance", "Road conditions", "Riding experience"],
   },
   {
-    title: "Mechanical Constraints",
-    items: ["Envelope dimensions", "Mounting points", "Connector type"],
+    title: "Performance Targets",
+    items: ["Top speed", "Real-world range", "Charging access"],
   },
   {
-    title: "Compliance and Safety",
-    items: ["UN 38.3", "IEC 62133", "IP rating"],
+    title: "Business Context",
+    items: ["Timeline", "Volume or fleet size", "Region"],
   },
 ];
 
 const advantages = [
-  "Rapid prototyping with design-for-manufacture review",
-  "Custom BMS firmware and protocol integration",
-  "Thermal modeling and enclosure validation",
-  "Compliance planning and certification support",
+  "Rider-first tuning for smooth torque delivery",
+  "Integrated powertrain and chassis design",
+  "Safety systems designed for daily use",
+  "Fleet and partner support when you scale",
 ];
 
 const faqs = [
   {
-    question: "How fast do you respond to inquiry forms?",
+    question: "How do I book a test ride?",
     answer:
-      "We typically respond within 24-48 business hours with a technical follow-up and NDA if required.",
+      "Share your location and preferred model, and we will arrange the next available demo slot.",
   },
   {
-    question: "Do you support small prototype runs?",
+    question: "What range should I expect?",
     answer:
-      "Yes. We offer flexible prototyping and can scale into pilot and production volumes.",
+      "Most city riders see 120 to 180 km per charge depending on speed, load, and terrain.",
   },
   {
-    question: "Can you work with our existing BMS protocol?",
+    question: "Do you support fleet or dealer partnerships?",
     answer:
-      "We integrate with CAN, CANOpen, J1939, RS-485, and can build custom firmware drivers.",
+      "Yes. We provide fleet configurations, service planning, and volume options for partners.",
   },
 ];
 
@@ -60,11 +60,11 @@ export default function ContactPage() {
                 </span>
               </div>
               <h1 className="font-nacelle text-4xl font-semibold text-gray-100 md:text-5xl">
-                Custom Battery Inquiry
+                Test Ride & Partnerships
               </h1>
               <p className="mt-4 text-lg text-gray-400">
-                Share your electrical, mechanical, and compliance needs. We will
-                translate them into a buildable pack architecture and timeline.
+                Tell us about your riding goals or partnership needs. We will
+                match you with the right model and timeline.
               </p>
               <p className="mt-4 text-sm text-gray-500">
                 Typical response time: 24-48 business hours.
@@ -89,7 +89,7 @@ export default function ContactPage() {
                 href="/product"
                 className="mt-2 text-sm text-blue-400 hover:text-blue-300"
               >
-                View product architecture -&gt;
+                View models and specs -&gt;
               </Link>
             </div>
           </div>
@@ -109,14 +109,14 @@ export default function ContactPage() {
                     htmlFor="company"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Company
+                    Company (optional)
                   </label>
                   <input
                     id="company"
                     name="company"
                     type="text"
                     className="form-input w-full"
-                    placeholder="Tycorun Industrial"
+                    placeholder="Tycorun Motorcycles"
                   />
                 </div>
                 <div>
@@ -171,18 +171,17 @@ export default function ContactPage() {
                     htmlFor="application"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Application
+                    Interest Type
                   </label>
                   <select
                     id="application"
                     name="application"
                     className="form-select w-full"
                   >
-                    <option>Robotics</option>
-                    <option>Medical</option>
-                    <option>Aerospace</option>
-                    <option>Industrial</option>
-                    <option>Logistics</option>
+                    <option>Personal Ride</option>
+                    <option>Fleet</option>
+                    <option>Dealer</option>
+                    <option>Press</option>
                     <option>Other</option>
                   </select>
                 </div>
@@ -191,59 +190,59 @@ export default function ContactPage() {
                     htmlFor="timeline"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Timeline
+                    Preferred Timeline
                   </label>
                   <input
                     id="timeline"
                     name="timeline"
                     type="text"
                     className="form-input w-full"
-                    placeholder="Prototype in 6 weeks"
+                    placeholder="Test ride this month"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="voltage"
+                    htmlFor="range"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Required Voltage
+                    Range Target
                   </label>
                   <input
-                    id="voltage"
-                    name="voltage"
+                    id="range"
+                    name="range"
                     type="text"
                     className="form-input w-full"
-                    placeholder="48V nominal"
+                    placeholder="120 to 180 km"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="capacity"
+                    htmlFor="speed"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Capacity
+                    Top Speed Target
                   </label>
                   <input
-                    id="capacity"
-                    name="capacity"
+                    id="speed"
+                    name="speed"
                     type="text"
                     className="form-input w-full"
-                    placeholder="120Ah / 5.8kWh"
+                    placeholder="110 to 130 km/h"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="current"
+                    htmlFor="charging"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Peak Current
+                    Charging Access
                   </label>
                   <input
-                    id="current"
-                    name="current"
+                    id="charging"
+                    name="charging"
                     type="text"
                     className="form-input w-full"
-                    placeholder="200A"
+                    placeholder="Home outlet / fast charger"
                   />
                 </div>
                 <div>
@@ -251,14 +250,14 @@ export default function ContactPage() {
                     htmlFor="quantity"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Target Quantity
+                    Quantity
                   </label>
                   <input
                     id="quantity"
                     name="quantity"
                     type="text"
                     className="form-input w-full"
-                    placeholder="Prototype / Pilot / Production"
+                    placeholder="1 / 5 / Fleet"
                   />
                 </div>
               </div>
@@ -267,14 +266,14 @@ export default function ContactPage() {
                   htmlFor="environment"
                   className="mb-2 block text-sm text-gray-300"
                 >
-                  Environment and Constraints
+                  Riding Conditions
                 </label>
                 <textarea
                   id="environment"
                   name="environment"
                   rows={4}
                   className="form-textarea w-full"
-                  placeholder="Temperature range, IP rating, shock/vibration, enclosure notes"
+                  placeholder="Commute distance, road quality, hills, weather"
                 />
               </div>
               <div className="mt-6">
@@ -295,7 +294,7 @@ export default function ContactPage() {
                 type="submit"
                 className="btn mt-8 w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
               >
-                Submit Inquiry
+                Submit Request
               </button>
             </form>
 
@@ -305,9 +304,9 @@ export default function ContactPage() {
                   Minimum Info Needed
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-gray-300">
-                  <li>Voltage window and capacity target</li>
-                  <li>Duty cycle and peak current profile</li>
-                  <li>Physical envelope and mounting constraints</li>
+                  <li>Commute distance and riding style</li>
+                  <li>Range and speed expectations</li>
+                  <li>Charging access and timeline</li>
                 </ul>
               </div>
               <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
@@ -315,8 +314,8 @@ export default function ContactPage() {
                   Engagement Notes
                 </div>
                 <p className="mt-4 text-sm text-gray-300">
-                  NDA available on request. We can align with your compliance and
-                  certification plan from day one.
+                  NDA available on request. We can align on demo schedules,
+                  compliance needs, and regional requirements from day one.
                 </p>
               </div>
               <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
@@ -324,7 +323,7 @@ export default function ContactPage() {
                   Direct Contact
                 </div>
                 <div className="mt-4 space-y-2 text-sm text-gray-300">
-                  <p>engineering@tycorun.com</p>
+                  <p>hello@tycorun.com</p>
                   <p>+1 (415) 555-0199</p>
                   <p>San Jose, CA</p>
                 </div>
@@ -361,7 +360,7 @@ export default function ContactPage() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center">
             <div data-aos="fade-up">
               <h2 className="font-nacelle text-3xl font-semibold text-gray-100">
-                Why teams choose Tycorun
+                Why riders choose Tycorun
               </h2>
               <ul className="mt-6 space-y-3 text-sm text-gray-300">
                 {advantages.map((item) => (
@@ -380,9 +379,9 @@ export default function ContactPage() {
                 Response Workflow
               </div>
               <ol className="mt-4 space-y-3 text-sm text-gray-300">
-                <li>1. Review requirements and system constraints</li>
-                <li>2. Define pack architecture and BMS strategy</li>
-                <li>3. Prototype and validate with your team</li>
+                <li>1. Review riding needs and usage profile</li>
+                <li>2. Recommend models and options</li>
+                <li>3. Schedule demo or partnership discussion</li>
               </ol>
             </div>
           </div>

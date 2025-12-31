@@ -10,9 +10,9 @@ import {
 } from "@/lib/blog";
 
 type BlogPostPageProps = {
-  params: {
+  params: Promise<{
     slug: string[];
-  };
+  }>;
 };
 
 type TocItem = {
@@ -159,7 +159,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
-  const post = getBlogPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
   if (!post) {
     return {
       title: "Post Not Found - Tycorun",
@@ -199,7 +200,8 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = getBlogPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
   if (!post) {
     notFound();
   }
@@ -311,17 +313,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <aside className="order-3 lg:order-3 lg:sticky lg:top-28 self-start">
                 <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
                   <div className="text-xs uppercase tracking-widest text-gray-500">
-                    Need a spec review?
+                    Need a ride consult?
                   </div>
                   <p className="mt-3 text-sm text-gray-300">
-                    Share your voltage, thermal, and duty cycle targets. We will
-                    map a buildable pack architecture within 48 hours.
+                    Share your commute distance, charging access, and riding
+                    style. We will recommend the right model and setup.
                   </p>
                   <a
                     className="btn-sm mt-4 inline-flex bg-linear-to-t from-blue-600 to-blue-500 text-white"
                     href="/contact"
                   >
-                    Contact Engineering
+                    Contact Sales
                   </a>
                 </div>
               </aside>

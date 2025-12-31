@@ -4,9 +4,9 @@ import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 
 export const metadata = {
-  title: "Contact | Custom Battery Inquiry",
+  title: "Contact | Test Ride & Partnerships",
   description:
-    "Start a custom battery project with Tycorun. Share requirements, timelines, and compliance needs for a rapid engineering response.",
+    "Book a test ride, request a demo, or explore fleet partnerships with Tycorun electric motorcycles.",
 };
 
 export default function Contact() {

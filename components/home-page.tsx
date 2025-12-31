@@ -178,9 +178,9 @@ function HeroCard() {
               
               <span className="hc-trail"></span>
             </div>
-            <span className="hc-logo-bottom-text">tycorun.com</span>
+          <span className="hc-logo-bottom-text">tycorun.com</span>
           </div>
-          <span className="hc-bottom-text">Custom Power</span>
+          <span className="hc-bottom-text">Electric Motorcycles</span>
         </div>
         {/* Ripple Element */}
         <div className="hc-ripple z-0"></div>
@@ -200,7 +200,7 @@ function Hero() {
               className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
               data-aos="fade-up"
             >
-              Custom Engineered Power Systems
+              High-Performance Electric Motorcycles
             </h1>
             <div className="mx-auto max-w-3xl">
               <p
@@ -208,17 +208,17 @@ function Hero() {
                 data-aos="fade-up"
                 data-aos-delay={200}
               >
-                High-performance lithium solutions designed for mission-critical applications. 
-                From robotics to aerospace, we deliver reliability where failure is not an option.
+                Built for city riders and light adventure. Instant torque, balanced handling,
+                and dependable range come first, powered by advanced battery technology.
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
                 <div data-aos="fade-up" data-aos-delay={400}>
                   <a
                     className="btn group mb-4 w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
-                    href="#0"
+                    href="/product"
                   >
                     <span className="relative inline-flex items-center">
-                      View Specifications
+                      View Models
                       <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                         -&gt;
                       </span>
@@ -230,7 +230,7 @@ function Hero() {
                     className="btn relative w-full bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%] sm:ml-4 sm:w-auto"
                     href="/contact"
                   >
-                    Contact Engineering
+                    Book a Test Ride
                   </Link>
                 </div>
               </div>
@@ -255,15 +255,15 @@ function Workflows() {
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                Precision-Engineered for Your Platform
+                Rider-First Engineering
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Map your power architecture
+              Design the ride feel
             </h2>
             <p className="text-lg text-gray-400">
-              Seamless integration with your chassis and BMS. We align physical dimensions 
-              and electrical characteristics to your exact hardware specifications.
+              We tune geometry, suspension, and power delivery around real riding
+              conditions. The battery and controller are there to support the ride.
             </p>
           </div>
           <Spotlight className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3">
@@ -305,12 +305,13 @@ function Workflows() {
                   <div className="mb-3">
                     <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
                       <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                        Extreme Tolerance
+                        All-Weather Ready
                       </span>
                     </span>
                   </div>
                   <p className="text-gray-400">
-                    Operating temperatures from -40°C to +80°C. Engineered for the harshest environments on Earth.
+                    Designed for heat, rain, and rough urban roads with sealed
+                    connectors and corrosion-resistant finishes.
                   </p>
                 </div>
               </div>
@@ -349,12 +350,13 @@ function Workflows() {
                   <div className="mb-3">
                     <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
                       <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                        Rapid Prototyping
+                        Ride-Proven Development
                       </span>
                     </span>
                   </div>
                   <p className="text-gray-400">
-                    From CAD to physical prototype in just 7 days. Accelerate your development cycle without compromising quality.
+                    From sketch to rideable prototype fast, then validated on
+                    real streets before production.
                   </p>
                 </div>
               </div>
@@ -396,12 +398,13 @@ function Workflows() {
                   <div className="mb-3">
                     <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
                       <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                        Scalable Production
+                        Scalable Manufacturing
                       </span>
                     </span>
                   </div>
                   <p className="text-gray-400">
-                     Flexible manufacturing lines supporting low-volume pilots to high-volume mass production runs.
+                     Flexible lines for limited runs, fleet pilots, and full
+                     production.
                   </p>
                 </div>
               </div>
@@ -445,15 +448,15 @@ function Features() {
           <div className="mx-auto max-w-3xl pb-4 text-center md:pb-12">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                Industrial Grade
+                Rider Focused
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Engineered for Mission-Critical Systems
+              Engineered for Real-World Riding
             </h2>
             <p className="text-lg text-gray-400">
-              Our cell-matching protocol and thermal simulation ensure zero-defect reliability 
-              for the most demanding applications.
+              Chassis balance, torque delivery, and braking confidence are tuned
+              together for a smooth, responsive ride.
             </p>
           </div>
           
@@ -481,7 +484,7 @@ function Features() {
               </g>
               <g transform="translate(400, 80)">
                  <rect width="200" height="140" stroke="#4B5563" strokeWidth="2" fill="#1F2937" />
-                 <text x="100" y="70" textAnchor="middle" fill="#9CA3AF" fontFamily="monospace" fontSize="14">BMS CONTROLLER</text>
+                 <text x="100" y="70" textAnchor="middle" fill="#9CA3AF" fontFamily="monospace" fontSize="14">MOTOR CONTROLLER</text>
                  <path d="M10 20 H 190" stroke="#374151" />
                  <path d="M10 40 H 190" stroke="#374151" />
                  <rect x="20" y="80" width="40" height="40" fill="#374151" />
@@ -492,7 +495,7 @@ function Features() {
               <circle cx="260" cy="120" r="4" fill="#60A5FA" />
               <circle cx="400" cy="120" r="4" fill="#60A5FA" />
               <path d="M 120 160 V 220 H 140" stroke="#9CA3AF" strokeWidth="1" />
-              <text x="150" y="225" fill="#9CA3AF" fontSize="12" fontFamily="monospace">Li-Ion Cell Array</text>
+              <text x="150" y="225" fill="#9CA3AF" fontSize="12" fontFamily="monospace">Integrated Power Pack</text>
             </svg>
           </div>
 
@@ -511,10 +514,11 @@ function Features() {
                 />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Cell-Level Traceability
+                Frame & Assembly Traceability
               </h3>
               <p className="text-gray-400">
-                Every cell is tracked from production to pack assembly, ensuring total quality control and history.
+                Key chassis and powertrain assemblies are tracked to ensure
+                consistent quality and service history.
               </p>
             </article>
             <article>
@@ -528,10 +532,11 @@ function Features() {
                 <path d="M19 6H0v2h17v8H7v-6H5v8h19v-2h-5V6Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                BMS Integration
+                Motor Control Tuning
               </h3>
               <p className="text-gray-400">
-                Full communication protocol support (CAN, RS485) for seamless integration with your master control unit.
+                Smooth throttle mapping and regen calibration for predictable
+                response in traffic and on open roads.
               </p>
             </article>
             <article>
@@ -548,10 +553,11 @@ function Features() {
                 />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Thermal Simulation
+                Ride Dynamics & Handling
               </h3>
               <p className="text-gray-400">
-                Advanced CFD modeling allows us to optimize heat dissipation before a single cell is welded.
+                Geometry and suspension are validated for stability, cornering,
+                and rider confidence.
               </p>
             </article>
             <article>
@@ -573,10 +579,11 @@ function Features() {
                 <path d="m16.321 2-.5-.866 1.733-1 .5.866A22 22 0 0 1 21 12c0 3.852-1.017 7.636-2.948 10.97l-.502.865-1.73-1.003.501-.865A19.878 19.878 0 0 0 19 12a20 20 0 0 0-2.679-10Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Cycle Life Validation
+                Durability & Vibration Testing
               </h3>
               <p className="text-gray-400">
-                Rigorous lab testing confirms performance over thousands of cycles under real-world load profiles.
+                Endurance testing validates long-term reliability across mixed
+                road conditions.
               </p>
             </article>
             <article>
@@ -593,10 +600,11 @@ function Features() {
                 <path d="m7.454 2.891.891-.454L7.437.655l-.891.454a12 12 0 0 0 0 21.382l.89.454.91-1.781-.892-.455a10 10 0 0 1 0-17.818ZM17.456 1.11l-.891-.454-.909 1.782.891.454a10 10 0 0 1 0 17.819l-.89.454.908 1.781.89-.454a12 12 0 0 0 0-21.382Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                UN 38.3 Certification
+                Safety & Compliance
               </h3>
               <p className="text-gray-400">
-                We handle all regulatory compliance and safety certifications for global shipping and deployment.
+                Built to meet road safety requirements with braking and lighting
+                standards in mind.
               </p>
             </article>
             <article>
@@ -613,10 +621,11 @@ function Features() {
                 <path d="M19.406 3.844 6.083 20.497.586 15 2 13.586l3.917 3.917L17.844 2.595l1.562 1.25Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                IP67 Enclosures
+                Weatherproof Electronics
               </h3>
               <p className="text-gray-400">
-                Custom-molded, sealed enclosures designed to withstand dust, water immersion, and high vibration.
+                Critical components are sealed against dust, splash, and
+                vibration.
               </p>
             </article>
           </div>
@@ -635,17 +644,23 @@ function TechnicalData() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
             <div>
               <h2 className="mb-6 font-nacelle text-3xl font-semibold text-gray-200">
-                Engineering Constraints & Reliability Metrics
+                Performance Envelope & Ride Confidence
               </h2>
               <div className="space-y-6 text-lg text-gray-400">
                 <p>
-                  We design for worst-case scenarios, not nominal averages. Our engineering process explicitly evaluates thermal runaway propagation risks, mechanical resonance frequencies, and electromagnetic compatibility (EMC) early in the architecture phase.
+                  We design for daily riding, not lab averages. Chassis stiffness,
+                  suspension travel, and braking feel are validated on city
+                  streets and uneven roads.
                 </p>
                 <p>
-                  <strong>Thermal Strategy:</strong> We utilize a "Zero-Convection" baseline for thermal simulation. If a pack cannot maintain safe junction temperatures (&lt;60°C) under load without airflow, we mandate liquid cooling or phase-change material integration.
+                  <strong>Power Delivery:</strong> Throttle mapping and
+                  regenerative braking are tuned for smooth control in traffic
+                  and confident pull on open roads.
                 </p>
                 <p>
-                  <strong>Redundancy Layers:</strong> Critical safety functions are handled by a dual-core lockstep processor in the BMS, with a hardwired analog backup loop that bypasses digital logic to disconnect the main contactor in &lt;10ms during fault conditions.
+                  <strong>Safety Systems:</strong> Braking, thermal monitoring,
+                  and traction management work together to protect the rider
+                  without dulling the ride.
                 </p>
               </div>
             </div>
@@ -655,49 +670,49 @@ function TechnicalData() {
               </div>
               <div className="space-y-4">
                 <div className="border-b border-gray-800 pb-2">
-                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Operating Envelope</h4>
+                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Performance Envelope</h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Discharge_Temp_Range</span>
-                    <span className="text-blue-400">-20°C to +60°C</span>
+                    <span className="text-gray-300">Real_World_Range</span>
+                    <span className="text-blue-400">120 to 180 km</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Charge_Temp_Range</span>
-                    <span className="text-blue-400">0°C to +45°C</span>
+                    <span className="text-gray-300">Top_Speed</span>
+                    <span className="text-blue-400">110 to 130 km/h</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Max_Cont_Discharge</span>
-                    <span className="text-blue-400">3C (Active Cooling)</span>
+                    <span className="text-gray-300">Charge_Time_20_80</span>
+                    <span className="text-blue-400">45 to 90 min</span>
                   </div>
                 </div>
                 <div className="border-b border-gray-800 pb-2">
                   <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Compliance & Safety</h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Transport</span>
-                    <span className="text-blue-400">UN 38.3 Class 9</span>
+                    <span className="text-gray-300">Braking_System</span>
+                    <span className="text-blue-400">ABS + Linked Braking</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
                     <span className="text-gray-300">Ingress_Protection</span>
-                    <span className="text-blue-400">IP67 / IP6K9K</span>
+                    <span className="text-blue-400">IP67 Critical Components</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Functional_Safety</span>
-                    <span className="text-blue-400">ISO 26262 ASIL-C</span>
+                    <span className="text-gray-300">Chassis_Safety</span>
+                    <span className="text-blue-400">High-Strength Frame</span>
                   </div>
                 </div>
                 <div>
                   <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Data Interface</h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Protocol</span>
-                    <span className="text-blue-400">CANOpen / J1939</span>
+                    <span className="text-gray-300">Ride_Modes</span>
+                    <span className="text-blue-400">Eco / Street / Sport</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Telemetry_Rate</span>
-                    <span className="text-blue-400">10ms - 1000ms</span>
+                    <span className="text-gray-300">Connectivity</span>
+                    <span className="text-blue-400">Bluetooth + App</span>
                   </div>
                 </div>
               </div>
               <div className="mt-6 border-t border-dashed border-gray-700 pt-4 text-xs text-gray-500">
-                * Performance metrics subject to cell selection (NMC vs LFP) and thermal architecture.
+                * Range varies with speed, load, temperature, and riding style.
               </div>
             </div>
           </div>
@@ -730,23 +745,23 @@ const EngineerAvatar = ({ name }: { name: string }) => {
 };
 
 const testimonialsData = [
-  { name: "Thomas W.", company: "Kuka Robotics", content: "Tycorun's rapid prototyping saved our project. We went from CAD model to a fully functional, custom-fit pack in under two weeks. Their engineering support was phenomenal.", categories: [1, 2, 5] },
-  { name: "Sarah L.", company: "Siemens Healthineers", content: "For our life-support system, battery failure is not an option. Tycorun's zero-defect protocol gave us the confidence we needed. They are a true engineering partner.", categories: [1, 3] },
-  { name: "David R.", company: "SAAB Aerospace", content: "The energy density they achieved for our drone fleet was unmatched. 15% more flight time compared to off-the-shelf solutions we tested previously.", categories: [1, 4] },
-  { name: "Michael C.", company: "Boston Dynamics", content: "Their BMS integration support was phenomenal. Seamless communication with our central controller right out of the box, saving us weeks of debugging.", categories: [1, 2] },
-  { name: "Elena G.", company: "Medtronic", content: "We needed a custom shape to fit a very tight housing. Tycorun engineered a solution that maximized capacity without compromising thermals or safety.", categories: [1, 3, 5] },
-  { name: "James F.", company: "Caterpillar", content: "Reliability in sub-zero temps was critical for our AGVs. Tycorun delivered a pack that performs perfectly at -20°C in the field.", categories: [1, 2, 5] },
-  { name: "Robert P.", company: "Lockheed Martin", content: "Professional, transparent, and technically competent. The best engineering partner we've worked with for mission-critical power systems.", categories: [1, 4] },
-  { name: "Lisa K.", company: "Honeywell", content: "Supply chain security is huge for us. Tycorun's UN 38.3 certification handling smoothed our global logistics significantly.", categories: [1, 5] },
-  { name: "Mark T.", company: "Stryker", content: "From the first consultation to mass production, the process was seamless. High quality, on time, every time.", categories: [1, 3] },
+  { name: "Kai M.", company: "City Commuter", content: "The throttle response is smooth and predictable. It feels fast but never twitchy, which makes daily traffic a lot less stressful.", categories: [1, 2] },
+  { name: "Lena P.", company: "Weekend Rider", content: "Balanced weight and easy handling. The bike stays planted through corners and feels confident on uneven pavement.", categories: [1, 3] },
+  { name: "Chris H.", company: "Light Adventure", content: "Plenty of torque for hill climbs and gravel shortcuts. Range holds up even when riding harder.", categories: [1, 4] },
+  { name: "Aria T.", company: "First-Time Rider", content: "The ride modes help a lot. Eco mode is forgiving, Sport is fun, and both feel consistent.", categories: [1, 2] },
+  { name: "Jin W.", company: "Urban Fleet", content: "Low operating cost and fast turnarounds make these ideal for fleet use. Maintenance has been minimal.", categories: [1, 5] },
+  { name: "Maya R.", company: "Dealer Partner", content: "Build quality feels premium and the fit and finish are strong. Customers notice it immediately.", categories: [1, 5] },
+  { name: "Noah S.", company: "Daily Commuter", content: "Charging is simple and the real-world range matches what was promised. It just works.", categories: [1, 3] },
+  { name: "Priya D.", company: "City Rider", content: "It pulls away from lights quickly but stays quiet and smooth. Great for urban riding.", categories: [1, 2] },
+  { name: "Alex V.", company: "Adventure Lite", content: "Stable at speed, comfortable posture, and enough clearance for rougher routes.", categories: [1, 4] },
 ];
 
 const getCategoryLabel = (categories: number[]) => {
-  if (categories.includes(2)) return "ROBOTICS";
-  if (categories.includes(3)) return "MEDICAL";
-  if (categories.includes(4)) return "AEROSPACE";
-  if (categories.includes(5)) return "INDUSTRIAL";
-  return "ENGINEERING";
+  if (categories.includes(2)) return "URBAN";
+  if (categories.includes(3)) return "COMMUTER";
+  if (categories.includes(4)) return "ADVENTURE";
+  if (categories.includes(5)) return "FLEET";
+  return "RIDER";
 };
 
 const CARD_WIDTH = 300;
@@ -841,11 +856,11 @@ function Testimonials() {
       <div className="py-12 md:py-20">
         <div className="mx-auto max-w-3xl px-4 pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            Trusted by Engineering Leaders
+            Trusted by Riders and Partners
           </h2>
           <p className="text-lg text-gray-400">
-            We provide power solutions that empower the next generation of
-            robotics, medical devices, and autonomous vehicles.
+            We build electric motorcycles that combine everyday usability with
+            spirited performance.
           </p>
         </div>
 
@@ -902,34 +917,34 @@ function Testimonials() {
 // --- Sub-Component: FAQ ---
 const faqs = [
   {
-    question: "What is typical lead time for custom battery packs?",
-    answer: <>For initial prototypes, our rapid engineering track delivers functional samples in <strong className="text-gray-200">7-10 business days</strong>. Full-scale mass production lead times depend on cell availability, typically ranging from <strong className="text-gray-200">4 to 8 weeks</strong> after design freeze.</>,
-    schemaAnswer: "For initial prototypes, our rapid engineering track delivers functional samples in 7-10 business days. Full-scale mass production lead times depend on cell availability, typically ranging from 4 to 8 weeks after design freeze."
+    question: "What is the real-world range?",
+    answer: <>Range depends on speed, load, and riding style. Most city riders see <strong className="text-gray-200">120 to 180 km</strong> per charge, with regen helping in traffic.</>,
+    schemaAnswer: "Range depends on speed, load, and riding style. Most city riders see 120 to 180 km per charge, with regen helping in traffic."
   },
   {
-    question: "Do you handle UN 38.3 and UL certification?",
-    answer: <>Yes. Regulatory compliance is part of our turnkey process. We manage <strong className="text-gray-200">UN 38.3</strong>, <strong className="text-gray-200">IEC 62133</strong>, and <strong className="text-gray-200">UL 2054</strong> testing. We can facilitate pre-compliance testing in our internal lab to ensure a first-pass success rate at certified third-party labs.</>,
-    schemaAnswer: "Yes. Regulatory compliance is part of our turnkey process. We manage UN 38.3, IEC 62133, and UL 2054 testing. We can facilitate pre-compliance testing in our internal lab to ensure a first-pass success rate at certified third-party labs."
+    question: "How fast can it charge?",
+    answer: <>Standard home charging works overnight. Fast charging can bring the bike from <strong className="text-gray-200">20% to 80%</strong> in about <strong className="text-gray-200">45 to 90 minutes</strong>, depending on the model.</>,
+    schemaAnswer: "Standard home charging works overnight. Fast charging can bring the bike from 20% to 80% in about 45 to 90 minutes, depending on the model."
   },
   {
-    question: "Can you integrate with our custom BMS protocol?",
-    answer: <>Absolutely. Our BMS modules support standard <strong className="text-gray-200">CANOpen</strong>, <strong className="text-gray-200">J1939</strong>, and <strong className="text-gray-200">RS-485</strong>. For proprietary protocols, our firmware engineering team can write custom drivers to ensure a seamless handshake with your master controller.</>,
-    schemaAnswer: "Absolutely. Our BMS modules support standard CANOpen, J1939, and RS-485. For proprietary protocols, our firmware engineering team can write custom drivers to ensure a seamless handshake with your master controller."
+    question: "Do you offer test rides?",
+    answer: <>Yes. Book a test ride and experience the ride modes, braking feel, and real-world range before deciding.</>,
+    schemaAnswer: "Yes. Book a test ride and experience the ride modes, braking feel, and real-world range before deciding."
   },
   {
-    question: "What cell chemistries do you support?",
-    answer: <>We focus on <strong className="text-gray-200">NMC (Nickel Manganese Cobalt)</strong> for high energy density applications (drones, robotics) and <strong className="text-gray-200">LFP (Lithium Iron Phosphate)</strong> for high cycle life and safety-critical stationary or industrial applications.</>,
-    schemaAnswer: "We focus on NMC (Nickel Manganese Cobalt) for high energy density applications (drones, robotics) and LFP (Lithium Iron Phosphate) for high cycle life and safety-critical stationary or industrial applications."
+    question: "What safety features are included?",
+    answer: <>We combine <strong className="text-gray-200">ABS braking</strong>, traction management, and thermal monitoring to keep the ride predictable and safe.</>,
+    schemaAnswer: "We combine ABS braking, traction management, and thermal monitoring to keep the ride predictable and safe."
   },
   {
-    question: "What is your Minimum Order Quantity (MOQ)?",
-    answer: <>We do not have a strict MOQ for the <strong className="text-gray-200">NRE (Non-Recurring Engineering)</strong> phase. For serial production, we typically aim for batch sizes of <strong className="text-gray-200">50+ units</strong>, but we remain flexible based on project complexity and annual volume commitments.</>,
-    schemaAnswer: "We do not have a strict MOQ for the NRE (Non-Recurring Engineering) phase. For serial production, we typically aim for batch sizes of 50+ units, but we remain flexible based on project complexity and annual volume commitments."
+    question: "What maintenance is required?",
+    answer: <>Electric drivetrains reduce routine service. Expect normal wear items like tires and brake pads, plus periodic checks for belt or chain tension.</>,
+    schemaAnswer: "Electric drivetrains reduce routine service. Expect normal wear items like tires and brake pads, plus periodic checks for belt or chain tension."
   },
   {
-    question: "How do you manage thermal runaway risks?",
-    answer: <>Safety is our primary constraint. We employ <strong className="text-gray-200">cell-level fusing</strong>, propagation-resistant materials (mica/aerogels), and advanced BMS logic to isolate faults immediately. We validate these designs with CFD thermal simulation and physical nail-penetration testing.</>,
-    schemaAnswer: "Safety is our primary constraint. We employ cell-level fusing, propagation-resistant materials (mica/aerogels), and advanced BMS logic to isolate faults immediately. We validate these designs with CFD thermal simulation and physical nail-penetration testing."
+    question: "Can you support fleet or custom builds?",
+    answer: <>Yes. We support fleet configurations, branding options, and volume planning for partners and operators.</>,
+    schemaAnswer: "Yes. We support fleet configurations, branding options, and volume planning for partners and operators."
   },
 ];
 
@@ -962,9 +977,9 @@ function Faq() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 md:py-20">
         <div className="mx-auto max-w-3xl pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            Engineering FAQ
+            Rider FAQ
           </h2>
-          <p className="text-lg text-gray-400">Common questions regarding our manufacturing process, compliance, and systems integration.</p>
+          <p className="text-lg text-gray-400">Common questions about range, charging, safety, and ownership.</p>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           <div className="flex flex-col gap-4">{faqs.slice(0, 3).map((faq, index) => <FaqItem key={index} faq={faq} isOpen={openIndex === index} onToggle={() => handleToggle(index)} />)}</div>

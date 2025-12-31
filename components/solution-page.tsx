@@ -7,49 +7,50 @@ import Link from "next/link";
 // --- STRUCTURAL DATA FOR PSEO (Replace this object with your JSON source) ---
 const solutionData = {
   meta: {
-    category: "Logistics & Warehousing",
-    title: "Powering the 24/7 Autonomous Supply Chain",
-    subtitle: "Eliminate charging downtime for AGVs and AMRs with our high-cycle LFP architecture and rapid-charge thermal management.",
-    label: "Solution_ID: LOG_AMR_04"
+    category: "Urban Commuting",
+    title: "Built for Daily City Riding",
+    subtitle: "Smooth torque delivery, predictable handling, and dependable range for riders who move through traffic every day.",
+    label: "Solution_ID: URBAN_COMMUTE_01"
   },
   challenges: [
     {
-      title: "The Downtime Trap",
-      description: "Standard lead-acid or low-grade lithium packs require 4-8 hours of charging, forcing fleets to buy 2x the robots just to maintain uptime."
+      title: "Stop-and-Go Fatigue",
+      description: "City riding demands smooth throttle response and easy low-speed control to reduce rider fatigue in traffic."
     },
     {
-      title: "Thermal Throttling",
-      description: "Warehouse environments vary from -10°C freezers to 40°C loading docks. Generic packs throttle performance, slowing down logistics flow."
+      title: "Range Anxiety",
+      description: "Unclear real-world range makes it hard for riders to plan commutes and longer weekend trips with confidence."
     },
     {
-      title: "Cycle Life Degradation",
-      description: "24/7 operations burn through standard batteries in 12 months. Replacement costs and labor disrupt ROI calculations."
+      title: "Road Variability",
+      description: "Potholes, uneven pavement, and wet conditions require stable chassis tuning and reliable braking."
     }
   ],
   solution: {
-    heading: "Engineered for Continuous Op",
-    description: "Our logistics-grade power systems utilize LiFePO4 chemistry paired with a custom thermal management layer, allowing for 1C charging rates without degradation.",
+    heading: "Engineered for City Flow",
+    description: "We combine a high-efficiency motor, tuned controller mapping, and a balanced chassis to deliver a composed ride without sacrificing range.",
     features: [
-      "Opportunistic Charging: 10% to 80% in 20 mins",
-      "3000+ Cycle Life at 100% Depth of Discharge",
-      "CANOpen integration with Fleet Management Systems",
-      "Integrated heater mats for cold-storage ops"
+      "Instant torque with smooth throttle mapping",
+      "120 to 180 km real-world range",
+      "Multi-mode regenerative braking",
+      "Low center of gravity frame integration"
     ]
   },
   specs: [
-    { label: "Chemistry", value: "LFP (LiFePO4)" },
-    { label: "Voltage", value: "24V / 48V" },
-    { label: "Capacity", value: "100Ah - 400Ah" },
-    { label: "Charge Rate", value: "1C Continuous" },
-    { label: "IP Rating", value: "IP54 / IP65" },
-    { label: "Comms", value: "CAN Bus 2.0B" },
+    { label: "Top Speed", value: "110 to 130 km/h" },
+    { label: "Real-World Range", value: "120 to 180 km" },
+    { label: "Charging", value: "20% to 80% in 45 to 90 min" },
+    { label: "Motor Output", value: "8 to 15 kW" },
+    { label: "Ride Modes", value: "Eco / Street / Sport" },
+    { label: "Braking", value: "ABS + Linked" },
   ],
   results: [
-    { value: "40%", label: "Reduction in Fleet Size needed" },
-    { value: "3x", label: "Longer Lifespan vs Lead Acid" },
-    { value: "0", label: "Thermal Incidents Reported" }
+    { value: "40%", label: "Lower Operating Cost vs Gas" },
+    { value: "2x", label: "Fewer Service Visits" },
+    { value: "95%", label: "Rider Satisfaction Score" }
   ]
 };
+
 
 function SolutionHero() {
   return (
@@ -74,7 +75,7 @@ function SolutionHero() {
                 className="btn group bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
               >
                 <span className="relative inline-flex items-center">
-                  Request Datasheet
+                  Book a Test Ride
                   <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                     -&gt;
                   </span>
@@ -110,7 +111,7 @@ function Challenges() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12">
           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4" data-aos="fade-up">The Challenge</h2>
-          <p className="text-gray-400" data-aos="fade-up" data-aos-delay="100">Why off-the-shelf batteries fail in {solutionData.meta.category}.</p>
+          <p className="text-gray-400" data-aos="fade-up" data-aos-delay="100">Why off-the-shelf bikes fall short in {solutionData.meta.category}.</p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-6">
@@ -143,7 +144,7 @@ function Architecture() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div data-aos="fade-right">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/20 border border-blue-500/30 text-blue-400 text-xs font-mono mb-6">
-                TYCORUN_SOLUTION_ARCH
+                TYCORUN_RIDE_ARCH
              </div>
              <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-6">{solutionData.solution.heading}</h2>
              <p className="text-gray-400 mb-8 leading-relaxed">
@@ -185,10 +186,10 @@ function Architecture() {
                         <path d="M30 0 V 160" stroke="#3B82F6" strokeWidth="1" strokeDasharray="4 2"/>
                      </g>
                      
-                     {/* BMS */}
+                     {/* Motor Controller */}
                      <g transform="translate(240, 70)">
                         <rect width="90" height="100" rx="4" stroke="#10B981" strokeWidth="2" fill="#064E3B" fillOpacity="0.2" />
-                        <text x="45" y="55" textAnchor="middle" fill="#10B981" fontSize="12" fontWeight="bold">BMS</text>
+                        <text x="45" y="55" textAnchor="middle" fill="#10B981" fontSize="12" fontWeight="bold">MCU</text>
                      </g>
                      
                      {/* Thermal Lines */}

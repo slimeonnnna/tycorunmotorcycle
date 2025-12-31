@@ -5,9 +5,9 @@ import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 
 export const metadata = {
-  title: "Autonomous Logistics Solutions | Tycorun",
+  title: "Urban Riding Solutions | Tycorun",
   description:
-    "High-uptime power systems designed specifically for 24/7 autonomous mobile robot (AMR) fleets.",
+    "Electric motorcycles tuned for city commuting, light adventure, and daily reliability.",
 };
 
 export default function Solution() {

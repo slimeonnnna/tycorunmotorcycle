@@ -1,7 +1,7 @@
 
 export const metadata = {
   title: "Home - Tycorun",
-  description: "Custom Industrial Battery Manufacturing",
+  description: "High-performance electric motorcycles for city riding and light adventure.",
 };
 
 import PageIllustration from "@/components/page-illustration";
