@@ -1,13 +1,13 @@
----
-title: "How to Think About Real-World Electric Motorcycle Range"
+﻿---
+title: "SKD/CKD vs CBU: How to Reduce Landed Cost"
 date: "2024-06-14"
-description: "Range numbers are estimates. Learn what really affects range and how to plan rides with confidence."
-tags: "electric motorcycle range, charging, commuting, riding tips"
-author: "Tycorun Editorial"
+description: "A distributor-focused guide to SKD/CKD programs, duty optimization, and local assembly strategy."
+tags: "SKD, CKD, CBU, landed cost, OEM, logistics"
+author: "TYCORUN Editorial"
 ---
 
-<section><h2 id="range-is-a-real-world-metric">Range is a real-world metric</h2><p>Advertised range is measured under controlled conditions. In the real world, your speed, terrain, temperature, and payload all matter. Use range numbers as guidance, not a guarantee.</p></section>
-<section><h2 id="speed-and-traffic">Speed and traffic</h2><p>City riding with frequent stops can be efficient for electric motorcycles because regenerative braking returns energy. Sustained high-speed riding on open highways uses more energy and reduces range.</p></section>
-<section><h2 id="terrain-and-load">Terrain and load</h2><p>Hills, headwinds, and heavier loads increase power demand. If you often ride with a passenger or cargo, plan for a lower range than the headline number.</p></section>
-<section><h2 id="charging-access">Charging access</h2><p>Home charging makes ownership easy. If you can plug in overnight, your bike starts every morning with a full battery. For longer routes, check fast-charge availability and allow time for stops.</p></section>
-<section><h2 id="planning-your-ride">Planning your ride</h2><p>Think about your typical weekly distance, not just the longest trip you might take. Most riders stay within city or regional ranges. If your daily commute is well within the real-world range, electric motorcycles fit naturally into your routine.</p></section>
+<section><h2 id="what-skdcskd-means">What SKD/CKD means</h2><p>SKD (semi-knocked down) and CKD (completely knocked down) programs ship vehicles as parts for local assembly. These programs can reduce duties, support local policy, and improve landed cost.</p></section>
+<section><h2 id="when-cbu-still-makes-sense">When CBU still makes sense</h2><p>CBU (complete built-up) shipments are faster for small orders and pilot programs. They work well when the market is still validating demand or when local assembly is not required.</p></section>
+<section><h2 id="compare-duty-and-labor">Compare duty and labor</h2><p>SKD/CKD savings depend on local import rules, labor cost, and assembly capability. A clear duty model and assembly plan help determine whether the savings outweigh the setup effort.</p></section>
+<section><h2 id="what-to-ask-your-supplier">What to ask your supplier</h2><p>Request packing lists, assembly manuals, and tooling requirements. Ask for container loading specs so you can model your landed cost accurately.</p></section>
+<section><h2 id="build-a-phased-plan">Build a phased plan</h2><p>Many distributors start with CBU pilots, then move to SKD/CKD once demand is proven. A supplier that supports both models can help you scale without re-platforming.</p></section>

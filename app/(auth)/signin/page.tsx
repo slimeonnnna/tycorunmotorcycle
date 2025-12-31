@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Sign In - Tycorun PRO",
+  title: "Sign In - TYCORUN PRO",
   description: "Page description",
 };
 

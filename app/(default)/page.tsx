@@ -1,7 +1,7 @@
 
 export const metadata = {
-  title: "Home - Tycorun",
-  description: "High-performance electric motorcycles for city riding and light adventure.",
+  title: "Home - TYCORUN",
+  description: "Factory-direct OEM/ODM electric motorcycles with SKD/CKD options and compliance support.",
 };
 
 import PageIllustration from "@/components/page-illustration";

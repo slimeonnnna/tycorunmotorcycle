@@ -7,47 +7,47 @@ import Link from "next/link";
 // --- STRUCTURAL DATA FOR PSEO (Replace this object with your JSON source) ---
 const solutionData = {
   meta: {
-    category: "Urban Commuting",
-    title: "Built for Daily City Riding",
-    subtitle: "Smooth torque delivery, predictable handling, and dependable range for riders who move through traffic every day.",
-    label: "Solution_ID: URBAN_COMMUTE_01"
+    category: "Global OEM Programs",
+    title: "Launch-Ready Electric Motorcycle Supply",
+    subtitle: "Factory-direct OEM/ODM programs with compliance support, SKD/CKD options, and export-ready logistics.",
+    label: "Solution_ID: OEM_GLOBAL_01"
   },
   challenges: [
     {
-      title: "Stop-and-Go Fatigue",
-      description: "City riding demands smooth throttle response and easy low-speed control to reduce rider fatigue in traffic."
+      title: "Compliance Barriers",
+      description: "Homologation and documentation delays can stall launches in EEC/DOT markets."
     },
     {
-      title: "Range Anxiety",
-      description: "Unclear real-world range makes it hard for riders to plan commutes and longer weekend trips with confidence."
+      title: "Unclear Landed Cost",
+      description: "Without packaging and loading clarity, distributors cannot predict margin or freight cost."
     },
     {
-      title: "Road Variability",
-      description: "Potholes, uneven pavement, and wet conditions require stable chassis tuning and reliable braking."
+      title: "Supply Chain Risk",
+      description: "Inconsistent QC and delivery schedules increase warranty exposure and market churn."
     }
   ],
   solution: {
-    heading: "Engineered for City Flow",
-    description: "We combine a high-efficiency motor, tuned controller mapping, and a balanced chassis to deliver a composed ride without sacrificing range.",
+    heading: "Built for Export Execution",
+    description: "We provide a structured OEM/ODM program with compliance packs, production QC, and logistics planning to de-risk global launches.",
     features: [
-      "Instant torque with smooth throttle mapping",
-      "120 to 180 km real-world range",
-      "Multi-mode regenerative braking",
-      "Low center of gravity frame integration"
+      "OEM branding + ODM trim customization",
+      "SKD/CKD programs for duty optimization",
+      "EEC/COC & DOT documentation support",
+      "Container loading specs and packaging"
     ]
   },
   specs: [
-    { label: "Top Speed", value: "110 to 130 km/h" },
-    { label: "Real-World Range", value: "120 to 180 km" },
-    { label: "Charging", value: "20% to 80% in 45 to 90 min" },
-    { label: "Motor Output", value: "8 to 15 kW" },
-    { label: "Ride Modes", value: "Eco / Street / Sport" },
-    { label: "Braking", value: "ABS + Linked" },
+    { label: "MOQ", value: "50 units / model" },
+    { label: "Lead Time", value: "45 to 60 days" },
+    { label: "Loading Qty", value: "50 units / 40HQ" },
+    { label: "Certifications", value: "EEC / COC / DOT" },
+    { label: "Spare Parts", value: "1% free spares" },
+    { label: "Incoterms", value: "FOB / CIF" },
   ],
   results: [
-    { value: "40%", label: "Lower Operating Cost vs Gas" },
-    { value: "2x", label: "Fewer Service Visits" },
-    { value: "95%", label: "Rider Satisfaction Score" }
+    { value: "25%", label: "Lower Landed Cost via CKD" },
+    { value: "60D", label: "Average Launch Lead Time" },
+    { value: "40+", label: "Export Markets Served" }
   ]
 };
 
@@ -75,7 +75,7 @@ function SolutionHero() {
                 className="btn group bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
               >
                 <span className="relative inline-flex items-center">
-                  Book a Test Ride
+                  Request OEM Pack
                   <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                     -&gt;
                   </span>
@@ -111,7 +111,7 @@ function Challenges() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12">
           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4" data-aos="fade-up">The Challenge</h2>
-          <p className="text-gray-400" data-aos="fade-up" data-aos-delay="100">Why off-the-shelf bikes fall short in {solutionData.meta.category}.</p>
+          <p className="text-gray-400" data-aos="fade-up" data-aos-delay="100">Why distributors need more than a retail-ready product in {solutionData.meta.category}.</p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-6">
@@ -144,7 +144,7 @@ function Architecture() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div data-aos="fade-right">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/20 border border-blue-500/30 text-blue-400 text-xs font-mono mb-6">
-                TYCORUN_RIDE_ARCH
+                TYCORUN_OEM_ARCH
              </div>
              <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-6">{solutionData.solution.heading}</h2>
              <p className="text-gray-400 mb-8 leading-relaxed">

@@ -4,9 +4,9 @@ import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 
 export const metadata = {
-  title: "Contact | Test Ride & Partnerships",
+  title: "Contact | OEM/ODM Partnerships",
   description:
-    "Book a test ride, request a demo, or explore fleet partnerships with Tycorun electric motorcycles.",
+    "Request OEM/ODM pricing, compliance documents, or SKD/CKD programs with TYCORUN.",
 };
 
 export default function Contact() {

@@ -5,9 +5,9 @@ import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 
 export const metadata = {
-  title: "About Tycorun | Electric Motorcycle Manufacturer",
+  title: "About TYCORUN | Electric Motorcycle Manufacturer",
   description:
-    "Learn how Tycorun designs and builds high-performance electric motorcycles with integrated powertrain and rider-first engineering.",
+    "Learn how TYCORUN delivers OEM/ODM electric motorcycle programs with compliance support and scalable manufacturing.",
 };
 
 export default function About() {

@@ -23,14 +23,14 @@ export default function Footer() {
         <div className="grid grid-cols-2 justify-between gap-12 py-8 sm:grid-rows-[auto_auto] md:grid-cols-4 md:grid-rows-[auto_auto] md:py-12 lg:grid-cols-[repeat(4,minmax(0,140px))_1fr] lg:grid-rows-1 xl:gap-20">
           {/* 1st block */}
           <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-200">Product</h3>
+            <h3 className="text-sm font-medium text-gray-200">OEM / ODM</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <a
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Features
+                  OEM Catalog
                 </a>
               </li>
               <li>
@@ -38,7 +38,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Technology
+                  SKD / CKD Programs
                 </a>
               </li>
               <li>
@@ -46,7 +46,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Quality &amp; Safety
+                  Quality &amp; Testing
                 </a>
               </li>
               <li>
@@ -54,7 +54,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Certifications
+                  Certifications (EEC/DOT)
                 </a>
               </li>
               <li>
@@ -70,7 +70,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  FAQs
+                  MOQ &amp; Terms
                 </a>
               </li>
             </ul>
@@ -84,7 +84,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  About Tycorun
+                  About TYCORUN
                 </a>
               </li>
               <li>
@@ -92,7 +92,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Careers
+                  Factory Tour
                 </a>
               </li>
               <li>
@@ -100,7 +100,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Sustainability
+                  Manufacturing Capacity
                 </a>
               </li>
               <li>
@@ -108,7 +108,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Press
+                  Export Markets
                 </a>
               </li>
               <li>
@@ -130,7 +130,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Technical Docs
+                  OEM Partnership Guide
                 </a>
               </li>
               <li>
@@ -138,7 +138,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Case Studies
+                  2025 Model Catalog
                 </a>
               </li>
               <li>
@@ -146,7 +146,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Engineering Blog
+                  Container Loading Specs
                 </a>
               </li>
               <li>
@@ -154,7 +154,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Safety Data Sheets
+                  After-Sales Parts List
                 </a>
               </li>
             </ul>
@@ -162,7 +162,7 @@ export default function Footer() {
           {/* 4th block */}
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-gray-200">
-              Content Library
+              Compliance
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -170,7 +170,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Industry Guides
+                  EEC / COC Pack
                 </a>
               </li>
               <li>
@@ -178,7 +178,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Whitepapers
+                  DOT Documentation
                 </a>
               </li>
               <li>
@@ -186,7 +186,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  Webinars
+                  Homologation Support
                 </a>
               </li>
             </ul>
@@ -198,7 +198,7 @@ export default function Footer() {
             </div>
             <div className="text-sm">
               <p className="mb-3 text-gray-400">
-                © Tycorun.com
+                © TYCORUN.com
                 <span className="text-gray-700"> · </span>
                 <a
                   className="text-gray-400 transition hover:text-blue-500"

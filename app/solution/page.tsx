@@ -5,9 +5,9 @@ import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 
 export const metadata = {
-  title: "Urban Riding Solutions | Tycorun",
+  title: "OEM / ODM Solutions | TYCORUN",
   description:
-    "Electric motorcycles tuned for city commuting, light adventure, and daily reliability.",
+    "Factory-ready OEM/ODM programs with compliance support and export logistics.",
 };
 
 export default function Solution() {

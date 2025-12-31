@@ -106,27 +106,54 @@ function Spotlight({ children, className = "" }: SpotlightProps) {
 function HeroCard() {
   return (
     <div className="relative flex justify-center items-center py-12 md:py-20">
-      {/* Background decoration: Technical Radar/Target */}
+      {/* Background decoration: Global supply network */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 opacity-30"
         aria-hidden="true"
       >
-         <svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="300" cy="300" r="299.5" stroke="#1F2937" strokeDasharray="4 4"/>
-            <circle cx="300" cy="300" r="200" stroke="#1F2937"/>
-            <circle cx="300" cy="300" r="100" stroke="#1F2937" strokeDasharray="2 2"/>
-            <line x1="300" y1="0" x2="300" y2="600" stroke="#1F2937"/>
-            <line x1="0" y1="300" x2="600" y2="300" stroke="#1F2937"/>
-            
-            {/* Active Sector */}
-            <path d="M300 300 L 512 87 A 300 300 0 0 1 600 300 Z" fill="url(#radar-gradient)" fillOpacity="0.1"/>
-            <defs>
-              <radialGradient id="radar-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(300 300) rotate(-45) scale(300)">
-                <stop stopColor="#3B82F6"/>
-                <stop offset="1" stopColor="#1F2937" stopOpacity="0"/>
-              </radialGradient>
-            </defs>
-         </svg>
+        <svg
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          width="100%"
+          height="100%"
+          viewBox="0 0 800 600"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern
+              id="grid-pattern"
+              x="0"
+              y="0"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="2" cy="2" r="1" className="fill-blue-500/20" />
+            </pattern>
+            <linearGradient id="fade-mask" x1="400" y1="300" x2="400" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="white" stopOpacity="1" />
+              <stop offset="1" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+            <mask id="hero-mask">
+              <circle cx="400" cy="300" r="400" fill="url(#fade-mask)" />
+            </mask>
+          </defs>
+
+          <rect x="0" y="0" width="800" height="600" fill="url(#grid-pattern)" mask="url(#hero-mask)" />
+
+          <g className="stroke-blue-500/20" strokeWidth="1" fill="none">
+            <path d="M400 300 L600 150" strokeDasharray="4 4" />
+            <path d="M400 300 L200 450" strokeDasharray="4 4" />
+            <path d="M400 300 L150 200" strokeDasharray="4 4" />
+            <path d="M400 300 L650 400" strokeDasharray="4 4" />
+            <circle cx="400" cy="300" r="150" className="stroke-gray-700/20" strokeDasharray="8 8" />
+            <circle cx="400" cy="300" r="280" className="stroke-gray-700/10" />
+          </g>
+
+          <circle cx="600" cy="150" r="3" className="fill-blue-400/40 animate-pulse" />
+          <circle cx="200" cy="450" r="3" className="fill-blue-400/40 animate-pulse" />
+          <circle cx="150" cy="200" r="3" className="fill-blue-400/40 animate-pulse" />
+        </svg>
       </div>
 
       {/* Interactive Card */}
@@ -158,29 +185,27 @@ function HeroCard() {
                       <stop offset="1" stopColor="#3B82F6" />
                     </linearGradient>
                   </defs>
-                  <path
-                    fill="url(#tycorun-card-gradient)"
-                    d="M26 6H12.5L6.5 12V15H17L26 6Z"
-                  />
-                  <circle cx="26" cy="6" r="2" fill="#2563EB" />
-                  <path
-                    fill="url(#tycorun-card-gradient)"
-                    d="M6 26H19.5L25.5 20V17H15L6 26Z"
-                  />
-                  <circle cx="6" cy="26" r="2" fill="#3B82F6" />
+                  <circle cx="16" cy="16" r="10" stroke="url(#tycorun-card-gradient)" strokeWidth="2" />
+                  <circle cx="16" cy="16" r="5" stroke="#3B82F6" strokeWidth="2" />
+                  <rect x="15" y="6" width="2" height="20" rx="1" fill="#60A5FA" />
+                  <rect x="6" y="15" width="20" height="2" rx="1" fill="#60A5FA" />
+                  <rect x="24" y="9" width="4" height="2" rx="1" fill="#93C5FD" />
+                  <rect x="24" y="21" width="4" height="2" rx="1" fill="#93C5FD" />
+                  <rect x="4" y="9" width="4" height="2" rx="1" fill="#93C5FD" />
+                  <rect x="4" y="21" width="4" height="2" rx="1" fill="#93C5FD" />
                 </svg>
               </div>
               
-              {/* Logo Part 2: The Text 'Tycorun' */}
+              {/* Logo Part 2: The Text 'TYCORUN' */}
               <div className="hc-logo-text">
-                <span className="font-nacelle text-2xl font-semibold text-gray-100 tracking-tight">Tycorun</span>
+                <span className="font-nacelle text-2xl font-semibold text-gray-100 tracking-tight">TYCORUN</span>
               </div>
               
               <span className="hc-trail"></span>
             </div>
           <span className="hc-logo-bottom-text">tycorun.com</span>
           </div>
-          <span className="hc-bottom-text">Electric Motorcycles</span>
+          <span className="hc-bottom-text">OEM / ODM Supply</span>
         </div>
         {/* Ripple Element */}
         <div className="hc-ripple z-0"></div>
@@ -200,7 +225,7 @@ function Hero() {
               className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
               data-aos="fade-up"
             >
-              High-Performance Electric Motorcycles
+              Leading Electric Motorcycle Manufacturer for Global OEMs
             </h1>
             <div className="mx-auto max-w-3xl">
               <p
@@ -208,8 +233,8 @@ function Hero() {
                 data-aos="fade-up"
                 data-aos-delay={200}
               >
-                Built for city riders and light adventure. Instant torque, balanced handling,
-                and dependable range come first, powered by advanced battery technology.
+                Factory-direct OEM/ODM supply with SKD/CKD options, market-ready
+                compliance support, and scalable manufacturing for global importers.
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
                 <div data-aos="fade-up" data-aos-delay={400}>
@@ -218,7 +243,7 @@ function Hero() {
                     href="/product"
                   >
                     <span className="relative inline-flex items-center">
-                      View Models
+                      Explore OEM Catalog
                       <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                         -&gt;
                       </span>
@@ -230,7 +255,7 @@ function Hero() {
                     className="btn relative w-full bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%] sm:ml-4 sm:w-auto"
                     href="/contact"
                   >
-                    Book a Test Ride
+                    Get Factory Pricing
                   </Link>
                 </div>
               </div>
@@ -255,15 +280,15 @@ function Workflows() {
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                Rider-First Engineering
+                Market-Ready Engineering
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Design the ride feel
+              Build for global distribution
             </h2>
             <p className="text-lg text-gray-400">
-              We tune geometry, suspension, and power delivery around real riding
-              conditions. The battery and controller are there to support the ride.
+              We engineer products for compliance, serviceability, and margin.
+              Documentation, certification support, and QC are built in.
             </p>
           </div>
           <Spotlight className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3">
@@ -305,13 +330,13 @@ function Workflows() {
                   <div className="mb-3">
                     <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
                       <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                        All-Weather Ready
+                        Global Climate Durability
                       </span>
                     </span>
                   </div>
                   <p className="text-gray-400">
-                    Designed for heat, rain, and rough urban roads with sealed
-                    connectors and corrosion-resistant finishes.
+                    Validated for heat, humidity, dust, and rain to reduce
+                    warranty risk in export markets.
                   </p>
                 </div>
               </div>
@@ -350,13 +375,13 @@ function Workflows() {
                   <div className="mb-3">
                     <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
                       <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                        Ride-Proven Development
+                        OEM / ODM Co-Development
                       </span>
                     </span>
                   </div>
                   <p className="text-gray-400">
-                    From sketch to rideable prototype fast, then validated on
-                    real streets before production.
+                    Rapid samples, engineering support, and custom trims for
+                    regional market positioning.
                   </p>
                 </div>
               </div>
@@ -398,13 +423,13 @@ function Workflows() {
                   <div className="mb-3">
                     <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
                       <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                        Scalable Manufacturing
+                        Scalable Supply Chain
                       </span>
                     </span>
                   </div>
                   <p className="text-gray-400">
-                     Flexible lines for limited runs, fleet pilots, and full
-                     production.
+                     Flexible capacity planning for pilot runs, launches, and
+                     volume orders.
                   </p>
                 </div>
               </div>
@@ -448,15 +473,15 @@ function Features() {
           <div className="mx-auto max-w-3xl pb-4 text-center md:pb-12">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                Rider Focused
+                B2B Ready
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Engineered for Real-World Riding
+              Engineered for Global Sales
             </h2>
             <p className="text-lg text-gray-400">
-              Chassis balance, torque delivery, and braking confidence are tuned
-              together for a smooth, responsive ride.
+              Products are built for local compliance, serviceability, and
+              predictable landed cost.
             </p>
           </div>
           
@@ -484,7 +509,7 @@ function Features() {
               </g>
               <g transform="translate(400, 80)">
                  <rect width="200" height="140" stroke="#4B5563" strokeWidth="2" fill="#1F2937" />
-                 <text x="100" y="70" textAnchor="middle" fill="#9CA3AF" fontFamily="monospace" fontSize="14">MOTOR CONTROLLER</text>
+                 <text x="100" y="70" textAnchor="middle" fill="#9CA3AF" fontFamily="monospace" fontSize="14">QC + CERTS</text>
                  <path d="M10 20 H 190" stroke="#374151" />
                  <path d="M10 40 H 190" stroke="#374151" />
                  <rect x="20" y="80" width="40" height="40" fill="#374151" />
@@ -495,7 +520,7 @@ function Features() {
               <circle cx="260" cy="120" r="4" fill="#60A5FA" />
               <circle cx="400" cy="120" r="4" fill="#60A5FA" />
               <path d="M 120 160 V 220 H 140" stroke="#9CA3AF" strokeWidth="1" />
-              <text x="150" y="225" fill="#9CA3AF" fontSize="12" fontFamily="monospace">Integrated Power Pack</text>
+              <text x="150" y="225" fill="#9CA3AF" fontSize="12" fontFamily="monospace">Export Platform</text>
             </svg>
           </div>
 
@@ -514,11 +539,11 @@ function Features() {
                 />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Frame & Assembly Traceability
+                Full-Process Traceability
               </h3>
               <p className="text-gray-400">
-                Key chassis and powertrain assemblies are tracked to ensure
-                consistent quality and service history.
+                Full batch tracking across assembly, testing, and packaging for
+                audit-ready deliveries.
               </p>
             </article>
             <article>
@@ -532,11 +557,11 @@ function Features() {
                 <path d="M19 6H0v2h17v8H7v-6H5v8h19v-2h-5V6Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Motor Control Tuning
+                Compliance-Ready Design
               </h3>
               <p className="text-gray-400">
-                Smooth throttle mapping and regen calibration for predictable
-                response in traffic and on open roads.
+                Built to match EEC/COC and DOT documentation requirements with
+                localization support.
               </p>
             </article>
             <article>
@@ -553,11 +578,11 @@ function Features() {
                 />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Ride Dynamics & Handling
+                Serviceability Focus
               </h3>
               <p className="text-gray-400">
-                Geometry and suspension are validated for stability, cornering,
-                and rider confidence.
+                Modules and components designed for fast service and lower
+                dealer maintenance cost.
               </p>
             </article>
             <article>
@@ -579,11 +604,11 @@ function Features() {
                 <path d="m16.321 2-.5-.866 1.733-1 .5.866A22 22 0 0 1 21 12c0 3.852-1.017 7.636-2.948 10.97l-.502.865-1.73-1.003.501-.865A19.878 19.878 0 0 0 19 12a20 20 0 0 0-2.679-10Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Durability & Vibration Testing
+                Reliability Testing
               </h3>
               <p className="text-gray-400">
-                Endurance testing validates long-term reliability across mixed
-                road conditions.
+                100% functional testing, burn-in, and road simulation to reduce
+                warranty claims.
               </p>
             </article>
             <article>
@@ -600,11 +625,11 @@ function Features() {
                 <path d="m7.454 2.891.891-.454L7.437.655l-.891.454a12 12 0 0 0 0 21.382l.89.454.91-1.781-.892-.455a10 10 0 0 1 0-17.818ZM17.456 1.11l-.891-.454-.909 1.782.891.454a10 10 0 0 1 0 17.819l-.89.454.908 1.781.89-.454a12 12 0 0 0 0-21.382Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Safety & Compliance
+                Logistics Optimization
               </h3>
               <p className="text-gray-400">
-                Built to meet road safety requirements with braking and lighting
-                standards in mind.
+                Packaging engineered for container loading efficiency and
+                reduced shipping damage.
               </p>
             </article>
             <article>
@@ -621,11 +646,11 @@ function Features() {
                 <path d="M19.406 3.844 6.083 20.497.586 15 2 13.586l3.917 3.917L17.844 2.595l1.562 1.25Z" />
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
-                Weatherproof Electronics
+                Global Supply Assurance
               </h3>
               <p className="text-gray-400">
-                Critical components are sealed against dust, splash, and
-                vibration.
+                Stable sourcing for motor, controller, and pack components with
+                long-term availability.
               </p>
             </article>
           </div>
@@ -644,23 +669,22 @@ function TechnicalData() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
             <div>
               <h2 className="mb-6 font-nacelle text-3xl font-semibold text-gray-200">
-                Performance Envelope & Ride Confidence
+                Export Readiness & Commercial Metrics
               </h2>
               <div className="space-y-6 text-lg text-gray-400">
                 <p>
-                  We design for daily riding, not lab averages. Chassis stiffness,
-                  suspension travel, and braking feel are validated on city
-                  streets and uneven roads.
+                  We design for repeatable production and global distribution.
+                  QC checkpoints, certification support, and packaging are built
+                  into every program.
                 </p>
                 <p>
-                  <strong>Power Delivery:</strong> Throttle mapping and
-                  regenerative braking are tuned for smooth control in traffic
-                  and confident pull on open roads.
+                  <strong>Partnership Models:</strong> OEM branding, ODM
+                  customization, and SKD/CKD programs to fit local policy and
+                  duties.
                 </p>
                 <p>
-                  <strong>Safety Systems:</strong> Braking, thermal monitoring,
-                  and traction management work together to protect the rider
-                  without dulling the ride.
+                  <strong>Quality Control:</strong> 100% functional testing,
+                  end-of-line inspection, and shipment documentation.
                 </p>
               </div>
             </div>
@@ -670,49 +694,49 @@ function TechnicalData() {
               </div>
               <div className="space-y-4">
                 <div className="border-b border-gray-800 pb-2">
-                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Performance Envelope</h4>
+                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Commercial Metrics</h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Real_World_Range</span>
-                    <span className="text-blue-400">120 to 180 km</span>
+                    <span className="text-gray-300">MOQ</span>
+                    <span className="text-blue-400">50 units / model</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Top_Speed</span>
-                    <span className="text-blue-400">110 to 130 km/h</span>
+                    <span className="text-gray-300">Lead_Time</span>
+                    <span className="text-blue-400">45 to 60 days</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Charge_Time_20_80</span>
-                    <span className="text-blue-400">45 to 90 min</span>
+                    <span className="text-gray-300">Spare_Parts</span>
+                    <span className="text-blue-400">1% free spares</span>
                   </div>
                 </div>
                 <div className="border-b border-gray-800 pb-2">
                   <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Compliance & Safety</h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Braking_System</span>
-                    <span className="text-blue-400">ABS + Linked Braking</span>
+                    <span className="text-gray-300">Certifications</span>
+                    <span className="text-blue-400">EEC/COC, DOT</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Ingress_Protection</span>
-                    <span className="text-blue-400">IP67 Critical Components</span>
+                    <span className="text-gray-300">Quality Tests</span>
+                    <span className="text-blue-400">100% functional</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Chassis_Safety</span>
-                    <span className="text-blue-400">High-Strength Frame</span>
+                    <span className="text-gray-300">Packaging</span>
+                    <span className="text-blue-400">Steel rack options</span>
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Data Interface</h4>
+                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Trade Terms</h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Ride_Modes</span>
-                    <span className="text-blue-400">Eco / Street / Sport</span>
+                    <span className="text-gray-300">Incoterms</span>
+                    <span className="text-blue-400">FOB / CIF</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Connectivity</span>
-                    <span className="text-blue-400">Bluetooth + App</span>
+                    <span className="text-gray-300">Payment</span>
+                    <span className="text-blue-400">T/T, LC</span>
                   </div>
                 </div>
               </div>
               <div className="mt-6 border-t border-dashed border-gray-700 pt-4 text-xs text-gray-500">
-                * Range varies with speed, load, temperature, and riding style.
+                * Commercial terms and certifications vary by region and model.
               </div>
             </div>
           </div>
@@ -745,23 +769,23 @@ const EngineerAvatar = ({ name }: { name: string }) => {
 };
 
 const testimonialsData = [
-  { name: "Kai M.", company: "City Commuter", content: "The throttle response is smooth and predictable. It feels fast but never twitchy, which makes daily traffic a lot less stressful.", categories: [1, 2] },
-  { name: "Lena P.", company: "Weekend Rider", content: "Balanced weight and easy handling. The bike stays planted through corners and feels confident on uneven pavement.", categories: [1, 3] },
-  { name: "Chris H.", company: "Light Adventure", content: "Plenty of torque for hill climbs and gravel shortcuts. Range holds up even when riding harder.", categories: [1, 4] },
-  { name: "Aria T.", company: "First-Time Rider", content: "The ride modes help a lot. Eco mode is forgiving, Sport is fun, and both feel consistent.", categories: [1, 2] },
-  { name: "Jin W.", company: "Urban Fleet", content: "Low operating cost and fast turnarounds make these ideal for fleet use. Maintenance has been minimal.", categories: [1, 5] },
-  { name: "Maya R.", company: "Dealer Partner", content: "Build quality feels premium and the fit and finish are strong. Customers notice it immediately.", categories: [1, 5] },
-  { name: "Noah S.", company: "Daily Commuter", content: "Charging is simple and the real-world range matches what was promised. It just works.", categories: [1, 3] },
-  { name: "Priya D.", company: "City Rider", content: "It pulls away from lights quickly but stays quiet and smooth. Great for urban riding.", categories: [1, 2] },
-  { name: "Alex V.", company: "Adventure Lite", content: "Stable at speed, comfortable posture, and enough clearance for rougher routes.", categories: [1, 4] },
+  { name: "European Distributor", company: "EEC Market", content: "Documentation was complete and the EEC compliance package made homologation straightforward for multiple EU countries.", categories: [1, 2] },
+  { name: "South American Assembler", company: "CKD Program", content: "Switching from CBU to CKD reduced duties and shortened our landed cost cycle by 25%.", categories: [1, 4] },
+  { name: "Middle East Importer", company: "Regional Dealer Network", content: "Fast lead times and consistent QC allowed us to plan monthly arrivals with low warranty exposure.", categories: [1, 3] },
+  { name: "African Fleet Operator", company: "Delivery & Mobility", content: "Spare parts planning and service documentation helped our technicians scale after-sales support quickly.", categories: [1, 5] },
+  { name: "LATAM Distributor", company: "ODM Partner", content: "We launched a localized trim within 60 days using their ODM process and tooling support.", categories: [1, 5] },
+  { name: "SEA Importer", company: "Urban Mobility", content: "Container loading specs and steel rack packaging improved our shipping efficiency immediately.", categories: [1, 2] },
+  { name: "GCC Dealer Group", company: "Hot Climate Market", content: "Climate durability testing reduced heat-related failures and improved our dealer confidence.", categories: [1, 3] },
+  { name: "OEM Partner", company: "Private Label", content: "Branding, badge engineering, and compliance support were handled end-to-end.", categories: [1, 4] },
+  { name: "Global Integrator", company: "Multi-Region Supply", content: "They operate like a true factory partner, not a reseller. That trust enabled repeat orders.", categories: [1, 2] },
 ];
 
 const getCategoryLabel = (categories: number[]) => {
-  if (categories.includes(2)) return "URBAN";
-  if (categories.includes(3)) return "COMMUTER";
-  if (categories.includes(4)) return "ADVENTURE";
+  if (categories.includes(2)) return "DISTRIBUTOR";
+  if (categories.includes(3)) return "IMPORTER";
+  if (categories.includes(4)) return "OEM/ODM";
   if (categories.includes(5)) return "FLEET";
-  return "RIDER";
+  return "PARTNER";
 };
 
 const CARD_WIDTH = 300;
@@ -856,11 +880,11 @@ function Testimonials() {
       <div className="py-12 md:py-20">
         <div className="mx-auto max-w-3xl px-4 pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            Trusted by Riders and Partners
+            Trusted by Global Distributors
           </h2>
           <p className="text-lg text-gray-400">
-            We build electric motorcycles that combine everyday usability with
-            spirited performance.
+            Factory-direct supply with OEM/ODM programs, documentation, and
+            export-ready quality control.
           </p>
         </div>
 
@@ -917,34 +941,34 @@ function Testimonials() {
 // --- Sub-Component: FAQ ---
 const faqs = [
   {
-    question: "What is the real-world range?",
-    answer: <>Range depends on speed, load, and riding style. Most city riders see <strong className="text-gray-200">120 to 180 km</strong> per charge, with regen helping in traffic.</>,
-    schemaAnswer: "Range depends on speed, load, and riding style. Most city riders see 120 to 180 km per charge, with regen helping in traffic."
+    question: "What is your MOQ?",
+    answer: <>Standard MOQ starts at <strong className="text-gray-200">50 units per model</strong>. We can support pilot orders for qualified partners.</>,
+    schemaAnswer: "Standard MOQ starts at 50 units per model. Pilot orders are available for qualified partners."
   },
   {
-    question: "How fast can it charge?",
-    answer: <>Standard home charging works overnight. Fast charging can bring the bike from <strong className="text-gray-200">20% to 80%</strong> in about <strong className="text-gray-200">45 to 90 minutes</strong>, depending on the model.</>,
-    schemaAnswer: "Standard home charging works overnight. Fast charging can bring the bike from 20% to 80% in about 45 to 90 minutes, depending on the model."
+    question: "Do you support OEM and ODM?",
+    answer: <>Yes. We provide OEM branding and ODM customization, including regional trims and compliance documentation.</>,
+    schemaAnswer: "Yes. We provide OEM branding and ODM customization with compliance documentation."
   },
   {
-    question: "Do you offer test rides?",
-    answer: <>Yes. Book a test ride and experience the ride modes, braking feel, and real-world range before deciding.</>,
-    schemaAnswer: "Yes. Book a test ride and experience the ride modes, braking feel, and real-world range before deciding."
+    question: "Do you offer SKD/CKD?",
+    answer: <>Yes. SKD/CKD programs are available to reduce duties and support local assembly.</>,
+    schemaAnswer: "Yes. SKD/CKD programs are available to reduce duties and support local assembly."
   },
   {
-    question: "What safety features are included?",
-    answer: <>We combine <strong className="text-gray-200">ABS braking</strong>, traction management, and thermal monitoring to keep the ride predictable and safe.</>,
-    schemaAnswer: "We combine ABS braking, traction management, and thermal monitoring to keep the ride predictable and safe."
+    question: "Which certifications do you support?",
+    answer: <>We support <strong className="text-gray-200">EEC/COC</strong> and <strong className="text-gray-200">DOT</strong> documentation depending on target market.</>,
+    schemaAnswer: "We support EEC/COC and DOT documentation depending on target market."
   },
   {
-    question: "What maintenance is required?",
-    answer: <>Electric drivetrains reduce routine service. Expect normal wear items like tires and brake pads, plus periodic checks for belt or chain tension.</>,
-    schemaAnswer: "Electric drivetrains reduce routine service. Expect normal wear items like tires and brake pads, plus periodic checks for belt or chain tension."
+    question: "What are payment terms?",
+    answer: <>We accept <strong className="text-gray-200">T/T</strong> and <strong className="text-gray-200">LC</strong> with standard production milestones.</>,
+    schemaAnswer: "We accept T/T and LC with standard production milestones."
   },
   {
-    question: "Can you support fleet or custom builds?",
-    answer: <>Yes. We support fleet configurations, branding options, and volume planning for partners and operators.</>,
-    schemaAnswer: "Yes. We support fleet configurations, branding options, and volume planning for partners and operators."
+    question: "What spare parts support is included?",
+    answer: <>We provide <strong className="text-gray-200">1% free spare parts</strong> and optional parts kits per shipment.</>,
+    schemaAnswer: "We provide 1% free spare parts and optional parts kits per shipment."
   },
 ];
 
@@ -977,9 +1001,9 @@ function Faq() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 md:py-20">
         <div className="mx-auto max-w-3xl pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            Rider FAQ
+            OEM / ODM FAQ
           </h2>
-          <p className="text-lg text-gray-400">Common questions about range, charging, safety, and ownership.</p>
+          <p className="text-lg text-gray-400">Commercial terms, compliance support, and partnership details.</p>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           <div className="flex flex-col gap-4">{faqs.slice(0, 3).map((faq, index) => <FaqItem key={index} faq={faq} isOpen={openIndex === index} onToggle={() => handleToggle(index)} />)}</div>

@@ -163,7 +163,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   const post = getBlogPostBySlug(slug);
   if (!post) {
     return {
-      title: "Post Not Found - Tycorun",
+      title: "Post Not Found - TYCORUN",
     };
   }
 
@@ -172,14 +172,14 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   const imageUrl = new URL(post.cover ?? "/tycorun-logo.webp", siteUrl).toString();
 
   return {
-    title: `${post.title} - Tycorun`,
+    title: `${post.title} - TYCORUN`,
     description: post.description,
     alternates: {
       canonical: postUrl,
     },
     openGraph: {
       type: "article",
-      title: `${post.title} - Tycorun`,
+      title: `${post.title} - TYCORUN`,
       description: post.description,
       url: postUrl,
       publishedTime: post.date,
@@ -192,7 +192,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${post.title} - Tycorun`,
+      title: `${post.title} - TYCORUN`,
       description: post.description,
       images: [imageUrl],
     },
@@ -224,12 +224,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         }
       : {
           "@type": "Organization",
-          name: "Tycorun",
+          name: "TYCORUN",
         },
     image: [imageUrl],
     publisher: {
       "@type": "Organization",
-      name: "Tycorun",
+      name: "TYCORUN",
       logo: {
         "@type": "ImageObject",
         url: new URL("/tycorun-logo.webp", siteUrl).toString(),
@@ -313,11 +313,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <aside className="order-3 lg:order-3 lg:sticky lg:top-28 self-start">
                 <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
                   <div className="text-xs uppercase tracking-widest text-gray-500">
-                    Need a ride consult?
+                    Need OEM support?
                   </div>
                   <p className="mt-3 text-sm text-gray-300">
-                    Share your commute distance, charging access, and riding
-                    style. We will recommend the right model and setup.
+                    Share your target market, volume, and certification needs.
+                    We will recommend the right models and program.
                   </p>
                   <a
                     className="btn-sm mt-4 inline-flex bg-linear-to-t from-blue-600 to-blue-500 text-white"

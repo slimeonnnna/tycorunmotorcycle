@@ -1,49 +1,49 @@
 import Link from "next/link";
 
 const quickSpec = [
-  { label: "Ride Focus", value: "City + Light Adventure" },
-  { label: "Range Target", value: "120 to 180 km" },
-  { label: "Charge Time", value: "45 to 90 min (20-80%)" },
-  { label: "Test Rides", value: "Available" },
+  { label: "MOQ", value: "50 units / model" },
+  { label: "Partnership", value: "OEM / ODM / SKD / CKD" },
+  { label: "Certifications", value: "EEC / COC / DOT" },
+  { label: "Incoterms", value: "FOB / CIF" },
 ];
 
 const requirementCards = [
   {
-    title: "Rider Profile",
-    items: ["Commute distance", "Road conditions", "Riding experience"],
+    title: "Market Requirements",
+    items: ["Target region", "Certification needs", "Channel type"],
   },
   {
-    title: "Performance Targets",
-    items: ["Top speed", "Real-world range", "Charging access"],
+    title: "Order Planning",
+    items: ["Annual volume", "MOQ target", "Delivery schedule"],
   },
   {
-    title: "Business Context",
-    items: ["Timeline", "Volume or fleet size", "Region"],
+    title: "Program Scope",
+    items: ["OEM/ODM branding", "SKD/CKD option", "After-sales support"],
   },
 ];
 
 const advantages = [
-  "Rider-first tuning for smooth torque delivery",
-  "Integrated powertrain and chassis design",
-  "Safety systems designed for daily use",
-  "Fleet and partner support when you scale",
+  "Factory-direct pricing with scalable capacity",
+  "OEM/ODM customization and compliance support",
+  "QC-driven production with export documentation",
+  "After-sales parts planning and service support",
 ];
 
 const faqs = [
   {
-    question: "How do I book a test ride?",
+    question: "What is your MOQ?",
     answer:
-      "Share your location and preferred model, and we will arrange the next available demo slot.",
+      "Standard MOQ starts at 50 units per model, with pilot orders available for qualified partners.",
   },
   {
-    question: "What range should I expect?",
+    question: "Do you offer OEM and ODM?",
     answer:
-      "Most city riders see 120 to 180 km per charge depending on speed, load, and terrain.",
+      "Yes. We provide branding, trims, documentation, and compliance support for regional markets.",
   },
   {
-    question: "Do you support fleet or dealer partnerships?",
+    question: "Do you support SKD/CKD?",
     answer:
-      "Yes. We provide fleet configurations, service planning, and volume options for partners.",
+      "Yes. SKD/CKD programs are available to reduce duties and localize assembly.",
   },
 ];
 
@@ -60,11 +60,11 @@ export default function ContactPage() {
                 </span>
               </div>
               <h1 className="font-nacelle text-4xl font-semibold text-gray-100 md:text-5xl">
-                Test Ride & Partnerships
+                OEM / ODM Partnership Inquiry
               </h1>
               <p className="mt-4 text-lg text-gray-400">
-                Tell us about your riding goals or partnership needs. We will
-                match you with the right model and timeline.
+                Share your market, volume, and compliance needs. We will align
+                on models, pricing, and production timelines.
               </p>
               <p className="mt-4 text-sm text-gray-500">
                 Typical response time: 24-48 business hours.
@@ -89,7 +89,7 @@ export default function ContactPage() {
                 href="/product"
                 className="mt-2 text-sm text-blue-400 hover:text-blue-300"
               >
-                View models and specs -&gt;
+                View OEM catalog -&gt;
               </Link>
             </div>
           </div>
@@ -109,14 +109,14 @@ export default function ContactPage() {
                     htmlFor="company"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Company (optional)
+                    Company
                   </label>
                   <input
                     id="company"
                     name="company"
                     type="text"
                     className="form-input w-full"
-                    placeholder="Tycorun Motorcycles"
+                    placeholder="TYCORUN Motorcycles"
                   />
                 </div>
                 <div>
@@ -171,17 +171,17 @@ export default function ContactPage() {
                     htmlFor="application"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Interest Type
+                    Partnership Type
                   </label>
                   <select
                     id="application"
                     name="application"
                     className="form-select w-full"
                   >
-                    <option>Personal Ride</option>
-                    <option>Fleet</option>
-                    <option>Dealer</option>
-                    <option>Press</option>
+                    <option>Distributor</option>
+                    <option>Importer</option>
+                    <option>OEM / ODM</option>
+                    <option>Fleet Operator</option>
                     <option>Other</option>
                   </select>
                 </div>
@@ -190,14 +190,14 @@ export default function ContactPage() {
                     htmlFor="timeline"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Preferred Timeline
+                    Target Timeline
                   </label>
                   <input
                     id="timeline"
                     name="timeline"
                     type="text"
                     className="form-input w-full"
-                    placeholder="Test ride this month"
+                    placeholder="PO in 60 days"
                   />
                 </div>
                 <div>
@@ -205,14 +205,14 @@ export default function ContactPage() {
                     htmlFor="range"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Range Target
+                    Target Market
                   </label>
                   <input
                     id="range"
                     name="range"
                     type="text"
                     className="form-input w-full"
-                    placeholder="120 to 180 km"
+                    placeholder="EU / LATAM / MENA"
                   />
                 </div>
                 <div>
@@ -220,14 +220,14 @@ export default function ContactPage() {
                     htmlFor="speed"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Top Speed Target
+                    Annual Volume
                   </label>
                   <input
                     id="speed"
                     name="speed"
                     type="text"
                     className="form-input w-full"
-                    placeholder="110 to 130 km/h"
+                    placeholder="500 / 1,000 / 5,000 units"
                   />
                 </div>
                 <div>
@@ -235,14 +235,14 @@ export default function ContactPage() {
                     htmlFor="charging"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Charging Access
+                    Certification Needs
                   </label>
                   <input
                     id="charging"
                     name="charging"
                     type="text"
                     className="form-input w-full"
-                    placeholder="Home outlet / fast charger"
+                    placeholder="EEC/COC / DOT"
                   />
                 </div>
                 <div>
@@ -250,14 +250,14 @@ export default function ContactPage() {
                     htmlFor="quantity"
                     className="mb-2 block text-sm text-gray-300"
                   >
-                    Quantity
+                    Order Size
                   </label>
                   <input
                     id="quantity"
                     name="quantity"
                     type="text"
                     className="form-input w-full"
-                    placeholder="1 / 5 / Fleet"
+                    placeholder="50 / 200 / 500 units"
                   />
                 </div>
               </div>
@@ -266,14 +266,14 @@ export default function ContactPage() {
                   htmlFor="environment"
                   className="mb-2 block text-sm text-gray-300"
                 >
-                  Riding Conditions
+                  Requirements Summary
                 </label>
                 <textarea
                   id="environment"
                   name="environment"
                   rows={4}
                   className="form-textarea w-full"
-                  placeholder="Commute distance, road quality, hills, weather"
+                  placeholder="Models, trims, compliance, packaging, after-sales support"
                 />
               </div>
               <div className="mt-6">
@@ -294,7 +294,7 @@ export default function ContactPage() {
                 type="submit"
                 className="btn mt-8 w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
               >
-                Submit Request
+                Submit OEM Inquiry
               </button>
             </form>
 
@@ -304,9 +304,9 @@ export default function ContactPage() {
                   Minimum Info Needed
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-gray-300">
-                  <li>Commute distance and riding style</li>
-                  <li>Range and speed expectations</li>
-                  <li>Charging access and timeline</li>
+                  <li>Target region and certification requirements</li>
+                  <li>Annual volume and first PO size</li>
+                  <li>OEM/ODM or SKD/CKD preference</li>
                 </ul>
               </div>
               <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
@@ -314,8 +314,8 @@ export default function ContactPage() {
                   Engagement Notes
                 </div>
                 <p className="mt-4 text-sm text-gray-300">
-                  NDA available on request. We can align on demo schedules,
-                  compliance needs, and regional requirements from day one.
+                  NDA available on request. We can align on pricing, compliance,
+                  and delivery schedules from day one.
                 </p>
               </div>
               <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
@@ -360,7 +360,7 @@ export default function ContactPage() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center">
             <div data-aos="fade-up">
               <h2 className="font-nacelle text-3xl font-semibold text-gray-100">
-                Why riders choose Tycorun
+                Why partners choose TYCORUN
               </h2>
               <ul className="mt-6 space-y-3 text-sm text-gray-300">
                 {advantages.map((item) => (
@@ -379,9 +379,9 @@ export default function ContactPage() {
                 Response Workflow
               </div>
               <ol className="mt-4 space-y-3 text-sm text-gray-300">
-                <li>1. Review riding needs and usage profile</li>
-                <li>2. Recommend models and options</li>
-                <li>3. Schedule demo or partnership discussion</li>
+                <li>1. Review market, volume, and certification needs</li>
+                <li>2. Confirm models, pricing, and packaging</li>
+                <li>3. Issue samples or begin production</li>
               </ol>
             </div>
           </div>

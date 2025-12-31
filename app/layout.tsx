@@ -50,18 +50,18 @@ const nacelle = localFont({
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Tycorun - High-Performance Electric Motorcycles",
+  title: "TYCORUN - Electric Motorcycle OEM/ODM Manufacturer",
   description:
-    "High-performance electric motorcycles for city riding and light adventure, tuned for torque, handling, and real-world range.",
+    "Factory-direct electric motorcycle OEM/ODM supply with SKD/CKD programs, compliance support, and global distribution.",
   icons: {
     icon: "/TYCORUN-Favicon.png",
   },
   openGraph: {
     type: "website",
-    siteName: "Tycorun",
-    title: "Tycorun - High-Performance Electric Motorcycles",
+    siteName: "TYCORUN",
+    title: "TYCORUN - Electric Motorcycle OEM/ODM Manufacturer",
     description:
-      "High-performance electric motorcycles for city riding and light adventure, tuned for torque, handling, and real-world range.",
+      "Factory-direct electric motorcycle OEM/ODM supply with SKD/CKD programs, compliance support, and global distribution.",
     url: "/",
     images: [
       {
@@ -71,9 +71,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tycorun - High-Performance Electric Motorcycles",
+    title: "TYCORUN - Electric Motorcycle OEM/ODM Manufacturer",
     description:
-      "High-performance electric motorcycles for city riding and light adventure, tuned for torque, handling, and real-world range.",
+      "Factory-direct electric motorcycle OEM/ODM supply with SKD/CKD programs, compliance support, and global distribution.",
     images: ["/tycorun-logo.webp"],
   },
 };

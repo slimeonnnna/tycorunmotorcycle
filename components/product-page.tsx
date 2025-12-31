@@ -7,13 +7,14 @@ function ProductHero() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="text-center pb-12 md:pb-16">
           <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
-            <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent font-mono text-sm tracking-wider uppercase">Ride-First Platform</span>
+            <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent font-mono text-sm tracking-wider uppercase">OEM / ODM Platform</span>
           </div>
           <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl" data-aos="fade-up">
-            Built Around the Ride
+            Built for Global Distribution
           </h1>
           <p className="mx-auto max-w-3xl text-xl text-gray-400" data-aos="fade-up" data-aos-delay="200">
-            Tycorun builds complete electric motorcycles where motor, battery, and chassis are tuned as one system for confident riding.
+            TYCORUN delivers export-ready electric motorcycles with OEM branding,
+            compliance support, and scalable supply chain execution.
           </p>
         </div>
         <div className="relative mx-auto max-w-5xl" data-aos="fade-up" data-aos-delay="400">
@@ -34,7 +35,7 @@ function ProductHero() {
                       <rect x="60" y="30" width="40" height="6" rx="2" fill="#3B82F6" />
                       <rect x="50" y="45" width="60" height="6" rx="2" fill="#3B82F6" opacity="0.8" />
                       <rect x="40" y="60" width="80" height="6" rx="2" fill="#3B82F6" opacity="0.6" />
-                      <text x="80" y="95" textAnchor="middle" fill="#E5E7EB" fontSize="14" fontWeight="600" fontFamily="var(--font-nacelle)">Tycorun</text>
+                      <text x="80" y="95" textAnchor="middle" fill="#E5E7EB" fontSize="14" fontWeight="600" fontFamily="var(--font-nacelle)">TYCORUN</text>
                       <text x="80" y="112" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontFamily="monospace">Unified Platform</text>
                    </g>
                    <path d="M 210 200 H 260" stroke="#3B82F6" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrowhead)" />
@@ -90,7 +91,7 @@ function ProductHero() {
                       <text x="80" y="112" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontFamily="monospace">Chassis & Ergonomics</text>
                    </g>
                    <path d="M 130 140 V 120 H 770 V 140" stroke="#3B82F6" strokeWidth="1" strokeOpacity="0.3" fill="none" />
-                   <text x="450" y="110" textAnchor="middle" fill="#3B82F6" fontSize="10" letterSpacing="2" opacity="0.8">END-TO-END RIDE SYSTEM</text>
+                   <text x="450" y="110" textAnchor="middle" fill="#3B82F6" fontSize="10" letterSpacing="2" opacity="0.8">END-TO-END OEM SYSTEM</text>
                 </svg>
              </div>
           </div>
@@ -119,15 +120,15 @@ function SystemLayers() {
     {
       id: "03",
       title: "Chassis + Suspension",
-      subtitle: "Ride Feel",
-      description: "Geometry, damping, and stiffness tuned for stable handling in city streets and mixed surfaces.",
+      subtitle: "Market Durability",
+      description: "Geometry and durability tuned for long-term service and regional road conditions.",
       features: ["Optimized rake/trail", "Adjustable suspension", "Predictable braking"],
     },
     {
       id: "04",
       title: "Safety Systems",
-      subtitle: "Rider Protection",
-      description: "ABS, lighting, and diagnostics designed to keep riders safe and confident.",
+      subtitle: "Compliance",
+      description: "ABS, lighting, and diagnostics aligned with regional certification needs.",
       features: ["ABS braking", "Traction management", "Diagnostic alerts"],
     }
   ];
@@ -136,8 +137,8 @@ function SystemLayers() {
     <section className="relative border-t border-gray-800 bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12 md:mb-16 text-center">
-           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Anatomy of a Tycorun Motorcycle</h2>
-           <p className="text-gray-400 max-w-2xl mx-auto">A motorcycle is a system of systems. We optimize every layer for ride quality, safety, and durability.</p>
+           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Anatomy of a TYCORUN Platform</h2>
+           <p className="text-gray-400 max-w-2xl mx-auto">A platform is a system of systems. We optimize every layer for compliance, durability, and serviceability.</p>
         </div>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
            <div className="relative order-2 lg:order-1" data-aos="fade-right">
@@ -171,10 +172,10 @@ function SystemLayers() {
 
 function SpecGrid() {
   const specs = [
-    { category: "Performance", items: [{ label: "Top Speed", value: "110 to 130 km/h" }, { label: "0-50 km/h", value: "3.5 to 4.5 s" }, { label: "Motor Output", value: "8 to 15 kW" }] },
-    { category: "Range & Charging", items: [{ label: "Real-World Range", value: "120 to 180 km" }, { label: "Fast Charge", value: "20% to 80% in 45 to 90 min" }, { label: "Home Charge", value: "Overnight" }] },
-    { category: "Chassis", items: [{ label: "Frame", value: "High-strength steel / aluminum" }, { label: "Suspension", value: "Front + rear tuned" }, { label: "Brakes", value: "ABS + Linked" }] },
-    { category: "Connectivity", items: [{ label: "App", value: "Bluetooth + diagnostics" }, { label: "Navigation", value: "Turn-by-turn support" }, { label: "Updates", value: "OTA capable" }] }
+    { category: "Performance", items: [{ label: "Top Speed", value: "110 to 130 km/h" }, { label: "Motor Output", value: "8 to 15 kW" }, { label: "Range (Real)", value: "120 to 180 km" }] },
+    { category: "Certification", items: [{ label: "Road Class", value: "EEC L3e / DOT" }, { label: "Docs", value: "COC + compliance pack" }, { label: "Testing", value: "100% functional" }] },
+    { category: "Logistics", items: [{ label: "Loading Qty", value: "50 units / 40HQ" }, { label: "Packaging", value: "Steel rack options" }, { label: "Incoterms", value: "FOB / CIF" }] },
+    { category: "Partnership", items: [{ label: "OEM / ODM", value: "Branding + trims" }, { label: "SKD / CKD", value: "Duty-friendly" }, { label: "MOQ", value: "50 units / model" }] }
   ];
 
   return (
@@ -182,7 +183,7 @@ function SpecGrid() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
          <div className="mb-12">
             <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Technical Capabilities</h2>
-            <p className="text-gray-400">Our core platform covers city and light adventure use cases, with options for fleets and custom builds.</p>
+            <p className="text-gray-400">Commercial specs designed for importers, distributors, and regional assembly partners.</p>
          </div>
          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {specs.map((group, idx) => (
@@ -195,7 +196,7 @@ function SpecGrid() {
          <div className="mt-12 flex justify-center">
             <button className="btn-sm bg-gray-800 text-gray-200 hover:bg-gray-700 border border-gray-700 flex items-center gap-2">
                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-               Download Full Spec Sheet (PDF)
+               Download OEM Catalog (PDF)
             </button>
          </div>
       </div>
@@ -205,19 +206,19 @@ function SpecGrid() {
 
 function ProcessSteps() {
   const steps = [
-    { title: "Design", desc: "Rider needs, geometry, and power targets." },
-    { title: "Prototype", desc: "Rideable builds for feedback." },
-    { title: "Ride Testing", desc: "City, hills, and mixed surfaces." },
-    { title: "Validation", desc: "Safety, durability, and compliance." },
-    { title: "Production", desc: "Quality-controlled assembly." },
+    { title: "Inquiry", desc: "Model selection and target market fit." },
+    { title: "Sampling", desc: "Pre-production samples and approvals." },
+    { title: "Compliance", desc: "EEC/DOT docs and testing support." },
+    { title: "Production", desc: "QC-controlled manufacturing runs." },
+    { title: "Shipping", desc: "Packaging, loading, and export docs." },
   ];
 
   return (
     <section className="bg-gray-950 border-t border-gray-800">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12 text-center">
-           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">From Concept to Road</h2>
-           <p className="text-gray-400">A rider-first process that turns prototypes into dependable motorcycles.</p>
+           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">From Inquiry to Shipment</h2>
+           <p className="text-gray-400">A structured B2B process for predictable delivery and compliance.</p>
         </div>
         <div className="relative">
            <div className="hidden md:block absolute top-6 left-0 right-0 h-0.5 bg-gray-800 z-0"></div>
@@ -241,15 +242,15 @@ function Applications() {
     <section className="relative">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
          <div className="mb-12">
-            <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Built for Real Riding</h2>
+            <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Built for Global Markets</h2>
          </div>
          <div className="grid md:grid-cols-3 gap-6">
             <div className="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 aspect-[4/3]">
                <div className="absolute inset-0 bg-linear-to-t from-gray-950 to-transparent opacity-90 z-10" />
                <div className="absolute bottom-0 left-0 p-6 z-20">
-                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Urban</div>
-                  <h3 className="text-xl font-semibold text-gray-100">City Commute</h3>
-                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Smooth torque delivery, easy handling, and confident braking for daily traffic.</p>
+                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Retail</div>
+                  <h3 className="text-xl font-semibold text-gray-100">Consumer Distribution</h3>
+                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Dealer-friendly trims with compliance documents and sales-ready specs.</p>
                </div>
                <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
                   <svg width="100%" height="100%"><pattern id="app-grid-1" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#4B5563" /></pattern><rect width="100%" height="100%" fill="url(#app-grid-1)" /></svg>
@@ -258,9 +259,9 @@ function Applications() {
             <div className="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 aspect-[4/3]">
                <div className="absolute inset-0 bg-linear-to-t from-gray-950 to-transparent opacity-90 z-10" />
                <div className="absolute bottom-0 left-0 p-6 z-20">
-                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Adventure</div>
-                  <h3 className="text-xl font-semibold text-gray-100">Light Adventure</h3>
-                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Stable chassis tuning and usable range for weekend routes and mixed surfaces.</p>
+                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Fleet</div>
+                  <h3 className="text-xl font-semibold text-gray-100">Delivery & Operations</h3>
+                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Low running cost, reliable uptime, and spare parts planning for operators.</p>
                </div>
                <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
                    <svg width="100%" height="100%"><path d="M0 0 L 100 100" stroke="#4B5563" strokeWidth="1"/><path d="M100 0 L 0 100" stroke="#4B5563" strokeWidth="1"/></svg>
@@ -269,9 +270,9 @@ function Applications() {
             <div className="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 aspect-[4/3]">
                <div className="absolute inset-0 bg-linear-to-t from-gray-950 to-transparent opacity-90 z-10" />
                <div className="absolute bottom-0 left-0 p-6 z-20">
-                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Fleet</div>
-                  <h3 className="text-xl font-semibold text-gray-100">Delivery & Operations</h3>
-                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Low operating cost, predictable range, and easy service for operators.</p>
+                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Swap</div>
+                  <h3 className="text-xl font-semibold text-gray-100">Battery Swap Programs</h3>
+                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Swap-ready architecture for high-ROI mobility networks and public programs.</p>
                </div>
                <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
                   <svg width="100%" height="100%"><rect x="0" y="0" width="100%" height="100%" fill="none" stroke="#4B5563" strokeWidth="20" strokeDasharray="10 10" /></svg>

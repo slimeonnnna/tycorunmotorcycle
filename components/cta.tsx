@@ -46,20 +46,18 @@ export default function Cta() {
                           <stop offset="1" stopColor="#3B82F6" />
                         </linearGradient>
                       </defs>
-                      <path
-                        fill="url(#cta-logo-gradient)"
-                        d="M26 6H12.5L6.5 12V15H17L26 6Z"
-                      />
-                      <circle cx="26" cy="6" r="2" fill="#2563EB" />
-                      <path
-                        fill="url(#cta-logo-gradient)"
-                        d="M6 26H19.5L25.5 20V17H15L6 26Z"
-                      />
-                      <circle cx="6" cy="26" r="2" fill="#3B82F6" />
+                      <circle cx="16" cy="16" r="10" stroke="url(#cta-logo-gradient)" strokeWidth="2" />
+                      <circle cx="16" cy="16" r="5" stroke="#3B82F6" strokeWidth="2" />
+                      <rect x="15" y="6" width="2" height="20" rx="1" fill="#60A5FA" />
+                      <rect x="6" y="15" width="20" height="2" rx="1" fill="#60A5FA" />
+                      <rect x="24" y="9" width="4" height="2" rx="1" fill="#93C5FD" />
+                      <rect x="24" y="21" width="4" height="2" rx="1" fill="#93C5FD" />
+                      <rect x="4" y="9" width="4" height="2" rx="1" fill="#93C5FD" />
+                      <rect x="4" y="21" width="4" height="2" rx="1" fill="#93C5FD" />
                     </svg>
                   </div>
                   <div className="font-nacelle text-2xl font-semibold text-gray-200">
-                    Tycorun Motorcycles
+                    TYCORUN Motorcycles
                   </div>
                   <div className="mt-2 text-xs font-medium uppercase tracking-[0.2em] text-blue-500">
                     Interactive
@@ -69,10 +67,10 @@ export default function Cta() {
                 {/* Hover State: CTA Content (Always visible on Mobile, reveal on hover for Desktop) */}
                 <div className="flex max-w-2xl flex-col items-center justify-center transition-all duration-500 opacity-100 translate-y-0 md:opacity-0 md:translate-y-8 group-hover:translate-y-0 group-hover:opacity-100 md:group-hover:delay-500">
                   <h2 className="mb-4 font-nacelle text-3xl font-semibold text-gray-100 md:text-4xl">
-                    Ready for your next ride?
+                    Ready to scale your lineup?
                   </h2>
                   <p className="mb-8 text-lg text-gray-400">
-                    Book a test ride or explore fleet partnerships with Tycorun.
+                    Request OEM pricing, catalog access, and compliance documents.
                   </p>
                   
                   <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
@@ -81,7 +79,7 @@ export default function Cta() {
                       className="btn group bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
                     >
                       <span className="relative inline-flex items-center">
-                        Contact Us
+                        Request Quote
                         <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                           -&gt;
                         </span>
@@ -91,7 +89,7 @@ export default function Cta() {
                       className="btn relative bg-gray-800 text-gray-300 hover:bg-gray-700"
                       href="#0"
                     >
-                      Download Brochure
+                      Download OEM Guide
                     </a>
                   </div>
                 </div>
