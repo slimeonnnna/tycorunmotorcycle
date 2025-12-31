@@ -106,56 +106,6 @@ function Spotlight({ children, className = "" }: SpotlightProps) {
 function HeroCard() {
   return (
     <div className="relative flex justify-center items-center py-12 md:py-20">
-      {/* Background decoration: Global supply network */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 opacity-30"
-        aria-hidden="true"
-      >
-        <svg
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          width="100%"
-          height="100%"
-          viewBox="0 0 800 600"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <pattern
-              id="grid-pattern"
-              x="0"
-              y="0"
-              width="40"
-              height="40"
-              patternUnits="userSpaceOnUse"
-            >
-              <circle cx="2" cy="2" r="1" className="fill-blue-500/20" />
-            </pattern>
-            <linearGradient id="fade-mask" x1="400" y1="300" x2="400" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="white" stopOpacity="1" />
-              <stop offset="1" stopColor="white" stopOpacity="0" />
-            </linearGradient>
-            <mask id="hero-mask">
-              <circle cx="400" cy="300" r="400" fill="url(#fade-mask)" />
-            </mask>
-          </defs>
-
-          <rect x="0" y="0" width="800" height="600" fill="url(#grid-pattern)" mask="url(#hero-mask)" />
-
-          <g className="stroke-blue-500/20" strokeWidth="1" fill="none">
-            <path d="M400 300 L600 150" strokeDasharray="4 4" />
-            <path d="M400 300 L200 450" strokeDasharray="4 4" />
-            <path d="M400 300 L150 200" strokeDasharray="4 4" />
-            <path d="M400 300 L650 400" strokeDasharray="4 4" />
-            <circle cx="400" cy="300" r="150" className="stroke-gray-700/20" strokeDasharray="8 8" />
-            <circle cx="400" cy="300" r="280" className="stroke-gray-700/10" />
-          </g>
-
-          <circle cx="600" cy="150" r="3" className="fill-blue-400/40 animate-pulse" />
-          <circle cx="200" cy="450" r="3" className="fill-blue-400/40 animate-pulse" />
-          <circle cx="150" cy="200" r="3" className="fill-blue-400/40 animate-pulse" />
-        </svg>
-      </div>
-
       {/* Interactive Card */}
       {/* We scale it up on medium screens to act as a proper hero visual */}
       <div className="relative transform md:scale-150">
@@ -201,7 +151,69 @@ function Hero() {
   return (
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="pb-12 pt-32 md:pb-20 md:pt-40">
+        <div className="relative pb-12 pt-32 md:pb-20 md:pt-40">
+          <div
+            className="pointer-events-none absolute left-1/2 top-0 -z-10 -translate-x-1/2 opacity-40"
+            aria-hidden="true"
+          >
+            <svg
+              className="max-w-none"
+              width="1440"
+              height="800"
+              viewBox="0 0 1440 800"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <pattern id="engineering-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-gray-800" />
+                </pattern>
+                <linearGradient id="hero-road" x1="0" y1="520" x2="1440" y2="520" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#111827" stopOpacity="0" />
+                  <stop offset="0.5" stopColor="#2563EB" stopOpacity="0.5" />
+                  <stop offset="1" stopColor="#111827" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="hero-bike" x1="600" y1="460" x2="780" y2="560" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#1F2937" stopOpacity="0" />
+                  <stop offset="0.5" stopColor="#3B82F6" stopOpacity="0.4" />
+                  <stop offset="1" stopColor="#1F2937" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="gradient-line-1" x1="0" y1="0" x2="1440" y2="600" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#1F2937" stopOpacity="0" />
+                  <stop offset="0.5" stopColor="#2563EB" stopOpacity="0.6" />
+                  <stop offset="1" stopColor="#1F2937" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="gradient-line-2" x1="1440" y1="0" x2="0" y2="600" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#1F2937" stopOpacity="0" />
+                  <stop offset="0.5" stopColor="#3B82F6" stopOpacity="0.6" />
+                  <stop offset="1" stopColor="#1F2937" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+
+              <rect width="1440" height="800" fill="url(#engineering-grid)" opacity="0.3" />
+              <path d="M240 40 L 520 220 L 860 200 L 1220 340" fill="none" stroke="url(#gradient-line-1)" strokeWidth="2" strokeDasharray="10 6" opacity="0.55" />
+              <path d="M120 160 L 420 300 L 720 260 L 1080 420" fill="none" stroke="url(#gradient-line-2)" strokeWidth="2" strokeDasharray="6 6" opacity="0.55" />
+              <path d="M60 420 L 360 360 L 660 520 L 980 480 L 1320 560" fill="none" stroke="url(#gradient-line-1)" strokeWidth="2" strokeDasharray="6 8" opacity="0.5" />
+              <path d="M200 640 L 520 560 L 820 600 L 1180 520" fill="none" stroke="url(#gradient-line-2)" strokeWidth="2" strokeDasharray="8 10" opacity="0.5" />
+              <path d="M360 120 L 620 300 L 900 260 L 1280 140" fill="none" stroke="url(#gradient-line-1)" strokeWidth="1.75" strokeDasharray="5 7" opacity="0.5" />
+              <path d="M260 260 L 520 200 L 820 360 L 1120 300" fill="none" stroke="url(#gradient-line-2)" strokeWidth="1.75" strokeDasharray="4 6" opacity="0.5" />
+              <path d="M300 0 V 300 L 500 500 H 1140" fill="none" stroke="url(#gradient-line-1)" strokeWidth="2" strokeDasharray="10 5" opacity="0.55" />
+              <path d="M1140 0 V 200 L 940 400 H 300" fill="none" stroke="url(#gradient-line-2)" strokeWidth="2" strokeDasharray="4 4" opacity="0.55" />
+
+              <g fill="#60A5FA" opacity="0.45">
+                <circle cx="240" cy="40" r="3" />
+                <circle cx="520" cy="220" r="3" />
+                <circle cx="860" cy="200" r="3" />
+                <circle cx="1220" cy="340" r="3" />
+                <circle cx="120" cy="160" r="3" />
+                <circle cx="720" cy="260" r="3" />
+                <circle cx="1080" cy="420" r="3" />
+                <circle cx="360" cy="360" r="3" />
+                <circle cx="980" cy="480" r="3" />
+                <circle cx="300" cy="0" r="3" />
+                <circle cx="940" cy="400" r="3" />
+              </g>
+            </svg>
+          </div>
           <div className="pb-12 text-center md:pb-20">
             <h1
               className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
@@ -253,12 +265,433 @@ function Hero() {
   );
 }
 
+// --- Sub-Component: TrustBadgeStrip ---
+function TrustBadgeStrip() {
+  return (
+    <div className="border-gray-800 bg-gray-950/70 backdrop-blur">
+      <div className="mx-auto w-full">
+        <div className="w-full rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-950/70 via-blue-950/40 to-slate-950/60 overflow-hidden relative transition-all duration-300 hover:border-blue-400/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+          <div className="relative z-10 flex flex-col md:flex-row">
+            <div className="p-4 md:w-1/2">
+              <div className="mb-4 flex items-center">
+                <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-xl border-2 border-blue-300/30 bg-gradient-to-br from-blue-500 to-blue-600 text-[0.6rem] font-bold leading-tight text-white shadow-lg">
+                  <div className="text-center">TYCO<br />RUN</div>
+                </div>
+                <div className="min-w-0">
+                  <h2 title="TYCORUN OEM Supply" className="truncate text-lg font-bold text-white/90">
+                    TYCORUN OEM Supply
+                  </h2>
+                  <span className="mt-1 inline-block rounded-full bg-blue-500/20 px-2 py-0.5 text-xs font-medium text-blue-200/90">
+                    Production Ready
+                  </span>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <h3 className="mb-2 text-xs font-semibold text-white/80">Core Features</h3>
+                <div className="flex flex-wrap -mx-1">
+                  {[
+                    "OEM / ODM Programs",
+                    "SKD / CKD Options",
+                    "Scalable Manufacturing",
+                    "Compliance Support",
+                  ].map((feature) => (
+                    <div
+                      key={feature}
+                      className="m-0.5 rounded-full border border-blue-300/20 bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-100/80 shadow-sm transition-all duration-300 hover:bg-blue-500/20"
+                    >
+                      {feature}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px w-full bg-white/10 md:h-auto md:w-px md:bg-white/10" />
+
+            <div className="p-4 md:w-1/2">
+              <div className="mb-4">
+                <h3 className="mb-2 text-xs font-semibold text-white/80">Other Features</h3>
+                <ul className="grid grid-cols-1 gap-2 text-xs text-blue-100/70">
+                  {[
+                    "EEC Certified",
+                    "ISO 9001 Factory",
+                    "DOT Compliant",
+                    "UN38.3 Battery Safety",
+                  ].map((item) => (
+                    <li key={item} className="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        fill="none"
+                        className="mr-2 h-3 w-3 text-blue-200/80"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M5 13l4 4L19 7"
+                          strokeWidth="2"
+                          strokeLinejoin="round"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      <span className="truncate">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- Sub-Component: CapacityDashboard ---
+function CapacityDashboard() {
+  const metrics = [
+    {
+      value: "200,000+",
+      title: "Annual Capacity (Units)",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          className="h-8 w-8 text-white drop-shadow-lg transition-colors duration-300 group-hover:text-gray-200"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 24h24" />
+          <path d="M6 24V14l6-4v14" />
+          <path d="M14 24V10l6-4v18" />
+          <path d="M22 24V12l4-2v14" />
+          <path d="M6 16h6" />
+          <path d="M14 12h6" />
+          <path d="M23 8l3-3" />
+          <path d="M26 5h-3" />
+          <path d="M26 5v3" />
+        </svg>
+      ),
+    },
+    {
+      value: "15 Days",
+      title: "Rapid Prototyping",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          className="h-8 w-8 text-white drop-shadow-lg transition-colors duration-300 group-hover:text-gray-200"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="16" cy="18" r="9" />
+          <path d="M16 18l4-3" />
+          <path d="M12 6h8" />
+          <path d="M14 4h4" />
+          <path d="M22 6l2-2" />
+          <path d="M6 18h4" />
+          <path d="M8 22h3" />
+        </svg>
+      ),
+    },
+    {
+      value: "1%",
+      title: "Free Spare Parts",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          className="h-8 w-8 text-white drop-shadow-lg transition-colors duration-300 group-hover:text-gray-200"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6 18h6l3-3 4 4 7-7" />
+          <path d="M24 10h4v4" />
+          <rect x="6" y="20" width="10" height="8" rx="2" />
+          <path d="M11 22v4" />
+          <path d="M20 22l4 4" />
+          <path d="M24 22l-4 4" />
+        </svg>
+      ),
+    },
+    {
+      value: "30+",
+      title: "Export Countries",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          className="h-8 w-8 text-white drop-shadow-lg transition-colors duration-300 group-hover:text-gray-200"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="16" cy="16" r="10" />
+          <path d="M6 16h20" />
+          <path d="M16 6c3 3.5 3 16.5 0 20" />
+          <path d="M16 6c-3 3.5-3 16.5 0 20" />
+          <path d="M23 9l3-2" />
+          <path d="M24 13l4 1" />
+          <circle cx="23" cy="9" r="1.5" />
+        </svg>
+      ),
+    },
+  ];
+
+  return (
+    <section className="border-b border-gray-800 bg-gray-950">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="py-10 md:py-20">
+          <div className="metric-grid">
+            {metrics.map((metric) => (
+              <div
+                key={metric.title}
+                className="group cursor-pointer transform-gpu transition-transform duration-500 hover:-rotate-1 hover:scale-105"
+              >
+                <div className="relative z-10 w-full overflow-hidden rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 via-blue-900/10 to-blue-500/5 text-white shadow-2xl backdrop-blur-2xl duration-700 hover:border-blue-300/40 hover:bg-blue-500/15 hover:shadow-3xl hover:shadow-blue-500/20">
+                    <div className="absolute inset-0 z-0 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-400/10 to-white/10 opacity-40 transition-opacity duration-500 group-hover:opacity-70" />
+                    <div
+                      style={{ animationDelay: "0.5s" }}
+                      className="absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-gradient-to-tr from-blue-500/20 to-transparent opacity-30 blur-3xl transition-all duration-700 group-hover:animate-bounce group-hover:scale-110 group-hover:opacity-60"
+                    />
+                    <div className="absolute left-10 top-10 h-16 w-16 rounded-full bg-blue-400/10 blur-xl group-hover:animate-ping" />
+                    <div
+                      style={{ animationDelay: "1s" }}
+                      className="absolute bottom-16 right-16 h-12 w-12 rounded-full bg-blue-300/10 blur-lg group-hover:animate-ping"
+                    />
+                    <div className="absolute inset-0 -skew-x-12 translate-x-full bg-gradient-to-r from-transparent via-blue-200/10 to-transparent transition-transform duration-1000 group-hover:translate-x-[-200%]" />
+                  </div>
+
+                  <div className="relative z-10 p-8">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="relative mb-6">
+                        <div className="rounded-full border border-blue-200/30 bg-blue-500/10 p-6 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 hover:shadow-blue-400/30">
+                          <div className="transition-transform duration-700 group-hover:rotate-[360deg]">
+                            {metric.icon}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mb-3 transition-transform duration-300 group-hover:scale-105">
+                        <p className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-3xl font-bold text-transparent group-hover:animate-pulse">
+                          {metric.value}
+                        </p>
+                      </div>
+
+                      <div className="max-w-sm space-y-1">
+                        <p className="text-sm font-semibold leading-relaxed text-gray-300 transition-colors duration-300 group-hover:text-gray-200">
+                          {metric.title}
+                        </p>
+                      </div>
+
+                      <div className="mt-6 h-0.5 w-1/3 origin-center rounded-full bg-gradient-to-r from-transparent via-blue-200 to-transparent transition-transform duration-500 group-hover:animate-pulse group-hover:scale-x-[1.5] group-hover:scale-y-[2]" />
+
+                      <div className="mt-4 flex space-x-2 opacity-60 transition-opacity duration-300 group-hover:opacity-100">
+                        <div className="h-2 w-2 rounded-full bg-blue-200 group-hover:animate-bounce" />
+                        <div
+                          style={{ animationDelay: "0.1s" }}
+                          className="h-2 w-2 rounded-full bg-blue-200 group-hover:animate-bounce"
+                        />
+                        <div
+                          style={{ animationDelay: "0.2s" }}
+                          className="h-2 w-2 rounded-full bg-blue-200 group-hover:animate-bounce"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute left-0 top-0 h-20 w-20 rounded-br-3xl bg-gradient-to-br from-blue-300/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="absolute bottom-0 right-0 h-20 w-20 rounded-tl-3xl bg-gradient-to-tl from-blue-300/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- Sub-Component: ProcessTimeline ---
+function ProcessTimeline() {
+  const steps = [
+    { title: "Inquiry", detail: "Specs confirmed within 24h." },
+    { title: "Sample", detail: "Prototype shipped in 15 days." },
+    { title: "Contract", detail: "30% Deposit & Production Schedule." },
+    { title: "Delivery", detail: "35-45 Days lead time (FOB)." },
+  ];
+
+  return (
+    <section className="border-t border-gray-800 bg-gray-950">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="py-12 md:py-20">
+          <div className="mx-auto max-w-3xl pb-10 text-center">
+            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
+              <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
+                OEM Process
+              </span>
+            </div>
+            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
+              Collaboration Timeline
+            </h2>
+            <p className="text-lg text-gray-400">
+              A clear, repeatable workflow from specification to delivery.
+            </p>
+          </div>
+          <div className="mx-auto max-w-3xl">
+            <div className="relative border-l border-gray-800 pl-8">
+              <div className="space-y-10">
+                {steps.map((step, index) => (
+                  <div key={step.title} className="relative">
+                    <div className="absolute -left-10 top-1 h-5 w-5 rounded-full border border-blue-500/60 bg-gray-950">
+                      <div className="absolute inset-1 rounded-full bg-blue-500/70" aria-hidden="true" />
+                    </div>
+                    <div className="text-sm uppercase tracking-widest text-blue-400">
+                      Step {index + 1}
+                    </div>
+                    <h3 className="mt-2 text-xl font-semibold text-gray-200">
+                      {step.title}
+                    </h3>
+                    <p className="mt-1 text-gray-400">{step.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- Sub-Component: ProfitTable ---
+function ProfitTable() {
+  return (
+    <section className="border-t border-gray-800 bg-gray-900/30">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="py-12 md:py-20">
+          <div className="mx-auto max-w-3xl pb-10 text-center">
+            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
+              <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
+                Margin Advantage
+              </span>
+            </div>
+            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
+              CBU vs CKD Profit Impact
+            </h2>
+            <p className="text-lg text-gray-400">
+              Reduce duties, shipping, and landed cost with CKD programs.
+            </p>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-gray-800 bg-gray-950/60">
+            <table className="w-full text-left text-sm text-gray-300">
+              <thead className="bg-gray-900/70 text-xs uppercase tracking-wider text-gray-400">
+                <tr>
+                  <th className="px-6 py-4">Import Mode</th>
+                  <th className="px-6 py-4">Duty Rate (Avg)</th>
+                  <th className="px-6 py-4">Shipping Cost/Unit</th>
+                  <th className="px-6 py-4">Assembly Cost</th>
+                  <th className="px-6 py-4">Total Margin Impact</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-800">
+                <tr className="bg-gray-950">
+                  <td className="px-6 py-4 font-semibold text-gray-200">CBU (Full Bike)</td>
+                  <td className="px-6 py-4">30-80%</td>
+                  <td className="px-6 py-4">High ($150)</td>
+                  <td className="px-6 py-4">$0</td>
+                  <td className="px-6 py-4 text-gray-400">Standard</td>
+                </tr>
+                <tr className="bg-gray-900/40">
+                  <td className="px-6 py-4 font-semibold text-gray-200">CKD (Parts)</td>
+                  <td className="px-6 py-4">0-10%</td>
+                  <td className="px-6 py-4">Low ($40)</td>
+                  <td className="px-6 py-4">$30</td>
+                  <td className="px-6 py-4 font-semibold text-green-400">+25% Profit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- Sub-Component: SpecOnlyCards ---
+function SpecOnlyCards() {
+  return (
+    <section className="border-t border-gray-800 bg-gray-950">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="py-12 md:py-20">
+          <div className="mx-auto max-w-3xl pb-10 text-center">
+            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
+              <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
+                Spec-Only Cards
+              </span>
+            </div>
+            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
+              Engineering-First Product Deck
+            </h2>
+            <p className="text-lg text-gray-400">
+              No placeholders. Pure technical specification for fast evaluation.
+            </p>
+          </div>
+          <div className="mx-auto max-w-3xl">
+            <div className="relative rounded-2xl border border-gray-800 bg-gray-900/60 p-6 shadow-2xl">
+              <div className="absolute left-6 top-0 -translate-y-1/2 rounded-full bg-gray-950 px-3 py-1 text-[10px] uppercase tracking-widest text-gray-400 ring-1 ring-gray-800">
+                spec_sheet
+              </div>
+              <div className="font-mono text-sm text-gray-300">
+                <div className="text-gray-200">MODEL: R-70 SPORT</div>
+                <div className="text-gray-600">------------------</div>
+                <div className="mt-3 space-y-2">
+                  <div>&gt; Motor: 5000W Brushless</div>
+                  <div>&gt; Battery: 72V 50Ah (CATL Cells)</div>
+                  <div>&gt; Max Speed: 100 km/h</div>
+                  <div>&gt; Tires: 120/70-12 (Tubeless)</div>
+                  <div>&gt; Certification: EEC L3e</div>
+                </div>
+              </div>
+              <div className="mt-6">
+                <Link
+                  className="inline-flex items-center gap-2 rounded-full border border-blue-500/40 bg-blue-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-blue-300 transition-colors hover:bg-blue-500/20"
+                  href="/contact"
+                >
+                  Download Datasheet
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // --- Sub-Component: Workflows ---
 function Workflows() {
   return (
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="pb-12 md:pb-20">
+        <div className="pb-12 pt-10 md:pb-20 md:pt-20">
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
@@ -417,6 +850,9 @@ function Workflows() {
               </div>
             </a>
           </Spotlight>
+          <div className="mx-auto mt-6 max-w-sm lg:max-w-none">
+            <TrustBadgeStrip />
+          </div>
         </div>
       </div>
     </section>
@@ -1001,7 +1437,11 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <CapacityDashboard />
       <Workflows />
+      <ProcessTimeline />
+      <ProfitTable />
+      <SpecOnlyCards />
       <Features />
       <TechnicalData />
       <Testimonials />
