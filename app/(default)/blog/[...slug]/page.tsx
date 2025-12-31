@@ -21,6 +21,12 @@ type TocItem = {
   id: string;
 };
 
+function resolveSiteUrl() {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
+}
+
 function slugifyHeading(value: string) {
   return value
     .toLowerCase()
@@ -160,9 +166,35 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
+  const siteUrl = resolveSiteUrl();
+  const postUrl = new URL(`/blog/${post.slug.join("/")}`, siteUrl).toString();
+  const imageUrl = new URL(post.cover ?? "/tycorun-logo.webp", siteUrl).toString();
+
   return {
     title: `${post.title} - Tycorun`,
     description: post.description,
+    alternates: {
+      canonical: postUrl,
+    },
+    openGraph: {
+      type: "article",
+      title: `${post.title} - Tycorun`,
+      description: post.description,
+      url: postUrl,
+      publishedTime: post.date,
+      authors: post.author ? [post.author] : undefined,
+      images: [
+        {
+          url: imageUrl,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} - Tycorun`,
+      description: post.description,
+      images: [imageUrl],
+    },
   };
 }
 
@@ -171,6 +203,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) {
     notFound();
   }
+
+  const siteUrl = resolveSiteUrl();
+  const postUrl = new URL(`/blog/${post.slug.join("/")}`, siteUrl).toString();
+  const imageUrl = new URL(post.cover ?? "/tycorun-logo.webp", siteUrl).toString();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    mainEntityOfPage: postUrl,
+    author: post.author
+      ? {
+          "@type": "Person",
+          name: post.author,
+        }
+      : {
+          "@type": "Organization",
+          name: "Tycorun",
+        },
+    image: [imageUrl],
+    publisher: {
+      "@type": "Organization",
+      name: "Tycorun",
+      logo: {
+        "@type": "ImageObject",
+        url: new URL("/tycorun-logo.webp", siteUrl).toString(),
+      },
+    },
+  };
 
   const isTemplate = post.content.includes("blog-article");
   const hasHtmlHeadings = /<h[23][^>]*>/i.test(post.content);
@@ -196,6 +259,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageIllustration />
       <section className="blog-post pt-32 pb-12 md:pt-40 md:pb-20">
         <div

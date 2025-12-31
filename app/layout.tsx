@@ -7,6 +7,14 @@ import Header from "@/components/ui/header";
 import AOSInit from "@/components/aos-init";
 import LenisInit from "@/components/lenis-init";
 
+function resolveSiteUrl() {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
+}
+
+const siteUrl = resolveSiteUrl();
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -41,10 +49,32 @@ const nacelle = localFont({
 });
 
 export const metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Tycorun - Custom Industrial Battery Manufacturing",
-  description: "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
+  description:
+    "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
   icons: {
     icon: "/favicon.svg",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Tycorun",
+    title: "Tycorun - Custom Industrial Battery Manufacturing",
+    description:
+      "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
+    url: "/",
+    images: [
+      {
+        url: "/tycorun-logo.webp",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tycorun - Custom Industrial Battery Manufacturing",
+    description:
+      "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
+    images: ["/tycorun-logo.webp"],
   },
 };
 
