@@ -166,10 +166,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const isTemplate = post.content.includes("blog-article");
-  let tocItems = isTemplate ? [] : extractToc(post.content);
+  const hasHtmlHeadings = /<h[23][^>]*>/i.test(post.content);
+  const useHtmlToc = isTemplate || hasHtmlHeadings;
+  let tocItems = useHtmlToc ? [] : extractToc(post.content);
 
   let contentHtml = post.content;
-  if (isTemplate) {
+  if (useHtmlToc) {
     const extracted = extractTocFromHtml(post.content);
     contentHtml = extracted.html;
     tocItems = extracted.items;
@@ -283,8 +285,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
 
               {tocRenderItems.length > 0 ? (
-                <aside className="order-3 hidden md:block">
-                  <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5 lg:sticky lg:top-28">
+                <aside className="order-3 hidden md:block self-start lg:sticky lg:top-28">
+                  <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
                     <div className="text-xs uppercase tracking-widest text-gray-500">
                       Table of Contents
                     </div>
