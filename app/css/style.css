@@ -293,13 +293,12 @@
 }
 
 .hc-logo-text {
-  height: 32px;
   position: absolute;
   left: 32px;
   white-space: nowrap;
   display: flex;
-  align-items: center;
   padding-left: 4px;
+  padding-top: 5px;
 }
 
 /* Trail Effect */
@@ -384,7 +383,7 @@
 }
 
 .hc-card:hover .hc-logo-container {
-  width: 140px; /* Expand to show full text */
+  width: 140px;
   animation: hc-opacity 1s ease-in-out;
 }
 

@@ -165,40 +165,22 @@ function HeroCard() {
             <div className="hc-logo-container">
               {/* Logo Part 1: The 'S' Icon */}
               <div className="hc-logo-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                >
-                  <defs>
-                    <linearGradient
-                      id="tycorun-card-gradient"
-                      x1="4"
-                      y1="4"
-                      x2="28"
-                      y2="28"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stopColor="#2563EB" />
-                      <stop offset="1" stopColor="#3B82F6" />
-                    </linearGradient>
-                  </defs>
-                  <circle cx="16" cy="16" r="10" stroke="url(#tycorun-card-gradient)" strokeWidth="2" />
-                  <circle cx="16" cy="16" r="5" stroke="#3B82F6" strokeWidth="2" />
-                  <rect x="15" y="6" width="2" height="20" rx="1" fill="#60A5FA" />
-                  <rect x="6" y="15" width="20" height="2" rx="1" fill="#60A5FA" />
-                  <rect x="24" y="9" width="4" height="2" rx="1" fill="#93C5FD" />
-                  <rect x="24" y="21" width="4" height="2" rx="1" fill="#93C5FD" />
-                  <rect x="4" y="9" width="4" height="2" rx="1" fill="#93C5FD" />
-                  <rect x="4" y="21" width="4" height="2" rx="1" fill="#93C5FD" />
+                <svg version="1.1" width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" preserveAspectRatio="xMidYMid meet">
+                  <circle fill="#1D4ED8" cx="32" cy="32" r="32" />
+                  <path fill="#0F172A" d="M17 31c3.3 0 6 2.7 6 6s-2.7 6-6 6s-6-2.7-6-6S13.7 31 17 31 M17 28c-5 0-9 4-9 9s4 9 9 9s9-4 9-9S22 28 17 28L17 28z"/>
+                  <path fill="#0F172A" d="M47 31c3.3 0 6 2.7 6 6s-2.7 6-6 6s-6-2.7-6-6S43.7 31 47 31 M47 28c-5 0-9 4-9 9s4 9 9 9s9-4 9-9S52 28 47 28L47 28z"/>
+                  <polyline fill="none" stroke="#E2E8F0" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" points="18,36.5 33,36.5 35,35" />
+                  <line fill="none" stroke="#93C5FD" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" x1="43" y1="21.1" x2="44" y2="23" />
+                  <path fill="none" stroke="#2563EB" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" d="M42 26c0 0 7-3 13 2" />
+                  <path fill="#60A5FA" d="M26 25.5h-4.6c8.8 10.3 15.6 4 15.6 4C37 26.6 32 25.5 26 25.5z" />
+                  <path fill="none" stroke="#2563EB" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" d="M9 27c0 0 2-1.5 5-1.5h12c6 0 11 1.1 11 4c0 0-5 6.5-14-3.5" />
+                  <polyline fill="none" stroke="#E2E8F0" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" points="32,18.5 37,18.5 47,37" />
                 </svg>
               </div>
               
               {/* Logo Part 2: The Text 'TYCORUN' */}
-              <div className="hc-logo-text">
-                <span className="font-nacelle text-2xl font-semibold text-gray-100 tracking-tight">TYCORUN</span>
+              <div className="hc-logo-text flex items-center justify-center">
+                <span className="block relative -top-[1px] font-nacelle text-xl font-semibold leading-none text-gray-100 tracking-tight">TYCORUN</span>
               </div>
               
               <span className="hc-trail"></span>
