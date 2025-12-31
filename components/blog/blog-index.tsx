@@ -55,9 +55,10 @@ export default function BlogIndex({ posts }: { posts: BlogListItem[] }) {
       ) : (
         <div className="grid gap-6">
           {filteredPosts.map((post) => (
-            <article
+            <Link
               key={post.slug.join("/")}
-              className="group rounded-2xl border border-gray-800 bg-gray-900/40 p-6 transition-colors hover:border-gray-700"
+              href={`/blog/${post.slug.join("/")}`}
+              className="group block rounded-2xl border border-gray-800 bg-gray-900/40 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-700 hover:shadow-[0_18px_40px_-20px_rgba(15,23,42,0.65)]"
             >
               {post.cover ? (
                 <div className="mb-5 overflow-hidden rounded-xl border border-gray-800 bg-gray-950">
@@ -85,21 +86,15 @@ export default function BlogIndex({ posts }: { posts: BlogListItem[] }) {
                 ) : null}
               </div>
               <h3 className="mt-3 text-2xl font-nacelle font-semibold text-gray-100 transition-colors group-hover:text-blue-300">
-                <Link href={`/blog/${post.slug.join("/")}`}>{post.title}</Link>
+                {post.title}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-gray-400">
                 {post.description}
               </p>
-              <Link
-                href={`/blog/${post.slug.join("/")}`}
-                className="mt-4 inline-flex items-center gap-2 text-sm text-blue-400"
-              >
-                Read more
-                <span className="transition-transform group-hover:translate-x-1">
-                  -&gt;
-                </span>
-              </Link>
-            </article>
+              <span className="mt-4 inline-flex items-center text-sm text-gray-400 transition-colors group-hover:text-blue-300">
+                Read article
+              </span>
+            </Link>
           ))}
         </div>
       )}

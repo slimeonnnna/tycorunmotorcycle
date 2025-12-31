@@ -59,7 +59,7 @@ export default function Cta() {
                     </svg>
                   </div>
                   <div className="font-nacelle text-2xl font-semibold text-gray-200">
-                    Slimeon Industrial
+                    Tycorun Industrial
                   </div>
                   <div className="mt-2 text-xs font-medium uppercase tracking-[0.2em] text-blue-500">
                     Interactive

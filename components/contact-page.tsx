@@ -116,7 +116,7 @@ export default function ContactPage() {
                     name="company"
                     type="text"
                     className="form-input w-full"
-                    placeholder="Slimeon Industrial"
+                    placeholder="Tycorun Industrial"
                   />
                 </div>
                 <div>
@@ -324,7 +324,7 @@ export default function ContactPage() {
                   Direct Contact
                 </div>
                 <div className="mt-4 space-y-2 text-sm text-gray-300">
-                  <p>engineering@slimeon.com</p>
+                  <p>engineering@tycorun.com</p>
                   <p>+1 (415) 555-0199</p>
                   <p>San Jose, CA</p>
                 </div>
@@ -361,7 +361,7 @@ export default function ContactPage() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center">
             <div data-aos="fade-up">
               <h2 className="font-nacelle text-3xl font-semibold text-gray-100">
-                Why teams choose Slimeon
+                Why teams choose Tycorun
               </h2>
               <ul className="mt-6 space-y-3 text-sm text-gray-300">
                 {advantages.map((item) => (

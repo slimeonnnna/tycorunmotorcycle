@@ -115,7 +115,7 @@ function Products() {
              <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-gray-800 border border-gray-700 group-hover:border-blue-500/50 transition-colors">
               <svg className="h-5 w-5 text-gray-300 group-hover:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
             </div>
-            <h3 className="font-nacelle text-xl font-semibold text-gray-100 mb-3">Slimeon OS</h3>
+            <h3 className="font-nacelle text-xl font-semibold text-gray-100 mb-3">Tycorun OS</h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">Cloud-connected telemetry and fleet management dashboard for real-time monitoring of asset health and warranty tracking.</p>
             <div className="text-xs font-mono text-blue-500 uppercase tracking-wider">Software Layer</div>
           </article>

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/" className="inline-flex shrink-0 items-center gap-2" aria-label="Slimeon">
+    <Link href="/" className="inline-flex shrink-0 items-center gap-2" aria-label="Tycorun">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
@@ -13,7 +13,7 @@ export default function Logo() {
       >
         <defs>
           <linearGradient
-            id="slimeon-gradient"
+            id="tycorun-gradient"
             x1="4"
             y1="4"
             x2="28"
@@ -26,19 +26,19 @@ export default function Logo() {
         </defs>
         {/* Top Circuit Segment */}
         <path
-          fill="url(#slimeon-gradient)"
+          fill="url(#tycorun-gradient)"
           d="M26 6H12.5L6.5 12V15H17L26 6Z"
         />
         <circle cx="26" cy="6" r="2" fill="#2563EB" />
         
         {/* Bottom Circuit Segment */}
         <path
-          fill="url(#slimeon-gradient)"
+          fill="url(#tycorun-gradient)"
           d="M6 26H19.5L25.5 20V17H15L6 26Z"
         />
         <circle cx="6" cy="26" r="2" fill="#3B82F6" />
       </svg>
-      <span className="font-nacelle text-lg font-semibold text-gray-100">Slimeon</span>
+      <span className="font-nacelle text-lg font-semibold text-gray-100">Tycorun</span>
     </Link>
   );
 }

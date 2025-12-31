@@ -84,7 +84,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  About Slimeon
+                  About Tycorun
                 </a>
               </li>
               <li>
@@ -198,7 +198,7 @@ export default function Footer() {
             </div>
             <div className="text-sm">
               <p className="mb-3 text-gray-400">
-                © Slimeon.com
+                © Tycorun.com
                 <span className="text-gray-700"> · </span>
                 <a
                   className="text-gray-400 transition hover:text-blue-500"

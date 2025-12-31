@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Reset Password - Slimeon PRO",
+  title: "Reset Password - Tycorun PRO",
   description: "Page description",
 };
 

@@ -1,6 +1,6 @@
 
 export const metadata = {
-  title: "Home - Slimeon",
+  title: "Home - Tycorun",
   description: "Custom Industrial Battery Manufacturing",
 };
 

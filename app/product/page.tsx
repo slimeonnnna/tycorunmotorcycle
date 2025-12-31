@@ -5,7 +5,7 @@ import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 
 export const metadata = {
-  title: "Product & Technology | Slimeon",
+  title: "Product & Technology | Tycorun",
   description:
     "Explore our modular battery architecture, intelligent BMS, and cloud-connected fleet management systems.",
 };

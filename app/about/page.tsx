@@ -5,9 +5,9 @@ import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 
 export const metadata = {
-  title: "About Slimeon | Infrastructure for Electric Mobility",
+  title: "About Tycorun | Infrastructure for Electric Mobility",
   description:
-    "Learn how Slimeon builds scalable battery, energy, and fleet infrastructure for electric mobility.",
+    "Learn how Tycorun builds scalable battery, energy, and fleet infrastructure for electric mobility.",
 };
 
 export default function About() {

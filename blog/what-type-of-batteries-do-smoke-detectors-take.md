@@ -3,7 +3,7 @@ title: "What Type of Batteries Do Smoke Detectors Take?"
 date: "2024-06-15"
 description: "Smoke detectors primarily use 9V and AA batteries, with some models incorporating AAA or sealed 10-year lithium batteries. 9V batteries have traditionally been favored for their compact size and reliable power but often require more frequent replacement, typically every six months to a year. AA batteries, commonly used in newer models, offer longer life and easier availability. Lithium batteries, especially sealed 10-year types, provide a maintenance-free option, but come at a higher upfront cost. Choosing the right battery involves balancing longevity, cost, and maintenance convenience. Regular testing and timely replacement ensure optimal smoke detector functionality and home safety."
 tags: "Smoke Detectors, Batteries, Home Safety, 9V Battery, AA Battery, Lithium Battery"
-author: "Slimeon Editorial"
+author: "Tycorun Editorial"
 category: "Home Safety"
 ---
 <article class="order-1 lg:order-none">

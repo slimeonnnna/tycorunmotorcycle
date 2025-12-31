@@ -3,7 +3,7 @@ title: "How Much Does a 3.7V 1800mAh Battery Cost? Pricing and Considerations"
 date: "2024-06-14"
 description: "A 3.7V 1800mAh battery typically costs between $5 and $15 depending on type, brand, and use case. Key trade-offs include battery chemistry, quality, and intended application which influence price and performance. Understanding these factors helps in selecting the best battery value for your needs."
 tags: "3.7v, 1800mah, battery cost, lithium ion, battery price, battery capacity, battery buying, battery types, battery comparison"
-author: "Slimeon Editorial"
+author: "Tycorun Editorial"
 category: "Battery Buying Guide"
 ---
 <article class="order-1 lg:order-none prose prose-invert max-w-none text-gray-200">

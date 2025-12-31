@@ -156,12 +156,12 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   const post = getBlogPostBySlug(params.slug);
   if (!post) {
     return {
-      title: "Post Not Found - Slimeon",
+      title: "Post Not Found - Tycorun",
     };
   }
 
   return {
-    title: `${post.title} - Slimeon`,
+    title: `${post.title} - Tycorun`,
     description: post.description,
   };
 }

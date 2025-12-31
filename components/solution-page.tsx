@@ -143,7 +143,7 @@ function Architecture() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div data-aos="fade-right">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/20 border border-blue-500/30 text-blue-400 text-xs font-mono mb-6">
-                SLIMEON_SOLUTION_ARCH
+                TYCORUN_SOLUTION_ARCH
              </div>
              <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-6">{solutionData.solution.heading}</h2>
              <p className="text-gray-400 mb-8 leading-relaxed">

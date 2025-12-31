@@ -13,7 +13,7 @@ function ProductHero() {
             More Than Just a Battery Pack
           </h1>
           <p className="mx-auto max-w-3xl text-xl text-gray-400" data-aos="fade-up" data-aos-delay="200">
-            Slimeon delivers a unified power platform. We integrate high-density cells, thermal logic, and intelligent BMS into a ruggedized enclosure designed for your specific chassis.
+            Tycorun delivers a unified power platform. We integrate high-density cells, thermal logic, and intelligent BMS into a ruggedized enclosure designed for your specific chassis.
           </p>
         </div>
         <div className="relative mx-auto max-w-5xl" data-aos="fade-up" data-aos-delay="400">
@@ -34,7 +34,7 @@ function ProductHero() {
                       <rect x="60" y="30" width="40" height="6" rx="2" fill="#3B82F6" />
                       <rect x="50" y="45" width="60" height="6" rx="2" fill="#3B82F6" opacity="0.8" />
                       <rect x="40" y="60" width="80" height="6" rx="2" fill="#3B82F6" opacity="0.6" />
-                      <text x="80" y="95" textAnchor="middle" fill="#E5E7EB" fontSize="14" fontWeight="600" fontFamily="var(--font-nacelle)">Slimeon</text>
+                      <text x="80" y="95" textAnchor="middle" fill="#E5E7EB" fontSize="14" fontWeight="600" fontFamily="var(--font-nacelle)">Tycorun</text>
                       <text x="80" y="112" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontFamily="monospace">Unified Platform</text>
                    </g>
                    <path d="M 210 200 H 260" stroke="#3B82F6" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrowhead)" />
@@ -104,7 +104,7 @@ function SystemLayers() {
   const layers = [
     { id: "01", title: "Cell Array", subtitle: "The Core Engine", description: "We source Tier-1 automotive grade cells (Samsung SDI, LG, CATL). Whether you need cylindrical (18650/21700) or prismatic formats, we match impedance and capacity to <1% variance.", features: ["NMC / LFP Chemistries", "Laser-welded busbars", "Cell-level fusing"] },
     { id: "02", title: "Thermal Matrix", subtitle: "Active Safety", description: "Heat is the enemy of longevity. Our designs incorporate phase-change materials (PCM), liquid cooling plates, or thermal interface gaps to maintain optimal ΔT across the pack.", features: ["Liquid Cooling Plates", "Aerogel Propagation Barriers", "Temp Sensors x 12"] },
-    { id: "03", title: "Slimeon BMS", subtitle: "Digital Brain", description: "Our proprietary BMS handles SoC/SoH algorithms with 99.5% accuracy. Includes redundant protection circuits and CAN/RS485/Bluetooth communication interfaces.", features: ["Dual-Core Processor", "Black Box Data Logging", "Remote Firmware Updates"] },
+    { id: "03", title: "Tycorun BMS", subtitle: "Digital Brain", description: "Our proprietary BMS handles SoC/SoH algorithms with 99.5% accuracy. Includes redundant protection circuits and CAN/RS485/Bluetooth communication interfaces.", features: ["Dual-Core Processor", "Black Box Data Logging", "Remote Firmware Updates"] },
     { id: "04", title: "Rugged Enclosure", subtitle: "Physical Shield", description: "From extruded aluminum to IP67-rated injection molded plastics. Designed to withstand 50G shock and vibration profiles common in industrial robotics.", features: ["IP67 / IP6K9K Rated", "EMI/RFI Shielding", "Custom Mounting Points"] }
   ];
 
@@ -112,7 +112,7 @@ function SystemLayers() {
     <section className="relative border-t border-gray-800 bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12 md:mb-16 text-center">
-           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Anatomy of a Slimeon System</h2>
+           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Anatomy of a Tycorun System</h2>
            <p className="text-gray-400 max-w-2xl mx-auto">A battery is a system of systems. We optimize every layer for performance density and safety.</p>
         </div>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

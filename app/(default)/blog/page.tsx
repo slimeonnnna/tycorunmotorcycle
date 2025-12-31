@@ -4,7 +4,7 @@ import BlogIndex from "@/components/blog/blog-index";
 import { getBlogList } from "@/lib/blog";
 
 export const metadata = {
-  title: "Blog - Slimeon",
+  title: "Blog - Tycorun",
   description: "Engineering notes, manufacturing insights, and product architecture updates.",
 };
 

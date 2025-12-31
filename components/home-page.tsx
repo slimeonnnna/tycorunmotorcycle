@@ -147,7 +147,7 @@ function HeroCard() {
                 >
                   <defs>
                     <linearGradient
-                      id="slimeon-card-gradient"
+                      id="tycorun-card-gradient"
                       x1="4"
                       y1="4"
                       x2="28"
@@ -159,26 +159,26 @@ function HeroCard() {
                     </linearGradient>
                   </defs>
                   <path
-                    fill="url(#slimeon-card-gradient)"
+                    fill="url(#tycorun-card-gradient)"
                     d="M26 6H12.5L6.5 12V15H17L26 6Z"
                   />
                   <circle cx="26" cy="6" r="2" fill="#2563EB" />
                   <path
-                    fill="url(#slimeon-card-gradient)"
+                    fill="url(#tycorun-card-gradient)"
                     d="M6 26H19.5L25.5 20V17H15L6 26Z"
                   />
                   <circle cx="6" cy="26" r="2" fill="#3B82F6" />
                 </svg>
               </div>
               
-              {/* Logo Part 2: The Text 'Slimeon' */}
+              {/* Logo Part 2: The Text 'Tycorun' */}
               <div className="hc-logo-text">
-                <span className="font-nacelle text-2xl font-semibold text-gray-100 tracking-tight">Slimeon</span>
+                <span className="font-nacelle text-2xl font-semibold text-gray-100 tracking-tight">Tycorun</span>
               </div>
               
               <span className="hc-trail"></span>
             </div>
-            <span className="hc-logo-bottom-text">slimeon.com</span>
+            <span className="hc-logo-bottom-text">tycorun.com</span>
           </div>
           <span className="hc-bottom-text">Custom Power</span>
         </div>
@@ -730,14 +730,14 @@ const EngineerAvatar = ({ name }: { name: string }) => {
 };
 
 const testimonialsData = [
-  { name: "Thomas W.", company: "Kuka Robotics", content: "Slimeon's rapid prototyping saved our project. We went from CAD model to a fully functional, custom-fit pack in under two weeks. Their engineering support was phenomenal.", categories: [1, 2, 5] },
-  { name: "Sarah L.", company: "Siemens Healthineers", content: "For our life-support system, battery failure is not an option. Slimeon's zero-defect protocol gave us the confidence we needed. They are a true engineering partner.", categories: [1, 3] },
+  { name: "Thomas W.", company: "Kuka Robotics", content: "Tycorun's rapid prototyping saved our project. We went from CAD model to a fully functional, custom-fit pack in under two weeks. Their engineering support was phenomenal.", categories: [1, 2, 5] },
+  { name: "Sarah L.", company: "Siemens Healthineers", content: "For our life-support system, battery failure is not an option. Tycorun's zero-defect protocol gave us the confidence we needed. They are a true engineering partner.", categories: [1, 3] },
   { name: "David R.", company: "SAAB Aerospace", content: "The energy density they achieved for our drone fleet was unmatched. 15% more flight time compared to off-the-shelf solutions we tested previously.", categories: [1, 4] },
   { name: "Michael C.", company: "Boston Dynamics", content: "Their BMS integration support was phenomenal. Seamless communication with our central controller right out of the box, saving us weeks of debugging.", categories: [1, 2] },
-  { name: "Elena G.", company: "Medtronic", content: "We needed a custom shape to fit a very tight housing. Slimeon engineered a solution that maximized capacity without compromising thermals or safety.", categories: [1, 3, 5] },
-  { name: "James F.", company: "Caterpillar", content: "Reliability in sub-zero temps was critical for our AGVs. Slimeon delivered a pack that performs perfectly at -20°C in the field.", categories: [1, 2, 5] },
+  { name: "Elena G.", company: "Medtronic", content: "We needed a custom shape to fit a very tight housing. Tycorun engineered a solution that maximized capacity without compromising thermals or safety.", categories: [1, 3, 5] },
+  { name: "James F.", company: "Caterpillar", content: "Reliability in sub-zero temps was critical for our AGVs. Tycorun delivered a pack that performs perfectly at -20°C in the field.", categories: [1, 2, 5] },
   { name: "Robert P.", company: "Lockheed Martin", content: "Professional, transparent, and technically competent. The best engineering partner we've worked with for mission-critical power systems.", categories: [1, 4] },
-  { name: "Lisa K.", company: "Honeywell", content: "Supply chain security is huge for us. Slimeon's UN 38.3 certification handling smoothed our global logistics significantly.", categories: [1, 5] },
+  { name: "Lisa K.", company: "Honeywell", content: "Supply chain security is huge for us. Tycorun's UN 38.3 certification handling smoothed our global logistics significantly.", categories: [1, 5] },
   { name: "Mark T.", company: "Stryker", content: "From the first consultation to mass production, the process was seamless. High quality, on time, every time.", categories: [1, 3] },
 ];
 

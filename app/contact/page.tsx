@@ -6,7 +6,7 @@ import Footer from "@/components/ui/footer";
 export const metadata = {
   title: "Contact | Custom Battery Inquiry",
   description:
-    "Start a custom battery project with Slimeon. Share requirements, timelines, and compliance needs for a rapid engineering response.",
+    "Start a custom battery project with Tycorun. Share requirements, timelines, and compliance needs for a rapid engineering response.",
 };
 
 export default function Contact() {

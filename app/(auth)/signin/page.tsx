@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Sign In - Slimeon PRO",
+  title: "Sign In - Tycorun PRO",
   description: "Page description",
 };
 

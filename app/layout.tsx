@@ -41,7 +41,7 @@ const nacelle = localFont({
 });
 
 export const metadata = {
-  title: "Slimeon - Custom Industrial Battery Manufacturing",
+  title: "Tycorun - Custom Industrial Battery Manufacturing",
   description: "High-performance lithium solutions designed for mission-critical applications in robotics, medical, and aerospace.",
   icons: {
     icon: "/favicon.svg",
