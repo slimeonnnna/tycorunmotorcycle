@@ -140,6 +140,13 @@ function addHeadingIds(contentHtml: string, tocItems: TocItem[]) {
   });
 }
 
+function stripOuterArticle(contentHtml: string) {
+  const match = /^\s*<article\b[^>]*>([\s\S]*)<\/article>\s*$/i.exec(
+    contentHtml,
+  );
+  return match ? match[1] : contentHtml;
+}
+
 export async function generateStaticParams() {
   const posts = getBlogList();
   return posts.map((post) => ({ slug: post.slug }));
@@ -183,6 +190,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   contentHtml = contentHtml.replace(/\r\n/g, "\n");
+  const articleHtml = stripOuterArticle(contentHtml);
 
   const tocRenderItems = tocItems.filter((item) => item.level === 2);
 
@@ -232,30 +240,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           ) : null}
 
           <div className={isTemplate ? "mt-10 text-base text-gray-200 sm:text-lg" : "mt-10"}>
-            {tocRenderItems.length > 0 ? (
-              <div className="md:hidden sticky top-20 z-20">
-                <details className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
-                  <summary className="cursor-pointer text-xs uppercase tracking-widest text-gray-400">
-                    Table of Contents
-                  </summary>
-                  <div className="mt-3 space-y-2 text-sm text-gray-300">
-                    {tocRenderItems.map((item, index) => (
-                      <div key={`${item.text}-${index}`}>
-                        <a
-                          href={`#${item.id}`}
-                          className="transition hover:text-blue-300"
-                        >
-                          {item.text}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                </details>
-              </div>
-            ) : null}
-
             <div className="grid gap-8 lg:grid-cols-[200px_minmax(0,1fr)_200px] lg:items-start">
-              <aside className="order-2 lg:order-none lg:sticky lg:top-28 self-start">
+              <aside className="order-3 lg:order-3 lg:sticky lg:top-28 self-start">
                 <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
                   <div className="text-xs uppercase tracking-widest text-gray-500">
                     Need a spec review?
@@ -273,19 +259,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               </aside>
 
-              <div className="order-1 lg:order-none">
-                {!isTemplate ? (
-                  <div
-                    className="prose prose-invert max-w-none text-gray-200"
-                    dangerouslySetInnerHTML={{ __html: contentHtml }}
-                  />
-                ) : (
-                  <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-                )}
-              </div>
+              <article
+                className={
+                  isTemplate
+                    ? "order-2 lg:order-2 text-base text-gray-200 sm:text-lg"
+                    : "order-2 lg:order-2 prose prose-invert max-w-none text-gray-200"
+                }
+                dangerouslySetInnerHTML={{ __html: articleHtml }}
+              />
 
               {tocRenderItems.length > 0 ? (
-                <aside className="order-3 hidden md:block self-start lg:sticky lg:top-28">
+                <aside className="order-1 lg:order-1 self-start lg:sticky lg:top-28">
                   <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
                     <div className="text-xs uppercase tracking-widest text-gray-500">
                       Table of Contents
