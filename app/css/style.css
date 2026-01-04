@@ -641,14 +641,6 @@
   }
 }
 
-.process-noise {
-  background-image: radial-gradient(circle at 20% 10%, rgba(59, 130, 246, 0.08), transparent 45%),
-    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.06), transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.05), transparent 55%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-  mix-blend-mode: screen;
-  opacity: 0.08;
-}
 
 .process-flow {
   background-image:
@@ -658,6 +650,47 @@
   background-repeat: no-repeat;
   mix-blend-mode: screen;
   opacity: 0.12;
+}
+
+
+/* 
+   ==========================================================================
+   4. Hero Grid Background
+   ==========================================================================
+*/
+.hero-grid-bg {
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMTkuNSIgbnVtT2N0YXZlcz0iMTAiIHJlc3VsdD0idHVyYnVsZW5jZSIvPjxmZUNvbXBvc2l0ZSBvcGVyYXRvcj0iaW4iIGluPSJ0dXJidWxlbmNlIiBpbjI9IlNvdXJjZUFscGhhIiByZXN1bHQ9ImNvbXBvc2l0ZSIvPjxmZUNvbG9yTWF0cml4IGluPSJjb21wb3NpdGUiIHR5cGU9Imx1bWluYW5jZVRvQWxwaGEiLz48ZmVCbGVuZCBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJjb21wb3NpdGUiIG1vZGU9ImNvbG9yLWJ1cm4iLz48L2ZpbHRlcj48L2RlZnM+PGcgZmlsdGVyPSJ1cmwoJyNhJykiPjxwYXRoIGZpbGw9IiMyNmIiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjxwYXRoIGQ9Ik0wIDB2MTAwaDEwMFYwWiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2U9IiM0OGYiIGZpbGw9IiMwMDAwIi8+PHBhdGggZmlsbD0iIzQ4ZjUiIGQ9Ik01MCAwaDF2MTAwaC0xeiIvPjxwYXRoIGZpbGw9IiM0OGY1IiBkPSJNMCA1MGgxMDB2MUgweiIvPjwvZz48L3N2Zz4=");
+  background-position: -10px 0;
+  mask: linear-gradient(#0004, #000);
+  opacity: 0.35;
+  filter: saturate(0.6) brightness(0.95);
+  z-index: 0;
+}
+
+.hero-grid-bg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(3, 7, 18, 0), rgba(3, 7, 18, 1));
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-grid-bg > * {
+  position: relative;
+  z-index: 1;
 }
 
 

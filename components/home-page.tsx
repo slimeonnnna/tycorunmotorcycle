@@ -149,71 +149,9 @@ function HeroCard() {
 // --- Sub-Component: Hero ---
 function Hero() {
   return (
-    <section>
+    <section className="hero-grid-bg relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="relative pb-12 pt-32 md:pb-20 md:pt-40">
-          <div
-            className="pointer-events-none absolute left-1/2 top-0 -z-10 -translate-x-1/2 opacity-40"
-            aria-hidden="true"
-          >
-            <svg
-              className="max-w-none"
-              width="1440"
-              height="800"
-              viewBox="0 0 1440 800"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <pattern id="engineering-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-gray-800" />
-                </pattern>
-                <linearGradient id="hero-road" x1="0" y1="520" x2="1440" y2="520" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#111827" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#2563EB" stopOpacity="0.5" />
-                  <stop offset="1" stopColor="#111827" stopOpacity="0" />
-                </linearGradient>
-                <linearGradient id="hero-bike" x1="600" y1="460" x2="780" y2="560" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#1F2937" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#3B82F6" stopOpacity="0.4" />
-                  <stop offset="1" stopColor="#1F2937" stopOpacity="0" />
-                </linearGradient>
-                <linearGradient id="gradient-line-1" x1="0" y1="0" x2="1440" y2="600" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#1F2937" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#2563EB" stopOpacity="0.6" />
-                  <stop offset="1" stopColor="#1F2937" stopOpacity="0" />
-                </linearGradient>
-                <linearGradient id="gradient-line-2" x1="1440" y1="0" x2="0" y2="600" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#1F2937" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#3B82F6" stopOpacity="0.6" />
-                  <stop offset="1" stopColor="#1F2937" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-
-              <rect width="1440" height="800" fill="url(#engineering-grid)" opacity="0.3" />
-              <path d="M240 40 L 520 220 L 860 200 L 1220 340" fill="none" stroke="url(#gradient-line-1)" strokeWidth="2" strokeDasharray="10 6" opacity="0.55" />
-              <path d="M120 160 L 420 300 L 720 260 L 1080 420" fill="none" stroke="url(#gradient-line-2)" strokeWidth="2" strokeDasharray="6 6" opacity="0.55" />
-              <path d="M60 420 L 360 360 L 660 520 L 980 480 L 1320 560" fill="none" stroke="url(#gradient-line-1)" strokeWidth="2" strokeDasharray="6 8" opacity="0.5" />
-              <path d="M200 640 L 520 560 L 820 600 L 1180 520" fill="none" stroke="url(#gradient-line-2)" strokeWidth="2" strokeDasharray="8 10" opacity="0.5" />
-              <path d="M360 120 L 620 300 L 900 260 L 1280 140" fill="none" stroke="url(#gradient-line-1)" strokeWidth="1.75" strokeDasharray="5 7" opacity="0.5" />
-              <path d="M260 260 L 520 200 L 820 360 L 1120 300" fill="none" stroke="url(#gradient-line-2)" strokeWidth="1.75" strokeDasharray="4 6" opacity="0.5" />
-              <path d="M300 0 V 300 L 500 500 H 1140" fill="none" stroke="url(#gradient-line-1)" strokeWidth="2" strokeDasharray="10 5" opacity="0.55" />
-              <path d="M1140 0 V 200 L 940 400 H 300" fill="none" stroke="url(#gradient-line-2)" strokeWidth="2" strokeDasharray="4 4" opacity="0.55" />
-
-              <g fill="#60A5FA" opacity="0.45">
-                <circle cx="240" cy="40" r="3" />
-                <circle cx="520" cy="220" r="3" />
-                <circle cx="860" cy="200" r="3" />
-                <circle cx="1220" cy="340" r="3" />
-                <circle cx="120" cy="160" r="3" />
-                <circle cx="720" cy="260" r="3" />
-                <circle cx="1080" cy="420" r="3" />
-                <circle cx="360" cy="360" r="3" />
-                <circle cx="980" cy="480" r="3" />
-                <circle cx="300" cy="0" r="3" />
-                <circle cx="940" cy="400" r="3" />
-              </g>
-            </svg>
-          </div>
           <div className="pb-12 text-center md:pb-20">
             <h1
               className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
@@ -258,6 +196,9 @@ function Hero() {
 
           <div data-aos="fade-up" data-aos-delay={800}>
             <HeroCard />
+          </div>
+          <div className="pt-6 md:pt-12">
+            <CapacityDashboard />
           </div>
         </div>
       </div>
@@ -461,8 +402,8 @@ function CapacityDashboard() {
   ];
 
   return (
-    <section className="border-b border-gray-800 bg-gray-950">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <div className="border-gray-800">
+      <div className="mx-auto max-w-6xl">
         <div className="py-10 md:py-20">
           <div className="metric-grid">
             {metrics.map((metric) => (
@@ -531,7 +472,7 @@ function CapacityDashboard() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -605,11 +546,7 @@ function ProcessTimeline() {
   const prevSlide = () => goToSlide(activeIndex - 1);
 
   return (
-    <section className="relative border-t border-gray-800 bg-gray-950">
-      <div
-        className="process-noise pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      />
+    <section className="relative">
       <div
         className="process-flow pointer-events-none absolute inset-0"
         aria-hidden="true"
@@ -698,10 +635,6 @@ function ProcessTimeline() {
                 style={{ flex: "0 0 var(--panel-width)" }}
               >
                 <div
-                  className="process-noise pointer-events-none absolute inset-0"
-                  aria-hidden="true"
-                />
-                <div
                   className="process-flow pointer-events-none absolute inset-0"
                   aria-hidden="true"
                 />
@@ -749,10 +682,6 @@ function ProcessTimeline() {
                   className="relative flex-none overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-6 shadow-lg backdrop-blur-lg md:p-8"
                   style={{ flex: "0 0 var(--panel-width)" }}
                 >
-                  <div
-                    className="process-noise pointer-events-none absolute inset-0"
-                    aria-hidden="true"
-                  />
                   <div
                     className="process-flow pointer-events-none absolute inset-0"
                     aria-hidden="true"
@@ -1352,7 +1281,7 @@ function Features() {
 // --- Sub-Component: TechnicalData ---
 function TechnicalData() {
   return (
-    <section className="relative border-t border-gray-800 bg-gray-950">
+    <section className="relative">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
@@ -1708,7 +1637,6 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <CapacityDashboard />
       <Workflows />
       <ProcessTimeline />
       <ProfitTable />
