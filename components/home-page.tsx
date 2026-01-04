@@ -537,126 +537,72 @@ function CapacityDashboard() {
 
 // --- Sub-Component: ProcessTimeline ---
 function ProcessTimeline() {
+  const [activeIndex, setActiveIndex] = useState(0);
   const steps = [
     {
       step: "01",
       label: "Inquiry",
       title: "Specs Confirmation",
-      detail: (
-        <>
-          We will review and confirm all specifications within{" "}
-          <strong className="font-semibold text-white">24 hours</strong>.
-        </>
-      ),
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
-          aria-hidden="true"
-        >
-          <rect x="3" y="4" width="18" height="14" rx="2" />
-          <path d="M7 20h10" />
-          <path d="M8 8h8" />
-          <path d="M8 12h5" />
-        </svg>
-      ),
+      overviewTime: "24 hours",
+      detailTime: "24 hours",
+      description:
+        "We review your requirements, confirm specs, and align on target markets and compliance needs.",
+      visual: {
+        title: "Specs Intake",
+        tags: ["BOM", "Compliance", "Target Market"],
+      },
     },
     {
       step: "02",
       label: "Sample",
       title: "Prototype Development",
-      detail: (
-        <>
-          Prototype sample shipped within{" "}
-          <strong className="font-semibold text-white">15 days</strong> for
-          approval.
-        </>
-      ),
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
-          aria-hidden="true"
-        >
-          <path d="M3 12h18" />
-          <path d="M7 12l4-7 6 14" />
-          <path d="M6 17h12" />
-        </svg>
-      ),
+      overviewTime: "15 days",
+      detailTime: "15 days",
+      description:
+        "Prototype build and validation with iterative feedback to lock in performance and fit.",
+      visual: {
+        title: "Prototype Lab",
+        tags: ["Bench Test", "Road Test", "Revisions"],
+      },
     },
     {
       step: "03",
       label: "Contract",
       title: "Agreement & Deposit",
-      detail: (
-        <>
-          Production starts after{" "}
-          <strong className="font-semibold text-white">30%</strong> deposit and
-          schedule confirmation.
-        </>
-      ),
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
-          aria-hidden="true"
-        >
-          <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
-          <path d="M14 3v5h5" />
-          <path d="M8 12h8" />
-          <path d="M8 16h6" />
-        </svg>
-      ),
+      overviewTime: "30% deposit",
+      detailTime: "30% deposit",
+      description:
+        "Final agreement, production plan, and deposit confirmation to trigger tooling and scheduling.",
+      visual: {
+        title: "Contract Gate",
+        tags: ["Schedule", "Tooling", "Deposit"],
+      },
     },
     {
       step: "04",
       label: "Delivery",
       title: "Mass Production & Shipping",
-      detail: (
-        <>
-          Lead time{" "}
-          <strong className="font-semibold text-white">35-45 days</strong>, FOB
-          terms.
-        </>
-      ),
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
-          aria-hidden="true"
-        >
-          <rect x="3" y="4" width="14" height="12" rx="2" />
-          <path d="M17 8h2l2 3v5h-4" />
-          <circle cx="7" cy="18" r="2" />
-          <circle cx="17" cy="18" r="2" />
-        </svg>
-      ),
+      overviewTime: "35–45 days",
+      detailTime: "35–45 days",
+      description:
+        "Mass production, QC checkpoints, and export-ready shipping documentation.",
+      visual: {
+        title: "Shipment Panel",
+        tags: ["QC", "Packing", "Export Docs"],
+      },
     },
   ];
+
+  const totalSlides = steps.length + 1;
+  const isOverview = activeIndex === 0;
+  const goToSlide = (index: number) => {
+    const safeIndex = Math.max(0, Math.min(totalSlides - 1, index));
+    setActiveIndex(safeIndex);
+  };
+  const jumpToStep = (stepIndex: number) => goToSlide(stepIndex + 1);
+  const backToOverview = () => goToSlide(0);
+  const nextSlide = () => goToSlide(activeIndex + 1);
+  const prevSlide = () => goToSlide(activeIndex - 1);
 
   return (
     <section className="relative border-t border-gray-800 bg-gray-950">
@@ -682,50 +628,227 @@ function ProcessTimeline() {
             <p className="text-lg text-gray-400">
               A clear, repeatable workflow from specification to delivery.
             </p>
+            <div className="mt-6 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={prevSlide}
+                disabled={activeIndex === 0}
+                className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-gray-900/60 text-white/70 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur transition-all hover:border-white/30 hover:bg-gray-900/80 hover:text-white hover:shadow-[0_0_18px_rgba(59,130,246,0.25)] disabled:cursor-not-allowed disabled:opacity-40"
+                aria-label="Previous slide"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+                  aria-hidden="true"
+                >
+                  <path d="M15 6l-6 6 6 6" />
+                  <path d="M21 12H9" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                disabled={activeIndex === totalSlides - 1}
+                className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-gray-900/60 text-white/70 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur transition-all hover:border-white/30 hover:bg-gray-900/80 hover:text-white hover:shadow-[0_0_18px_rgba(59,130,246,0.25)] disabled:cursor-not-allowed disabled:opacity-40"
+                aria-label="Next slide"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                  <path d="M3 12h12" />
+                </svg>
+              </button>
+            </div>
             <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
           </div>
-          <div className="mx-auto max-w-4xl">
-            <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-lg md:p-8">
-              <div className="grid gap-6 sm:grid-cols-2">
-                {steps.map((step, index) => {
-                  const isKeyStep = index === 1 || index === 2;
-                  return (
-                    <div
-                      key={step.step}
-                      className={`group rounded-xl border p-5 text-white/90 shadow-sm backdrop-blur-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${
-                        isKeyStep
-                          ? "border-white/30 bg-white/14 hover:border-white/40 hover:bg-white/18"
-                          : "border-white/20 bg-white/10 hover:border-white/30 hover:bg-white/14"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
+          <div
+            className="relative mx-auto w-full max-w-none overflow-visible"
+            style={
+              {
+                "--carousel-gap": "16px",
+                "--panel-width": "100%",
+              } as React.CSSProperties
+            }
+          >
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{
+                transform: `translateX(calc(-${activeIndex} * (var(--panel-width) + var(--carousel-gap))))`,
+                gap: "var(--carousel-gap)",
+                paddingRight: "var(--peek-space)",
+              }}
+            >
+              <section
+                className="relative flex-none overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-6 shadow-lg backdrop-blur-lg md:p-8"
+                style={{ flex: "0 0 var(--panel-width)" }}
+              >
+                <div
+                  className="process-noise pointer-events-none absolute inset-0"
+                  aria-hidden="true"
+                />
+                <div
+                  className="process-flow pointer-events-none absolute inset-0"
+                  aria-hidden="true"
+                />
+                <div className="relative grid gap-6 sm:grid-cols-2">
+                  {steps.map((step, index) => {
+                    const isKeyStep = index === 1 || index === 2;
+                    return (
+                      <button
+                        type="button"
+                        key={step.step}
+                        onClick={() => jumpToStep(index)}
+                        className={`group flex h-full flex-col rounded-xl border p-5 text-left text-white/90 shadow-sm backdrop-blur-lg transition-all duration-300 hover:shadow-md ${
+                          isKeyStep
+                            ? "border-white/30 bg-white/14 hover:border-white/40 hover:bg-white/18"
+                            : "border-white/20 bg-white/10 hover:border-white/30 hover:bg-white/14"
+                        }`}
+                      >
                         <div className="text-2xl font-semibold tracking-[0.2em] text-white/20">
                           {step.step}
                         </div>
-                      </div>
-                      <div className="mt-3 text-xs font-semibold uppercase tracking-widest text-white/60">
-                        {step.label}
-                      </div>
-                      <div className="mt-2 flex items-start gap-2">
-                        <div className="pt-0.5">{step.icon}</div>
-                        <h3 className="text-lg font-semibold text-white transition-colors duration-300 group-hover:text-blue-200">
+                        <div className="mt-3 text-xs font-semibold uppercase tracking-widest text-white/60">
+                          {step.label}
+                        </div>
+                        <h3 className="mt-2 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-blue-200">
                           {step.title}
                         </h3>
-                      </div>
-                      <p className="mt-2 text-sm text-white/70">{step.detail}</p>
-                    </div>
-                  );
-                })}
+                        <p className="mt-2 text-sm text-white/70">
+                          <strong className="font-semibold text-white">
+                            {step.overviewTime}
+                          </strong>
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="relative mt-6 text-center text-xs text-white/60">
+                  Lead times are based on in-house production and stable supply
+                  chain control.
+                </p>
+              </section>
+
+              {steps.map((step, index) => (
+                <section
+                  key={step.step}
+                  className="relative flex-none overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-6 shadow-lg backdrop-blur-lg md:p-8"
+                  style={{ flex: "0 0 var(--panel-width)" }}
+                >
+                  <div
+                    className="process-noise pointer-events-none absolute inset-0"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="process-flow pointer-events-none absolute inset-0"
+                    aria-hidden="true"
+                  />
+                  <div className="relative grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+                          <div className="space-y-4 text-white/80">
+                            <div className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
+                              Step {step.step} / {step.label}
+                            </div>
+                            <h3 className="text-2xl font-semibold text-white">
+                              {step.title}
+                            </h3>
+                            <p className="text-sm leading-relaxed text-white/70">
+                              {step.description}
+                            </p>
+                            <div className="text-sm text-white/70">
+                              Key timing:{" "}
+                              <strong className="font-semibold text-white">
+                                {step.detailTime}
+                              </strong>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={backToOverview}
+                              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white/80 transition-colors hover:border-white/40 hover:text-white"
+                            >
+                              Back to overview
+                            </button>
+                          </div>
+                          <div className="relative rounded-xl border border-white/15 bg-white/5 p-6">
+                            <div className="mb-4 flex items-center justify-between text-xs uppercase tracking-widest text-white/40">
+                              <span>{step.visual.title}</span>
+                              <span>Module {index + 1}</span>
+                            </div>
+                            <div className="space-y-4">
+                              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+                                <div className="mb-2 text-[10px] uppercase tracking-widest text-white/40">
+                                  Signals
+                                </div>
+                                <div className="grid grid-cols-3 gap-2">
+                                  {step.visual.tags.map((tag) => (
+                                    <div
+                                      key={tag}
+                                      className="rounded-full border border-white/15 bg-white/10 px-2 py-1 text-[10px] text-white/70"
+                                    >
+                                      {tag}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="rounded-lg border border-white/10 bg-gradient-to-br from-white/10 to-white/0 p-4">
+                                <div className="mb-3 flex items-center justify-between text-[10px] uppercase tracking-widest text-white/40">
+                                  <span>Status Grid</span>
+                                  <span className="text-blue-200/70">Live</span>
+                                </div>
+                                <div className="grid grid-cols-4 gap-2">
+                                  {Array.from({ length: 8 }).map((_, tileIndex) => (
+                                    <div
+                                      key={tileIndex}
+                                      className={`h-6 rounded-md border ${
+                                        tileIndex % 3 === 0
+                                          ? "border-blue-300/40 bg-blue-400/20"
+                                          : "border-white/10 bg-white/5"
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+                                <div className="mb-2 text-[10px] uppercase tracking-widest text-white/40">
+                                  Flow Diagram
+                                </div>
+                                <div className="flex items-center gap-2 text-[10px] text-white/60">
+                                  <span className="rounded-full border border-white/20 bg-white/10 px-2 py-1">
+                                    Input
+                                  </span>
+                                  <span className="text-white/30">→</span>
+                                  <span className="rounded-full border border-white/20 bg-white/10 px-2 py-1">
+                                    Review
+                                  </span>
+                                  <span className="text-white/30">→</span>
+                                  <span className="rounded-full border border-white/20 bg-white/10 px-2 py-1">
+                                    Output
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </section>
+                  ))}
+                </div>
               </div>
-              <p className="mt-6 text-center text-xs text-white/60">
-                Lead times are based on in-house production and stable supply
-                chain control.
-              </p>
-            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
   );
 }
 
