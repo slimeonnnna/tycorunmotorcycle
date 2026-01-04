@@ -1,23 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import Lenis from "lenis";
 
 export default function LenisInit() {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.1,
-      smoothWheel: true,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
-
+    let cancelled = false;
+    let lenis: import("lenis").default | null = null;
     let rafId = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-
     const handleAnchorClick = (event: MouseEvent) => {
+      if (!lenis) return;
       const target = event.target as HTMLElement | null;
       if (!target) return;
       const anchor = target.closest("a[href^='#']") as HTMLAnchorElement | null;
@@ -34,14 +25,31 @@ export default function LenisInit() {
       history.replaceState(null, "", hash);
     };
 
-    document.addEventListener("click", handleAnchorClick);
+    const init = async () => {
+      const { default: Lenis } = await import("lenis");
+      if (cancelled) return;
+      lenis = new Lenis({
+        duration: 1.1,
+        smoothWheel: true,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
 
-    rafId = requestAnimationFrame(raf);
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+
+      document.addEventListener("click", handleAnchorClick);
+      rafId = requestAnimationFrame(raf);
+    };
+
+    init();
 
     return () => {
+      cancelled = true;
       document.removeEventListener("click", handleAnchorClick);
       cancelAnimationFrame(rafId);
-      lenis.destroy();
+      lenis?.destroy();
     };
   }, []);
 

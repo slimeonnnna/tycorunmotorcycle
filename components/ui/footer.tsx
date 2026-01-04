@@ -138,7 +138,7 @@ export default function Footer() {
                   className="text-gray-400 transition hover:text-blue-500"
                   href="#0"
                 >
-                  2025 Model Catalog
+                  2026 Model Catalog
                 </a>
               </li>
               <li>

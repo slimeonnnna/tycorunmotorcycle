@@ -307,10 +307,8 @@ function TrustBadgeStrip() {
               </div>
             </div>
 
-            <div className="h-px w-full bg-white/10 md:h-auto md:w-px md:bg-white/10" />
-
             <div className="p-4 md:w-1/2">
-              <div className="mb-4">
+              <div>
                 <h3 className="mb-2 text-xs font-semibold text-white/80">Other Features</h3>
                 <ul className="grid grid-cols-1 gap-2 text-xs text-blue-100/70">
                   {[
@@ -339,6 +337,14 @@ function TrustBadgeStrip() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-4">
+                  <Link
+                    className="inline-flex items-center justify-center rounded-lg border border-blue-400/30 bg-blue-500/15 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-blue-100 transition-colors hover:bg-blue-500/25"
+                    href="/contact"
+                  >
+                    Inquiry Now
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -466,7 +472,7 @@ function CapacityDashboard() {
               >
                 <div className="relative z-10 w-full overflow-hidden rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 via-blue-900/10 to-blue-500/5 text-white shadow-2xl backdrop-blur-2xl duration-700 hover:border-blue-300/40 hover:bg-blue-500/15 hover:shadow-3xl hover:shadow-blue-500/20">
                     <div className="absolute inset-0 z-0 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-400/10 to-white/10 opacity-40 transition-opacity duration-500 group-hover:opacity-70" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-400/10 to-blue-300/10 opacity-40 transition-opacity duration-500 group-hover:opacity-70" />
                     <div
                       style={{ animationDelay: "0.5s" }}
                       className="absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-gradient-to-tr from-blue-500/20 to-transparent opacity-30 blur-3xl transition-all duration-700 group-hover:animate-bounce group-hover:scale-110 group-hover:opacity-60"
@@ -476,7 +482,7 @@ function CapacityDashboard() {
                       style={{ animationDelay: "1s" }}
                       className="absolute bottom-16 right-16 h-12 w-12 rounded-full bg-blue-300/10 blur-lg group-hover:animate-ping"
                     />
-                    <div className="absolute inset-0 -skew-x-12 translate-x-full bg-gradient-to-r from-transparent via-blue-200/10 to-transparent transition-transform duration-1000 group-hover:translate-x-[-200%]" />
+                    <div className="absolute inset-0 -skew-x-12 translate-x-full bg-gradient-to-r from-transparent via-blue-500/15 to-transparent transition-transform duration-1000 group-hover:translate-x-[-200%]" />
                   </div>
 
                   <div className="relative z-10 p-8">
@@ -490,7 +496,7 @@ function CapacityDashboard() {
                       </div>
 
                       <div className="mb-3 transition-transform duration-300 group-hover:scale-105">
-                        <p className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-3xl font-bold text-transparent group-hover:animate-pulse">
+                        <p className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 bg-clip-text text-3xl font-bold text-transparent group-hover:animate-pulse">
                           {metric.value}
                         </p>
                       </div>
@@ -501,24 +507,24 @@ function CapacityDashboard() {
                         </p>
                       </div>
 
-                      <div className="mt-6 h-0.5 w-1/3 origin-center rounded-full bg-gradient-to-r from-transparent via-blue-200 to-transparent transition-transform duration-500 group-hover:animate-pulse group-hover:scale-x-[1.5] group-hover:scale-y-[2]" />
+                      <div className="mt-6 h-0.5 w-1/3 origin-center rounded-full bg-gradient-to-r from-transparent via-blue-500/70 to-transparent transition-transform duration-500 group-hover:animate-pulse group-hover:scale-x-[1.5] group-hover:scale-y-[2]" />
 
                       <div className="mt-4 flex space-x-2 opacity-60 transition-opacity duration-300 group-hover:opacity-100">
-                        <div className="h-2 w-2 rounded-full bg-blue-200 group-hover:animate-bounce" />
+                        <div className="h-2 w-2 rounded-full bg-blue-400/80 group-hover:animate-bounce" />
                         <div
                           style={{ animationDelay: "0.1s" }}
-                          className="h-2 w-2 rounded-full bg-blue-200 group-hover:animate-bounce"
+                          className="h-2 w-2 rounded-full bg-blue-400/80 group-hover:animate-bounce"
                         />
                         <div
                           style={{ animationDelay: "0.2s" }}
-                          className="h-2 w-2 rounded-full bg-blue-200 group-hover:animate-bounce"
+                          className="h-2 w-2 rounded-full bg-blue-400/80 group-hover:animate-bounce"
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className="absolute left-0 top-0 h-20 w-20 rounded-br-3xl bg-gradient-to-br from-blue-300/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  <div className="absolute bottom-0 right-0 h-20 w-20 rounded-tl-3xl bg-gradient-to-tl from-blue-300/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="absolute left-0 top-0 h-20 w-20 rounded-br-3xl bg-gradient-to-br from-blue-500/15 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="absolute bottom-0 right-0 h-20 w-20 rounded-tl-3xl bg-gradient-to-tl from-blue-500/15 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </div>
               </div>
             ))}
@@ -532,14 +538,136 @@ function CapacityDashboard() {
 // --- Sub-Component: ProcessTimeline ---
 function ProcessTimeline() {
   const steps = [
-    { title: "Inquiry", detail: "Specs confirmed within 24h." },
-    { title: "Sample", detail: "Prototype shipped in 15 days." },
-    { title: "Contract", detail: "30% Deposit & Production Schedule." },
-    { title: "Delivery", detail: "35-45 Days lead time (FOB)." },
+    {
+      step: "01",
+      label: "Inquiry",
+      title: "Specs Confirmation",
+      detail: (
+        <>
+          We will review and confirm all specifications within{" "}
+          <strong className="font-semibold text-white">24 hours</strong>.
+        </>
+      ),
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
+          aria-hidden="true"
+        >
+          <rect x="3" y="4" width="18" height="14" rx="2" />
+          <path d="M7 20h10" />
+          <path d="M8 8h8" />
+          <path d="M8 12h5" />
+        </svg>
+      ),
+    },
+    {
+      step: "02",
+      label: "Sample",
+      title: "Prototype Development",
+      detail: (
+        <>
+          Prototype sample shipped within{" "}
+          <strong className="font-semibold text-white">15 days</strong> for
+          approval.
+        </>
+      ),
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
+          aria-hidden="true"
+        >
+          <path d="M3 12h18" />
+          <path d="M7 12l4-7 6 14" />
+          <path d="M6 17h12" />
+        </svg>
+      ),
+    },
+    {
+      step: "03",
+      label: "Contract",
+      title: "Agreement & Deposit",
+      detail: (
+        <>
+          Production starts after{" "}
+          <strong className="font-semibold text-white">30%</strong> deposit and
+          schedule confirmation.
+        </>
+      ),
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
+          aria-hidden="true"
+        >
+          <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+          <path d="M14 3v5h5" />
+          <path d="M8 12h8" />
+          <path d="M8 16h6" />
+        </svg>
+      ),
+    },
+    {
+      step: "04",
+      label: "Delivery",
+      title: "Mass Production & Shipping",
+      detail: (
+        <>
+          Lead time{" "}
+          <strong className="font-semibold text-white">35-45 days</strong>, FOB
+          terms.
+        </>
+      ),
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-6 w-6 text-white/80 transition-transform duration-300 group-hover:scale-105 group-hover:text-blue-200"
+          aria-hidden="true"
+        >
+          <rect x="3" y="4" width="14" height="12" rx="2" />
+          <path d="M17 8h2l2 3v5h-4" />
+          <circle cx="7" cy="18" r="2" />
+          <circle cx="17" cy="18" r="2" />
+        </svg>
+      ),
+    },
   ];
 
   return (
-    <section className="border-t border-gray-800 bg-gray-950">
+    <section className="relative border-t border-gray-800 bg-gray-950">
+      <div
+        className="process-noise pointer-events-none absolute inset-0"
+        aria-hidden="true"
+      />
+      <div
+        className="process-flow pointer-events-none absolute inset-0"
+        aria-hidden="true"
+      />
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="mx-auto max-w-3xl pb-10 text-center">
@@ -554,25 +682,45 @@ function ProcessTimeline() {
             <p className="text-lg text-gray-400">
               A clear, repeatable workflow from specification to delivery.
             </p>
+            <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
           </div>
-          <div className="mx-auto max-w-3xl">
-            <div className="relative border-l border-gray-800 pl-8">
-              <div className="space-y-10">
-                {steps.map((step, index) => (
-                  <div key={step.title} className="relative">
-                    <div className="absolute -left-10 top-1 h-5 w-5 rounded-full border border-blue-500/60 bg-gray-950">
-                      <div className="absolute inset-1 rounded-full bg-blue-500/70" aria-hidden="true" />
+          <div className="mx-auto max-w-4xl">
+            <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-lg md:p-8">
+              <div className="grid gap-6 sm:grid-cols-2">
+                {steps.map((step, index) => {
+                  const isKeyStep = index === 1 || index === 2;
+                  return (
+                    <div
+                      key={step.step}
+                      className={`group rounded-xl border p-5 text-white/90 shadow-sm backdrop-blur-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${
+                        isKeyStep
+                          ? "border-white/30 bg-white/14 hover:border-white/40 hover:bg-white/18"
+                          : "border-white/20 bg-white/10 hover:border-white/30 hover:bg-white/14"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="text-2xl font-semibold tracking-[0.2em] text-white/20">
+                          {step.step}
+                        </div>
+                      </div>
+                      <div className="mt-3 text-xs font-semibold uppercase tracking-widest text-white/60">
+                        {step.label}
+                      </div>
+                      <div className="mt-2 flex items-start gap-2">
+                        <div className="pt-0.5">{step.icon}</div>
+                        <h3 className="text-lg font-semibold text-white transition-colors duration-300 group-hover:text-blue-200">
+                          {step.title}
+                        </h3>
+                      </div>
+                      <p className="mt-2 text-sm text-white/70">{step.detail}</p>
                     </div>
-                    <div className="text-sm uppercase tracking-widest text-blue-400">
-                      Step {index + 1}
-                    </div>
-                    <h3 className="mt-2 text-xl font-semibold text-gray-200">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1 text-gray-400">{step.detail}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+              <p className="mt-6 text-center text-xs text-white/60">
+                Lead times are based on in-house production and stable supply
+                chain control.
+              </p>
             </div>
           </div>
         </div>
@@ -709,7 +857,7 @@ function Workflows() {
           <Spotlight className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3">
             {/* Card 1 */}
             <a
-              className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-48 after:-top-48 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
+              className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-linear-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50">
@@ -758,7 +906,7 @@ function Workflows() {
             </a>
             {/* Card 2 */}
             <a
-              className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-48 after:-top-48 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
+              className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-linear-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50">
@@ -803,7 +951,7 @@ function Workflows() {
             </a>
             {/* Card 3 */}
             <a
-              className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-48 after:-top-48 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
+              className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-linear-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50">
