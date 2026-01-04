@@ -546,69 +546,72 @@ function ProcessTimeline() {
   const prevSlide = () => goToSlide(activeIndex - 1);
 
   return (
-    <section className="relative">
+    <section className="grid-wrapper relative overflow-hidden">
+      <div
+        className="grid-background pointer-events-none absolute inset-0"
+        aria-hidden="true"
+      />
       <div
         className="process-flow pointer-events-none absolute inset-0"
         aria-hidden="true"
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="py-12 md:py-20">
-          <div className="mx-auto max-w-3xl pb-10 text-center">
+        <div className="border-t border-gray-800 py-12 md:py-20">
+          <div className="mx-auto pb-10 text-center">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                OEM Process
+                Commercial Partnership Frameworks
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Collaboration Timeline
+              Manufacturing Aligned With Your Profit Model
             </h2>
             <p className="text-lg text-gray-400">
-              A clear, repeatable workflow from specification to delivery.
+              Global markets operate on diverse regulatory and fiscal frameworks.
+              TYCORUN structures production not just to export vehicles, but to
+              integrate with your specific business strategy—whether that requires
+              total brand control, tariff mitigation, or rapid market entry.
             </p>
-            <div className="mt-6 flex items-center justify-center gap-2">
+            <div className="mt-6 flex items-center justify-center gap-3">
               <button
                 type="button"
                 onClick={prevSlide}
                 disabled={activeIndex === 0}
-                className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-gray-900/60 text-white/70 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur transition-all hover:border-white/30 hover:bg-gray-900/80 hover:text-white hover:shadow-[0_0_18px_rgba(59,130,246,0.25)] disabled:cursor-not-allowed disabled:opacity-40"
+                className="carousel-arrow-button"
                 aria-label="Previous slide"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
-                  aria-hidden="true"
-                >
-                  <path d="M15 6l-6 6 6 6" />
-                  <path d="M21 12H9" />
-                </svg>
+                <div className="button-box">
+                  <span className="button-elem" aria-hidden="true">
+                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z" />
+                    </svg>
+                  </span>
+                  <span className="button-elem" aria-hidden="true">
+                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z" />
+                    </svg>
+                  </span>
+                </div>
               </button>
               <button
                 type="button"
                 onClick={nextSlide}
                 disabled={activeIndex === totalSlides - 1}
-                className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-gray-900/60 text-white/70 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur transition-all hover:border-white/30 hover:bg-gray-900/80 hover:text-white hover:shadow-[0_0_18px_rgba(59,130,246,0.25)] disabled:cursor-not-allowed disabled:opacity-40"
+                className="carousel-arrow-button carousel-arrow-button--next"
                 aria-label="Next slide"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                >
-                  <path d="M9 6l6 6-6 6" />
-                  <path d="M3 12h12" />
-                </svg>
+                <div className="button-box">
+                  <span className="button-elem" aria-hidden="true">
+                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z" />
+                    </svg>
+                  </span>
+                  <span className="button-elem" aria-hidden="true">
+                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z" />
+                    </svg>
+                  </span>
+                </div>
               </button>
             </div>
             <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
@@ -631,49 +634,152 @@ function ProcessTimeline() {
               }}
             >
               <section
-                className="relative flex-none overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-6 shadow-lg backdrop-blur-lg md:p-8"
+                className="card card--wide card--split relative flex-none"
                 style={{ flex: "0 0 var(--panel-width)" }}
               >
                 <div
                   className="process-flow pointer-events-none absolute inset-0"
                   aria-hidden="true"
                 />
-                <div className="relative grid gap-6 sm:grid-cols-2">
-                  {steps.map((step, index) => {
-                    const isKeyStep = index === 1 || index === 2;
-                    return (
-                      <button
-                        type="button"
-                        key={step.step}
-                        onClick={() => jumpToStep(index)}
-                        className={`group flex h-full flex-col rounded-xl border p-5 text-left text-white/90 shadow-sm backdrop-blur-lg transition-all duration-300 hover:shadow-md ${
-                          isKeyStep
-                            ? "border-white/30 bg-white/14 hover:border-white/40 hover:bg-white/18"
-                            : "border-white/20 bg-white/10 hover:border-white/30 hover:bg-white/14"
-                        }`}
-                      >
-                        <div className="text-2xl font-semibold tracking-[0.2em] text-white/20">
-                          {step.step}
-                        </div>
-                        <div className="mt-3 text-xs font-semibold uppercase tracking-widest text-white/60">
-                          {step.label}
-                        </div>
-                        <h3 className="mt-2 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-blue-200">
-                          {step.title}
-                        </h3>
-                        <p className="mt-2 text-sm text-white/70">
-                          <strong className="font-semibold text-white">
-                            {step.overviewTime}
-                          </strong>
-                        </p>
-                      </button>
-                    );
-                  })}
+                <div className="card__border"></div>
+                <div className="card__body">
+                  <div className="card__left">
+                    <div className="card_title__container">
+                      <div className="card_kicker">
+                        <svg
+                          className="card_kicker__icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M4 16l6-6 4 4 6-8"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M17.5 6H20v2.5"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <span className="card_title">Define Your Path</span>
+                      </div>
+                      <h3 className="card_heading animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text text-transparent">
+                        One Factory. Four Ways to Scale.
+                      </h3>
+                      <p className="card_paragraph">
+                        We don't force a "take it or leave it" catalog. Select the
+                        cooperation tier that best fits your engineering capabilities
+                        and target market maturity.
+                      </p>
+                    </div>
+                    <ul className="card__list">
+                      {[
+                        "Private Label & Visual OEM",
+                        "ODM & Architecture Tuning",
+                        "SKD/CKD Tariff Optimization",
+                        "Regional Sales & Support",
+                      ].map((item) => (
+                        <li key={item} className="card__list_item">
+                          <span className="check">
+                            <svg
+                              className="check_svg"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true"
+                            >
+                              <path
+                                clipRule="evenodd"
+                                d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+                                fillRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                          <span className="list_text">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href="/contact"
+                      className="group relative z-10 mt-[10px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-100 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                    >
+                      <span className="relative z-20">Contact Us</span>
+                      <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6" />
+                      <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6" />
+                    </Link>
+                  </div>
+                  <div className="card__visual" aria-hidden="true">
+                    <svg
+                      className="card__visual-svg w-full h-full max-h-[400px] overflow-visible text-gray-700"
+                      viewBox="0 0 400 420"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient id="main-flow" x1="0" y1="200" x2="400" y2="200" gradientUnits="userSpaceOnUse">
+                          <stop offset="0" stopColor="#3B82F6" stopOpacity="0" />
+                          <stop offset="0.5" stopColor="#3B82F6" />
+                          <stop offset="1" stopColor="#60A5FA" />
+                        </linearGradient>
+                        <filter id="glow">
+                          <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                          <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                          </feMerge>
+                        </filter>
+                      </defs>
+
+                      <path d="M40 0 V400 M120 0 V400 M200 0 V400 M280 0 V400 M360 0 V400" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="4 4" />
+                      <path d="M0 40 H400 M0 120 H400 M0 200 H400 M0 280 H400 M0 360 H400" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="4 4" />
+
+                      <circle cx="40" cy="200" r="12" fill="#1D4ED8" stroke="#3B82F6" strokeWidth="2">
+                        <animate attributeName="r" values="12;14;12" dur="3s" repeatCount="indefinite" />
+                      </circle>
+                      <linearGradient id="hq-gradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0" stopColor="#93C5FD" />
+                        <stop offset="1" stopColor="#3B82F6" />
+                      </linearGradient>
+                      <text x="40" y="252" fill="url(#hq-gradient)" fontSize="20" fontFamily="monospace" fontWeight="bold" textAnchor="middle">TYCORUN HQ</text>
+
+                      <path d="M52 200 C 120 200, 150 80, 280 80 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" filter="url(#glow)" />
+                      <circle cx="340" cy="80" r="6" fill="#1E3A8A" stroke="#60A5FA" strokeWidth="2" />
+                      <text x="340" y="112" fill="#E5E7EB" fontSize="20" textAnchor="middle">Private Label</text>
+
+                      <path d="M52 200 C 120 200, 150 160, 280 160 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" opacity="0.8" />
+                      <circle cx="340" cy="160" r="6" fill="#1E3A8A" stroke="#A78BFA" strokeWidth="2" />
+                      <text x="340" y="192" fill="#E5E7EB" fontSize="20" textAnchor="middle">ODM Tuning</text>
+
+                      <path d="M52 200 C 120 200, 150 240, 280 240 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" opacity="0.8" />
+                      <circle cx="340" cy="240" r="6" fill="#1E3A8A" stroke="#34D399" strokeWidth="2" />
+                      <text x="340" y="272" fill="#E5E7EB" fontSize="20" textAnchor="middle">SKD/CKD</text>
+
+                      <path d="M52 200 C 120 200, 150 320, 280 320 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" opacity="0.6" />
+                      <circle cx="340" cy="320" r="6" fill="#1E3A8A" stroke="#FBBF24" strokeWidth="2" />
+                      <text x="340" y="352" fill="#E5E7EB" fontSize="20" textAnchor="middle">Distribution</text>
+
+                      <circle r="3" fill="white">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M52 200 C 120 200, 150 80, 280 80 H 340" />
+                      </circle>
+                      <circle r="3" fill="white">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 160, 280 160 H 340" />
+                      </circle>
+                      <circle r="3" fill="white">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M52 200 C 120 200, 150 240, 280 240 H 340" />
+                      </circle>
+                      <circle r="3" fill="white">
+                        <animateMotion dur="3.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 320, 280 320 H 340" />
+                      </circle>
+                    </svg>
+                  </div>
                 </div>
-                <p className="relative mt-6 text-center text-xs text-white/60">
-                  Lead times are based on in-house production and stable supply
-                  chain control.
-                </p>
               </section>
 
               {steps.map((step, index) => (
