@@ -730,7 +730,7 @@ function ProcessTimeline() {
                 <span className="card_title">{slide.kicker}</span>
               </div>
               <h3
-                className={`card_heading ${
+                className={`card_heading process-card-heading ${
                   isActive ? "animate-[gradient_6s_linear_infinite]" : ""
                 } bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text text-transparent`}
               >
@@ -769,201 +769,137 @@ function ProcessTimeline() {
               <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6" />
             </Link>
           </div>
-          <div className="card__visual" aria-hidden="true">
+          <div
+            className={`card__visual ${index === 2 ? "card__visual--bom" : ""}`}
+            aria-hidden="true"
+          >
             {index === 1 ? (
-              <div className="dashboard-panel relative w-full max-w-[400px] mx-auto perspective-1000 group cursor-default select-none">
-                <div
-                  className={`relative bg-gray-800 rounded-[2rem] p-3 shadow-2xl border-t border-gray-700 border-b-4 border-b-gray-900 transition-transform duration-500 ${
-                    isActive ? "group-hover:rotate-x-2" : ""
-                  }`}
-                >
-                  <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-12 h-1 bg-black/30 rounded-full"></div>
-                  <div className="relative h-[220px] bg-gray-950 rounded-2xl overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,1)] border border-gray-800">
-                    <div
-                      className="absolute inset-0 opacity-20"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(#374151 1px, transparent 1px), linear-gradient(90deg, #374151 1px, transparent 1px)",
-                        backgroundSize: "20px 20px",
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent z-20 pointer-events-none"></div>
-                    <div className="monitor-scanline absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/10 to-transparent z-10 w-full h-[20%]"></div>
-                    <div className="relative z-10 flex flex-col justify-between h-full p-6 font-mono">
-                      <div className="flex justify-between items-center text-[10px] text-gray-500 uppercase tracking-widest">
-                        <div className="flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                          <span>Ready</span>
-                        </div>
-                        <div>{clockTime || "—"}</div>
-                        <div className="flex items-center gap-1">
-                          <span>BT</span>
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div className="flex items-end justify-between mt-2">
-                        <div className="text-center">
-                          <div className="animate-speed-css text-4xl font-bold text-white tabular-nums tracking-tighter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
-                          <div className="text-xs text-gray-400 font-bold">KM/H</div>
-                        </div>
-                        <div className="mb-2 text-center">
-                          <div className="relative inline-block">
-                            <div className="absolute -inset-4 bg-blue-500/20 blur-xl rounded-full animate-pulse"></div>
-                            <div className="relative text-blue-400 font-black text-xl tracking-widest uppercase border border-blue-500/30 px-3 py-1 rounded bg-blue-900/10 backdrop-blur-sm">
-                              YOUR BRAND
-                            </div>
-                          </div>
-                          <div className="text-[9px] text-blue-500/60 mt-1 uppercase tracking-[0.2em]">System Active</div>
-                        </div>
-                        <div className="text-right flex flex-col items-end">
-                          <div className="relative mb-1">
-                            <svg className="w-8 h-4 text-gray-600" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <rect x="1" y="1" width="28" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
-                              <path d="M31 5V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                            </svg>
-                            <div className="absolute top-[3px] left-[3px] h-[10px] w-[24px] rounded-[1px] bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.6)] animate-pulse"></div>
-                          </div>
-                          <div className="flex items-baseline mb-1 -mt-1">
-                            <div className="text-3xl font-bold text-white leading-none tracking-tight">98</div>
-                            <div className="text-sm font-bold text-gray-500 ml-0.5">%</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-auto rounded-lg border border-white/10 bg-white/5 px-3 py-2 shadow-lg backdrop-blur-md">
-                        <div className="flex justify-between items-center text-sm font-mono text-gray-300">
-                          <div className="flex flex-col">
-                            <span className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">ODO</span>
-                            <span className="text-white">
-                              01,248 <span className="text-[11px] text-gray-400">KM</span>
-                            </span>
-                          </div>
-                          <div className="h-8 w-px bg-white/10"></div>
-                          <div className="flex flex-col text-right">
-                            <span className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">TRIP A</span>
-                            <span className="text-white">
-                              45.2 <span className="text-[11px] text-gray-400">KM</span>
-                            </span>
-                          </div>
-                        </div>
+              <div className="dna-progress">
+                <div className="full-progress">
+                  <div className="content">
+                    <div className="text">
+                      <span>100%</span>
+                      <span>DNA</span>
+                    </div>
+                    <div className="progresses">
+                      <div className="main-prog">
+                        <div className="separ"></div>
+                        <div className="separ"></div>
+                        <div className="separ"></div>
+                        <div className="separ"></div>
+                        <div className="separ"></div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="absolute -bottom-4 left-4 right-4 h-4 bg-black/40 blur-lg rounded-[50%]"></div>
               </div>
             ) : index === 2 ? (
-              <svg
-                className="w-full h-full max-h-[400px]"
-                viewBox="0 0 400 300"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                key={isActive ? `bom-active-${activeIndex}` : "bom-inactive"}
-              >
-                <defs>
-                  <linearGradient id={`glass-gradient-${suffix}`} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stopColor="#111827" stopOpacity="0.92" />
-                    <stop offset="0.55" stopColor="#0B1A33" stopOpacity="0.95" />
-                    <stop offset="1" stopColor="#0B1220" stopOpacity="0.98" />
-                  </linearGradient>
-                  <filter id={`glow-text-${suffix}`}>
-                    <feGaussianBlur stdDeviation="1" result="coloredBlur" />
-                    <feMerge>
-                      <feMergeNode in="coloredBlur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
+              <div className="w-full font-sans">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
 
-                <path d="M0 40 H400 M0 80 H400 M0 120 H400 M0 160 H400 M0 200 H400 M0 240 H400" stroke="#374151" strokeWidth="1" strokeOpacity="0.2" strokeDasharray="2 2" />
+                  <div className="relative bg-gray-900 border border-gray-800 rounded-xl p-2 pt-10 shadow-2xl">
+                    <div className="absolute left-3 top-3 flex items-center space-x-2 bg-blue-900/30 border border-blue-500/30 px-3 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-[pulse_2s_infinite]"></span>
+                      <span className="text-[10px] text-blue-200 font-bold uppercase tracking-wider">
+                        BOM OPEN
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-1 mb-6">
+                      <div className="space-y-1">
+                        <p className="text-lg font-bold bg-gradient-to-r from-blue-300 to-blue-500 bg-clip-text text-transparent font-nacelle">
+                          Performance Arch.
+                        </p>
+                        <p className="text-xs text-gray-400 font-mono tracking-wide uppercase">
+                          ODM Configuration V2
+                        </p>
+                      </div>
+                    </div>
 
-                <rect x="40" y="30" width="320" height="240" rx="4" fill={`url(#glass-gradient-${suffix})`} stroke="#374151" strokeWidth="1" />
+                    <div className="grid grid-cols-3 gap-2 mb-6 sm:gap-3">
+                      <div className="relative overflow-hidden rounded-lg p-2 sm:p-3 bg-gray-800/50 border border-gray-700/50 group/item hover:border-blue-500/50 transition-colors">
+                        <div className="relative z-10">
+                          <svg className="perf-icon absolute right-2 top-2 w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                          </svg>
+                          <span className="block text-xl font-bold text-gray-200 font-mono">
+                            180<span className="text-xs ml-0.5 text-gray-500">mm</span>
+                          </span>
+                          <span className="text-[10px] text-blue-300 font-medium uppercase tracking-tight">
+                            Re-valved
+                          </span>
+                        </div>
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-blue-400 opacity-50"></div>
+                      </div>
 
-                <rect x="40" y="30" width="320" height="30" rx="4" fill="#1F2937" fillOpacity="0.5" />
-                <text x="60" y="50" fill="#9CA3AF" fontFamily="monospace" fontSize="10" fontWeight="bold">BILL OF MATERIALS (BOM) // CONFIG_V2.4</text>
-                <circle cx="340" cy="45" r="3" fill="#10B981">
-                  {isActive ? (
-                    <animate attributeName="opacity" values="1;0.2;1" dur="2s" begin="1s" repeatCount="indefinite" />
-                  ) : null}
-                </circle>
+                      <div className="relative overflow-hidden rounded-lg p-2 sm:p-3 bg-gray-800/50 border border-gray-700/50 group/item hover:border-blue-500/50 transition-colors">
+                        <div className="relative z-10">
+                          <svg className="perf-icon absolute right-2 top-2 w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                          <span className="block text-xl font-bold text-gray-200 font-mono">
+                            250<span className="text-xs ml-0.5 text-gray-500">Nm</span>
+                          </span>
+                          <span className="text-[10px] text-blue-400 font-medium uppercase tracking-tight">
+                            Hi-Torque
+                          </span>
+                        </div>
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-blue-400 opacity-50"></div>
+                      </div>
 
-                <g transform="translate(60, 80)">
-                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
-                    {isActive ? (
-                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="1.5s" fill="freeze" />
-                    ) : null}
-                  </rect>
-                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
-                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
-                    {isActive ? (
-                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="1.5s" fill="freeze" />
-                    ) : null}
-                  </path>
-                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">CHASSIS_SUSPENSION</text>
-                  <text x="200" y="4" fill="#60A5FA" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ RE-VALVED ]</text>
-                </g>
+                      <div className="relative overflow-hidden rounded-lg p-2 sm:p-3 bg-gray-800/50 border border-gray-700/50 group/item hover:border-blue-500/50 transition-colors">
+                        <div className="relative z-10">
+                          <svg className="perf-icon absolute right-2 top-2 w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                          </svg>
+                          <span className="block text-xl font-bold text-gray-200 font-mono">
+                            -20<span className="text-xs ml-0.5 text-gray-500">°C</span>
+                          </span>
+                          <span className="text-[10px] text-blue-300 font-medium uppercase tracking-tight">
+                            Cold Cell
+                          </span>
+                        </div>
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-blue-400 opacity-50"></div>
+                      </div>
+                    </div>
 
-                <g transform="translate(60, 120)">
-                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
-                    {isActive ? (
-                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="2.5s" fill="freeze" />
-                    ) : null}
-                  </rect>
-                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
-                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
-                    {isActive ? (
-                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="2.5s" fill="freeze" />
-                    ) : null}
-                  </path>
-                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">POWERTRAIN_MOTOR</text>
-                  <text x="200" y="4" fill="#A78BFA" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ HI-TORQUE ]</text>
-                </g>
+                    <div className="space-y-4 mb-6">
+                      <div>
+                        <div className="flex justify-between text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+                          <span>Torque Mapping</span>
+                          <span className="text-white">Aggressive</span>
+                        </div>
+                          <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                            <div className="h-full w-[85%] bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 rounded-full transform origin-left animate-[load-bar_2s_ease-out_forwards]"></div>
+                          </div>
+                      </div>
+                    </div>
 
-                <g transform="translate(60, 160)">
-                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
-                    {isActive ? (
-                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="3.5s" fill="freeze" />
-                    ) : null}
-                  </rect>
-                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
-                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
-                    {isActive ? (
-                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="3.5s" fill="freeze" />
-                    ) : null}
-                  </path>
-                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">ENERGY_CELL_TYPE</text>
-                  <text x="200" y="4" fill="#34D399" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ LFP_COLD ]</text>
-                </g>
+                    <div className="flex items-center justify-between">
+                      <div className="flex -space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center z-30" title="Reinforced Racks">
+                          <span className="text-[10px] text-gray-300 font-bold">R</span>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center z-20" title="Suspension">
+                          <span className="text-[10px] text-gray-300 font-bold">S</span>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center z-10" title="Battery">
+                          <span className="text-[10px] text-gray-300 font-bold">B</span>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-gray-800/50 border border-gray-700/50 flex items-center justify-center z-0">
+                          <span className="text-[9px] text-gray-500">+4</span>
+                        </div>
+                      </div>
 
-                <g transform="translate(60, 200)">
-                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
-                    {isActive ? (
-                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="4.5s" fill="freeze" />
-                    ) : null}
-                  </rect>
-                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
-                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
-                    {isActive ? (
-                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="4.5s" fill="freeze" />
-                    ) : null}
-                  </path>
-                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">LOGIC_MAPPING</text>
-                  <text x="200" y="4" fill="#FBBF24" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ SPORT_V2 ]</text>
-                </g>
-
-                <g transform="translate(60, 240)">
-                  <text x="0" y="0" fill="#6B7280" fontFamily="monospace" fontSize="10">VALIDATING CONFIGURATION...</text>
-                  <rect x="0" y="8" width="280" height="2" fill="#374151" />
-                  <rect x="0" y="8" width="0" height="2" fill="#3B82F6">
-                    {isActive ? (
-                      <animate attributeName="width" values="0;200;280" dur="4s" begin="1s" fill="freeze" />
-                    ) : null}
-                  </rect>
-                </g>
-              </svg>
+                      <button className="px-4 py-1.5 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-gray-500 text-gray-200 text-xs font-medium rounded-lg transition-all">
+                        View Specs
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             ) : index === 3 ? (
-              <div className="w-full max-w-[420px] mx-auto grid grid-cols-2 gap-4 h-full content-center">
+              <div className="w-full grid grid-cols-2 gap-4 h-full content-center">
                 <div className="group relative bg-gradient-to-br from-slate-900 via-blue-950/40 to-slate-900 rounded-xl border border-gray-700 p-4 hover:border-blue-500 transition-colors duration-300">
                   <div className="absolute top-4 right-4 text-blue-500/30 group-hover:text-blue-500 transition-colors">
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1024,6 +960,59 @@ function ProcessTimeline() {
                     &lt;1<span className="text-xs text-gray-500 ml-1 font-sans font-normal">%</span>
                   </div>
                   <div className="mt-2 text-[10px] text-gray-400">Steel Frame Packing</div>
+                </div>
+              </div>
+            ) : index === 4 ? (
+              <div className="w-full p-2 bg-gray-900 rounded-xl border border-gray-700 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <svg className="w-24 h-24 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                  </svg>
+                </div>
+
+                <div className="mb-6 relative z-10">
+                  <h3 className="text-xl font-bold text-white font-nacelle mb-1">Distributor Success Kit</h3>
+                  <p className="text-xs text-gray-400 font-mono uppercase tracking-widest">
+                    Status: ALL SYSTEMS GO
+                  </p>
+                </div>
+
+                <div id="b2b-checklist" className="grid grid-cols-1 gap-2 relative z-10">
+                  <div className="check-item">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="font-medium">White-Label Marketing Kit</span>
+                      <span className="status-tag min-w-[84px] text-center text-[10px] bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30">
+                        READY
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="check-item">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="font-medium">Recommended Spares (RSPL)</span>
+                      <span className="status-tag min-w-[84px] text-center text-[10px] bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30">
+                        VERIFIED
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="check-item">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="font-medium">Rapid RMA Process</span>
+                      <span className="status-tag min-w-[84px] text-center text-[10px] bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30">
+                        ONLINE
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="check-item">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="font-medium">Dealer Service Training</span>
+                      <span className="status-tag min-w-[84px] text-center text-[10px] bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30">
+                        UNLOCKED
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -1184,7 +1173,7 @@ function ProcessTimeline() {
           >
             <div
               ref={dragRef}
-              className="flex cursor-grab select-none transition-transform duration-700 ease-out active:cursor-grabbing"
+              className="process-carousel-track flex cursor-grab select-none transition-transform duration-700 ease-out active:cursor-grabbing"
               style={{
                 transform: `translateX(calc(-${activeIndex} * (var(--panel-width) + var(--carousel-gap)) + ${Math.round(dragOffset)}px))`,
                 gap: "var(--carousel-gap)",
@@ -1206,6 +1195,17 @@ function ProcessTimeline() {
                 ),
               )}
             </div>
+          </div>
+          <div className="mt-12 flex items-center justify-center gap-2">
+            {slides.map((_, index) => (
+              <button
+                key={`carousel-dot-${index}`}
+                type="button"
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`carousel-dot ${activeIndex === index ? "carousel-dot--active" : ""}`}
+              />
+            ))}
           </div>
           </div>
         </div>
@@ -2120,3 +2120,4 @@ export default function HomePage() {
     </>
   );
 }
+
