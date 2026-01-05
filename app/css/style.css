@@ -443,7 +443,55 @@
 .metric-grid {
   display: grid;
   gap: 24px;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  .metric-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 0 7.5vw 8px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 7.5vw;
+    scroll-padding-right: 7.5vw;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+
+  .metric-grid > .group {
+    flex: 0 0 85vw;
+    scroll-snap-align: center;
+  }
+
+  .metric-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .metric-grid {
+    scrollbar-width: none;
+  }
+
+  .metric-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .metric-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(96, 165, 250, 0.35);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+
+  .metric-dot.is-active {
+    background: rgba(96, 165, 250, 0.9);
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.6);
+  }
 }
 
 @media (min-width: 640px) {
@@ -953,6 +1001,12 @@
   transform-origin: bottom center;
 }
 
+@media (max-width: 640px) {
+  .dna-progress .main-prog > .separ {
+    height: calc(var(--prog-size) * 0.6);
+  }
+}
+
 .dna-progress .main-prog > .separ:nth-child(1) {
   --seg-rot: 0deg;
 }
@@ -988,7 +1042,6 @@
   font-size: clamp(72px, 18vw, 100px);
   font-weight: bold;
   line-height: 0.85;
-  animation: dna-float 2.4s ease-in-out infinite;
 }
 
 .dna-progress .text span:last-child {
@@ -1001,6 +1054,28 @@
   0% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
   100% { transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.card__visual[data-anim-ready="true"] .dna-progress .text span:first-child {
+  animation: dna-float 2.4s ease-in-out infinite 1s;
+}
+
+.card__visual[data-anim-ready="true"] .perf-pulse {
+  animation: pulse 2s infinite 1s;
+}
+
+.perf-load-bar {
+  width: 0;
+}
+
+.card__visual[data-anim-ready="true"] .perf-load-bar {
+  animation: load-bar 2s ease-out forwards 1s;
 }
 
 

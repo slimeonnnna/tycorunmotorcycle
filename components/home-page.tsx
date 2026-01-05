@@ -301,6 +301,8 @@ function TrustBadgeStrip() {
 
 // --- Sub-Component: CapacityDashboard ---
 function CapacityDashboard() {
+  const metricScrollRef = useRef<HTMLDivElement>(null);
+  const [metricActiveIndex, setMetricActiveIndex] = useState(0);
   const metrics = [
     {
       value: "200,000+",
@@ -404,16 +406,71 @@ function CapacityDashboard() {
       ),
     },
   ];
+  const metricCount = metrics.length;
+
+  useEffect(() => {
+    const container = metricScrollRef.current;
+    if (!container) {
+      return;
+    }
+
+    let rafId = 0;
+    const updateActive = () => {
+      const items = Array.from(
+        container.querySelectorAll<HTMLElement>(".metric-item")
+      );
+      if (!items.length) {
+        return;
+      }
+
+      const center = container.scrollLeft + container.clientWidth / 2;
+      let nextIndex = 0;
+      let closest = Infinity;
+      items.forEach((item, index) => {
+        const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+        const distance = Math.abs(itemCenter - center);
+        if (distance < closest) {
+          closest = distance;
+          nextIndex = index;
+        }
+      });
+
+      setMetricActiveIndex(nextIndex);
+    };
+
+    const handleScroll = () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+      rafId = requestAnimationFrame(updateActive);
+    };
+
+    const handleResize = () => {
+      updateActive();
+    };
+
+    updateActive();
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [metricCount]);
 
   return (
-    <div className="border-gray-800">
-      <div className="mx-auto max-w-6xl">
+    <div className="border-gray-800 -mx-4 sm:mx-0">
+      <div className="mx-auto w-full max-w-none sm:max-w-6xl">
         <div className="py-10 md:py-20">
-          <div className="metric-grid">
+          <div className="metric-grid" ref={metricScrollRef}>
             {metrics.map((metric) => (
               <div
                 key={metric.title}
-                className="group cursor-pointer transform-gpu transition-transform duration-500 hover:-rotate-1 hover:scale-105"
+                className="metric-item group cursor-pointer transform-gpu transition-transform duration-500 hover:-rotate-1 hover:scale-105"
               >
                 <div className="relative z-10 w-full overflow-hidden rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 via-blue-900/10 to-blue-500/5 text-white shadow-2xl backdrop-blur-2xl duration-700 hover:border-blue-300/40 hover:bg-blue-500/15 hover:shadow-3xl hover:shadow-blue-500/20">
                     <div className="absolute inset-0 z-0 overflow-hidden">
@@ -454,17 +511,6 @@ function CapacityDashboard() {
 
                       <div className="mt-6 h-0.5 w-1/3 origin-center rounded-full bg-gradient-to-r from-transparent via-blue-500/70 to-transparent transition-transform duration-500 group-hover:animate-pulse group-hover:scale-x-[1.5] group-hover:scale-y-[2]" />
 
-                      <div className="mt-4 flex space-x-2 opacity-60 transition-opacity duration-300 group-hover:opacity-100">
-                        <div className="h-2 w-2 rounded-full bg-blue-400/80 group-hover:animate-bounce" />
-                        <div
-                          style={{ animationDelay: "0.1s" }}
-                          className="h-2 w-2 rounded-full bg-blue-400/80 group-hover:animate-bounce"
-                        />
-                        <div
-                          style={{ animationDelay: "0.2s" }}
-                          className="h-2 w-2 rounded-full bg-blue-400/80 group-hover:animate-bounce"
-                        />
-                      </div>
                     </div>
                   </div>
 
@@ -472,6 +518,18 @@ function CapacityDashboard() {
                   <div className="absolute bottom-0 right-0 h-20 w-20 rounded-tl-3xl bg-gradient-to-tl from-blue-500/15 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </div>
               </div>
+            ))}
+          </div>
+          <div className="metric-dots" aria-hidden="true">
+            {metrics.map((metric, index) => (
+              <span
+                key={metric.title}
+                className={
+                  index === metricActiveIndex
+                    ? "metric-dot is-active"
+                    : "metric-dot"
+                }
+              ></span>
             ))}
           </div>
         </div>
@@ -484,6 +542,8 @@ function CapacityDashboard() {
 function ProcessTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [clockTime, setClockTime] = useState("");
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const slides = [
     {
       kicker: "Define Your Path",
@@ -567,6 +627,22 @@ function ProcessTimeline() {
     const intervalId = window.setInterval(updateTime, 60_000);
     return () => window.clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (!("IntersectionObserver" in window)) {
+      setIsInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
   const dragRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
@@ -581,6 +657,16 @@ function ProcessTimeline() {
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    const target = event.target as HTMLElement;
+    if (target.closest("a,button")) return;
+    const slideEl = target.closest<HTMLElement>("[data-slide-index]");
+    if (slideEl) {
+      const slideIndex = Number(slideEl.dataset.slideIndex);
+      if (!Number.isNaN(slideIndex) && slideIndex !== activeIndex) {
+        goToSlide(slideIndex);
+        return;
+      }
+    }
     isDragging.current = true;
     dragTriggered.current = false;
     dragStartX.current = event.clientX;
@@ -632,6 +718,7 @@ function ProcessTimeline() {
     isActive: boolean,
     key?: string,
   ) => {
+    const isAnimReady = isActive && isInView;
     const flowId = `main-flow-${suffix}`;
     const glowId = `glow-${suffix}`;
     const hqGradientId = `hq-gradient-${suffix}`;
@@ -716,6 +803,7 @@ function ProcessTimeline() {
         className="card card--wide card--split relative flex-none"
         style={{ flex: "0 0 var(--panel-width)" }}
         data-active={isActive ? "true" : "false"}
+        data-slide-index={index}
       >
         <div
           className="process-flow pointer-events-none absolute inset-0"
@@ -772,6 +860,7 @@ function ProcessTimeline() {
           <div
             className={`card__visual ${index === 2 ? "card__visual--bom" : ""}`}
             aria-hidden="true"
+            data-anim-ready={isAnimReady ? "true" : "false"}
           >
             {index === 1 ? (
               <div className="dna-progress">
@@ -800,7 +889,7 @@ function ProcessTimeline() {
 
                   <div className="relative bg-gray-900 border border-gray-800 rounded-xl p-2 pt-10 shadow-2xl">
                     <div className="absolute left-3 top-3 flex items-center space-x-2 bg-blue-900/30 border border-blue-500/30 px-3 py-1 rounded-full">
-                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-[pulse_2s_infinite]"></span>
+                      <span className="perf-pulse w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
                       <span className="text-[10px] text-blue-200 font-bold uppercase tracking-wider">
                         BOM OPEN
                       </span>
@@ -870,7 +959,7 @@ function ProcessTimeline() {
                           <span className="text-white">Aggressive</span>
                         </div>
                           <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
-                            <div className="h-full w-[85%] bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 rounded-full transform origin-left animate-[load-bar_2s_ease-out_forwards]"></div>
+                            <div className="perf-load-bar h-full w-[85%] bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 rounded-full transform origin-left"></div>
                           </div>
                       </div>
                     </div>
@@ -963,7 +1052,9 @@ function ProcessTimeline() {
                 </div>
               </div>
             ) : index === 4 ? (
-              <div className="w-full p-2 bg-gray-900 rounded-xl border border-gray-700 shadow-2xl relative overflow-hidden group">
+              <div className="w-full p-2 bg-gray-900 rounded-xl border border-gray-700 shadow-[0_0_18px_rgba(59,130,246,0.2)] hover:shadow-[0_0_26px_rgba(59,130,246,0.35)] transition-shadow relative overflow-hidden group">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_55%)]"></div>
+                <div className="pointer-events-none absolute inset-0 opacity-15 [background:linear-gradient(90deg,rgba(148,163,184,0.15)_1px,transparent_1px),linear-gradient(rgba(148,163,184,0.12)_1px,transparent_1px)] [background-size:28px_28px]"></div>
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <svg className="w-24 h-24 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
@@ -1045,8 +1136,8 @@ function ProcessTimeline() {
                 <path d="M0 40 H400 M0 120 H400 M0 200 H400 M0 280 H400 M0 360 H400" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="4 4" />
 
                 <circle cx="40" cy="200" r="12" fill="#1D4ED8" stroke="#3B82F6" strokeWidth="2">
-                  {isActive ? (
-                    <animate attributeName="r" values="12;14;12" dur="3s" repeatCount="indefinite" />
+                  {isAnimReady ? (
+                    <animate attributeName="r" values="12;14;12" dur="3s" begin="1s" repeatCount="indefinite" />
                   ) : null}
                 </circle>
                 <text x="40" y="252" fill={`url(#${hqGradientId})`} fontSize="20" fontFamily="monospace" fontWeight="bold" textAnchor="middle">TYCORUN HQ</text>
@@ -1067,19 +1158,19 @@ function ProcessTimeline() {
                 <circle cx="340" cy="320" r="6" fill="#1E3A8A" stroke="#FBBF24" strokeWidth="2" />
                 <text x="340" y="352" fill="#E5E7EB" fontSize="20" textAnchor="middle">Distribution</text>
 
-                {isActive ? (
+                {isAnimReady ? (
                   <>
                     <circle r="3" fill="white">
-                      <animateMotion dur="2s" repeatCount="indefinite" path="M52 200 C 120 200, 150 80, 280 80 H 340" />
+                      <animateMotion dur="2s" begin="1s" repeatCount="indefinite" path="M52 200 C 120 200, 150 80, 280 80 H 340" />
                     </circle>
                     <circle r="3" fill="white">
-                      <animateMotion dur="2.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 160, 280 160 H 340" />
+                      <animateMotion dur="2.5s" begin="1s" repeatCount="indefinite" path="M52 200 C 120 200, 150 160, 280 160 H 340" />
                     </circle>
                     <circle r="3" fill="white">
-                      <animateMotion dur="3s" repeatCount="indefinite" path="M52 200 C 120 200, 150 240, 280 240 H 340" />
+                      <animateMotion dur="3s" begin="1s" repeatCount="indefinite" path="M52 200 C 120 200, 150 240, 280 240 H 340" />
                     </circle>
                     <circle r="3" fill="white">
-                      <animateMotion dur="3.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 320, 280 320 H 340" />
+                      <animateMotion dur="3.5s" begin="1s" repeatCount="indefinite" path="M52 200 C 120 200, 150 320, 280 320 H 340" />
                     </circle>
                   </>
                 ) : null}
@@ -1092,7 +1183,7 @@ function ProcessTimeline() {
   };
 
   return (
-    <section className="grid-wrapper process-timeline relative overflow-hidden">
+    <section className="grid-wrapper process-timeline relative overflow-hidden" ref={sectionRef}>
       <div
         className="grid-background pointer-events-none absolute inset-0"
         aria-hidden="true"
