@@ -149,7 +149,11 @@ function HeroCard() {
 // --- Sub-Component: Hero ---
 function Hero() {
   return (
-    <section className="hero-grid-bg relative overflow-hidden">
+    <section
+      className="hero-grid-bg relative overflow-hidden"
+      data-animate-on-view
+      data-in-view="false"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="relative pb-12 pt-32 md:pb-20 md:pt-40">
           <div className="pb-12 text-center md:pb-20">
@@ -479,74 +483,627 @@ function CapacityDashboard() {
 // --- Sub-Component: ProcessTimeline ---
 function ProcessTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const steps = [
+  const [clockTime, setClockTime] = useState("");
+  const slides = [
     {
-      step: "01",
-      label: "Inquiry",
-      title: "Specs Confirmation",
-      overviewTime: "24 hours",
-      detailTime: "24 hours",
-      description:
-        "We review your requirements, confirm specs, and align on target markets and compliance needs.",
-      visual: {
-        title: "Specs Intake",
-        tags: ["BOM", "Compliance", "Target Market"],
-      },
+      kicker: "Define Your Path",
+      heading: "One Factory. Four Ways to Scale.",
+      paragraph:
+        "We don't force a take-it-or-leave-it catalog. Select the cooperation tier that best fits your engineering capabilities and target market maturity.",
+      items: [
+        "Private Label & Visual OEM",
+        "ODM & Architecture Tuning",
+        "SKD/CKD Tariff Optimization",
+        "Regional Sales & Support",
+      ],
     },
     {
-      step: "02",
-      label: "Sample",
-      title: "Prototype Development",
-      overviewTime: "15 days",
-      detailTime: "15 days",
-      description:
-        "Prototype build and validation with iterative feedback to lock in performance and fit.",
-      visual: {
-        title: "Prototype Lab",
-        tags: ["Bench Test", "Road Test", "Revisions"],
-      },
+      kicker: "Visual Identity",
+      heading: "Private Label & Visual OEM",
+      paragraph:
+        "Don't just sticker it. We integrate your brand DNA into the hardware, from laser-etched VINs to custom dashboard startup screens and unboxing experiences.",
+      items: [
+        "Custom Dashboard UI/UX",
+        "Laser-Etched Components",
+        "Localized User Manuals",
+        "Exclusive Color Schemes",
+      ],
     },
     {
-      step: "03",
-      label: "Contract",
-      title: "Agreement & Deposit",
-      overviewTime: "30% deposit",
-      detailTime: "30% deposit",
-      description:
-        "Final agreement, production plan, and deposit confirmation to trigger tooling and scheduling.",
-      visual: {
-        title: "Contract Gate",
-        tags: ["Schedule", "Tooling", "Deposit"],
-      },
+      kicker: "Architecture Tuning",
+      heading: "ODM & Performance Configs",
+      paragraph:
+        "Generic specs fail in niche markets. We open our BOM to fine-tune suspension valves, motor windings, and battery chemistry for your specific terrain.",
+      items: [
+        "Suspension Re-valving",
+        "High-Torque Windings",
+        "Reinforced Cargo Racks",
+        "Climate-Specific Cells",
+      ],
     },
     {
-      step: "04",
-      label: "Delivery",
-      title: "Mass Production & Shipping",
-      overviewTime: "35–45 days",
-      detailTime: "35–45 days",
-      description:
-        "Mass production, QC checkpoints, and export-ready shipping documentation.",
-      visual: {
-        title: "Shipment Panel",
-        tags: ["QC", "Packing", "Export Docs"],
-      },
+      kicker: "Tariff Engineering",
+      heading: "Cost Optimization (SKD/CKD)",
+      paragraph:
+        "Transition from importer to assembler. We provide container nesting plans and step-by-step SOPs to drastically reduce import duties and shipping costs.",
+      items: [
+        "High-Density Loading",
+        "Step-by-Step SOP Manuals",
+        "Engineer On-Site Support",
+        "Local Tooling Guides",
+      ],
+    },
+    {
+      kicker: "Distributor Success",
+      heading: "Regional Sales & Service",
+      paragraph:
+        "Solve the after-sales anxiety. We empower distributors with studio-quality marketing assets and data-driven spare parts lists (RSPL) to ensure fleet uptime.",
+      items: [
+        "White-Label Marketing Kit",
+        "Recommended Spares (RSPL)",
+        "Rapid RMA Process",
+        "Dealer Service Training",
+      ],
     },
   ];
 
-  const totalSlides = steps.length + 1;
-  const isOverview = activeIndex === 0;
+  const totalSlides = slides.length;
   const goToSlide = (index: number) => {
     const safeIndex = Math.max(0, Math.min(totalSlides - 1, index));
     setActiveIndex(safeIndex);
   };
-  const jumpToStep = (stepIndex: number) => goToSlide(stepIndex + 1);
-  const backToOverview = () => goToSlide(0);
   const nextSlide = () => goToSlide(activeIndex + 1);
   const prevSlide = () => goToSlide(activeIndex - 1);
 
+  useEffect(() => {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+    const updateTime = () => {
+      setClockTime(formatter.format(new Date()));
+    };
+    updateTime();
+    const intervalId = window.setInterval(updateTime, 60_000);
+    return () => window.clearInterval(intervalId);
+  }, []);
+  const dragRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragThreshold = 12;
+  const dragTriggered = useRef(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const getEdgeOffset = () => {
+    const containerWidth = dragRef.current?.getBoundingClientRect().width ?? 0;
+    if (!containerWidth || typeof window === "undefined") return 0;
+    return Math.max(0, (window.innerWidth - containerWidth) / 2);
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    isDragging.current = true;
+    dragTriggered.current = false;
+    dragStartX.current = event.clientX;
+    dragRef.current?.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current) return;
+    const liveDeltaX = event.clientX - dragStartX.current;
+    const isAtStart = activeIndex === 0;
+    const isAtEnd = activeIndex === totalSlides - 1;
+    const edgeOffset = getEdgeOffset();
+    let clampedDeltaX = liveDeltaX;
+    if (isAtStart && liveDeltaX > 0) {
+      clampedDeltaX = Math.min(liveDeltaX, edgeOffset);
+    } else if (isAtEnd && liveDeltaX < 0) {
+      clampedDeltaX = Math.max(liveDeltaX, -edgeOffset);
+    }
+    setDragOffset(clampedDeltaX);
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current) return;
+    const deltaX = dragOffset;
+    const isAtStart = activeIndex === 0;
+    const isAtEnd = activeIndex === totalSlides - 1;
+    isDragging.current = false;
+    dragTriggered.current = false;
+    setDragOffset(0);
+    if (Math.abs(deltaX) >= dragThreshold) {
+      if (deltaX > 0 && !isAtStart) {
+        prevSlide();
+      } else if (deltaX < 0 && !isAtEnd) {
+        nextSlide();
+      }
+    }
+    dragRef.current?.releasePointerCapture(event.pointerId);
+  };
+
+  const renderOverviewSlide = (
+    slide: {
+      kicker: string;
+      heading: string;
+      paragraph: string;
+      items: string[];
+    },
+    suffix: string,
+    index: number,
+    isActive: boolean,
+    key?: string,
+  ) => {
+    const flowId = `main-flow-${suffix}`;
+    const glowId = `glow-${suffix}`;
+    const hqGradientId = `hq-gradient-${suffix}`;
+    const kickerIcon =
+      index === 1 ? (
+        <svg
+          className="card_kicker__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <rect x="5" y="4.5" width="14" height="15" rx="3" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        </svg>
+      ) : index === 2 ? (
+        <svg
+          className="card_kicker__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M19.4 4.6l-2.1 2.1M6.7 17.3l-2.1 2.1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        </svg>
+      ) : index === 3 ? (
+        <svg
+          className="card_kicker__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 9l8-4 8 4v8l-8 4-8-4V9z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M4 9l8 4 8-4"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 9.5a3 3 0 1 0 0 .01M12 6.8v-1.6M12 13.2v1.6M9.2 9.5H7.6M16.4 9.5h-1.6M10.1 7.6l-1.1-1.1M14.9 11.4l1.1 1.1M14.9 7.6l1.1-1.1M10.1 11.4l-1.1 1.1"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+        </svg>
+      ) : (
+        <svg
+          className="card_kicker__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 16l6-6 4 4 6-8"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M17.5 6H20v2.5"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    return (
+      <section
+        key={key}
+        className="card card--wide card--split relative flex-none"
+        style={{ flex: "0 0 var(--panel-width)" }}
+        data-active={isActive ? "true" : "false"}
+      >
+        <div
+          className="process-flow pointer-events-none absolute inset-0"
+          aria-hidden="true"
+        />
+        <div className="card__border"></div>
+        <div className="card__body">
+          <div className="card__left">
+            <div className="card_title__container">
+              <div className="card_kicker">
+                {kickerIcon}
+                <span className="card_title">{slide.kicker}</span>
+              </div>
+              <h3
+                className={`card_heading ${
+                  isActive ? "animate-[gradient_6s_linear_infinite]" : ""
+                } bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text text-transparent`}
+              >
+                {slide.heading}
+              </h3>
+              <p className="card_paragraph">{slide.paragraph}</p>
+            </div>
+            <ul className="card__list">
+              {slide.items.map((item) => (
+                <li key={item} className="card__list_item">
+                  <span className="check">
+                    <svg
+                      className="check_svg"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+                        fillRule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  <span className="list_text">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/contact"
+              className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+            >
+              <span className="relative z-20">Contact Us</span>
+              <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6" />
+              <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6" />
+            </Link>
+          </div>
+          <div className="card__visual" aria-hidden="true">
+            {index === 1 ? (
+              <div className="dashboard-panel relative w-full max-w-[400px] mx-auto perspective-1000 group cursor-default select-none">
+                <div
+                  className={`relative bg-gray-800 rounded-[2rem] p-3 shadow-2xl border-t border-gray-700 border-b-4 border-b-gray-900 transition-transform duration-500 ${
+                    isActive ? "group-hover:rotate-x-2" : ""
+                  }`}
+                >
+                  <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-12 h-1 bg-black/30 rounded-full"></div>
+                  <div className="relative h-[220px] bg-gray-950 rounded-2xl overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,1)] border border-gray-800">
+                    <div
+                      className="absolute inset-0 opacity-20"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(#374151 1px, transparent 1px), linear-gradient(90deg, #374151 1px, transparent 1px)",
+                        backgroundSize: "20px 20px",
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent z-20 pointer-events-none"></div>
+                    <div className="monitor-scanline absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/10 to-transparent z-10 w-full h-[20%]"></div>
+                    <div className="relative z-10 flex flex-col justify-between h-full p-6 font-mono">
+                      <div className="flex justify-between items-center text-[10px] text-gray-500 uppercase tracking-widest">
+                        <div className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                          <span>Ready</span>
+                        </div>
+                        <div>{clockTime || "—"}</div>
+                        <div className="flex items-center gap-1">
+                          <span>BT</span>
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="flex items-end justify-between mt-2">
+                        <div className="text-center">
+                          <div className="animate-speed-css text-4xl font-bold text-white tabular-nums tracking-tighter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
+                          <div className="text-xs text-gray-400 font-bold">KM/H</div>
+                        </div>
+                        <div className="mb-2 text-center">
+                          <div className="relative inline-block">
+                            <div className="absolute -inset-4 bg-blue-500/20 blur-xl rounded-full animate-pulse"></div>
+                            <div className="relative text-blue-400 font-black text-xl tracking-widest uppercase border border-blue-500/30 px-3 py-1 rounded bg-blue-900/10 backdrop-blur-sm">
+                              YOUR BRAND
+                            </div>
+                          </div>
+                          <div className="text-[9px] text-blue-500/60 mt-1 uppercase tracking-[0.2em]">System Active</div>
+                        </div>
+                        <div className="text-right flex flex-col items-end">
+                          <div className="relative mb-1">
+                            <svg className="w-8 h-4 text-gray-600" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="1" y="1" width="28" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                              <path d="M31 5V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                            <div className="absolute top-[3px] left-[3px] h-[10px] w-[24px] rounded-[1px] bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.6)] animate-pulse"></div>
+                          </div>
+                          <div className="flex items-baseline mb-1 -mt-1">
+                            <div className="text-3xl font-bold text-white leading-none tracking-tight">98</div>
+                            <div className="text-sm font-bold text-gray-500 ml-0.5">%</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-auto rounded-lg border border-white/10 bg-white/5 px-3 py-2 shadow-lg backdrop-blur-md">
+                        <div className="flex justify-between items-center text-sm font-mono text-gray-300">
+                          <div className="flex flex-col">
+                            <span className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">ODO</span>
+                            <span className="text-white">
+                              01,248 <span className="text-[11px] text-gray-400">KM</span>
+                            </span>
+                          </div>
+                          <div className="h-8 w-px bg-white/10"></div>
+                          <div className="flex flex-col text-right">
+                            <span className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">TRIP A</span>
+                            <span className="text-white">
+                              45.2 <span className="text-[11px] text-gray-400">KM</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute -bottom-4 left-4 right-4 h-4 bg-black/40 blur-lg rounded-[50%]"></div>
+              </div>
+            ) : index === 2 ? (
+              <svg
+                className="w-full h-full max-h-[400px]"
+                viewBox="0 0 400 300"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                key={isActive ? `bom-active-${activeIndex}` : "bom-inactive"}
+              >
+                <defs>
+                  <linearGradient id={`glass-gradient-${suffix}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#111827" stopOpacity="0.92" />
+                    <stop offset="0.55" stopColor="#0B1A33" stopOpacity="0.95" />
+                    <stop offset="1" stopColor="#0B1220" stopOpacity="0.98" />
+                  </linearGradient>
+                  <filter id={`glow-text-${suffix}`}>
+                    <feGaussianBlur stdDeviation="1" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                <path d="M0 40 H400 M0 80 H400 M0 120 H400 M0 160 H400 M0 200 H400 M0 240 H400" stroke="#374151" strokeWidth="1" strokeOpacity="0.2" strokeDasharray="2 2" />
+
+                <rect x="40" y="30" width="320" height="240" rx="4" fill={`url(#glass-gradient-${suffix})`} stroke="#374151" strokeWidth="1" />
+
+                <rect x="40" y="30" width="320" height="30" rx="4" fill="#1F2937" fillOpacity="0.5" />
+                <text x="60" y="50" fill="#9CA3AF" fontFamily="monospace" fontSize="10" fontWeight="bold">BILL OF MATERIALS (BOM) // CONFIG_V2.4</text>
+                <circle cx="340" cy="45" r="3" fill="#10B981">
+                  {isActive ? (
+                    <animate attributeName="opacity" values="1;0.2;1" dur="2s" begin="1s" repeatCount="indefinite" />
+                  ) : null}
+                </circle>
+
+                <g transform="translate(60, 80)">
+                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
+                    {isActive ? (
+                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="1.5s" fill="freeze" />
+                    ) : null}
+                  </rect>
+                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
+                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
+                    {isActive ? (
+                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="1.5s" fill="freeze" />
+                    ) : null}
+                  </path>
+                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">CHASSIS_SUSPENSION</text>
+                  <text x="200" y="4" fill="#60A5FA" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ RE-VALVED ]</text>
+                </g>
+
+                <g transform="translate(60, 120)">
+                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
+                    {isActive ? (
+                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="2.5s" fill="freeze" />
+                    ) : null}
+                  </rect>
+                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
+                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
+                    {isActive ? (
+                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="2.5s" fill="freeze" />
+                    ) : null}
+                  </path>
+                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">POWERTRAIN_MOTOR</text>
+                  <text x="200" y="4" fill="#A78BFA" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ HI-TORQUE ]</text>
+                </g>
+
+                <g transform="translate(60, 160)">
+                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
+                    {isActive ? (
+                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="3.5s" fill="freeze" />
+                    ) : null}
+                  </rect>
+                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
+                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
+                    {isActive ? (
+                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="3.5s" fill="freeze" />
+                    ) : null}
+                  </path>
+                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">ENERGY_CELL_TYPE</text>
+                  <text x="200" y="4" fill="#34D399" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ LFP_COLD ]</text>
+                </g>
+
+                <g transform="translate(60, 200)">
+                  <rect x="-10" y="-12" width="300" height="24" rx="2" fill="#3B82F6" fillOpacity="0.1" opacity="0">
+                    {isActive ? (
+                      <animate attributeName="opacity" values="0;1;1" dur="4s" begin="4.5s" fill="freeze" />
+                    ) : null}
+                  </rect>
+                  <rect x="0" y="-5" width="10" height="10" stroke="#3B82F6" strokeWidth="1" fill="none" />
+                  <path d="M2 -1 L 5 2 L 12 -5" stroke="#3B82F6" strokeWidth="2" strokeDasharray="20" strokeDashoffset="20">
+                    {isActive ? (
+                      <animate attributeName="stroke-dashoffset" values="20;0" dur="0.5s" begin="4.5s" fill="freeze" />
+                    ) : null}
+                  </path>
+                  <text x="20" y="4" fill="#E5E7EB" fontFamily="monospace" fontSize="12">LOGIC_MAPPING</text>
+                  <text x="200" y="4" fill="#FBBF24" fontFamily="monospace" fontSize="10" fontWeight="bold" filter={`url(#glow-text-${suffix})`}>[ SPORT_V2 ]</text>
+                </g>
+
+                <g transform="translate(60, 240)">
+                  <text x="0" y="0" fill="#6B7280" fontFamily="monospace" fontSize="10">VALIDATING CONFIGURATION...</text>
+                  <rect x="0" y="8" width="280" height="2" fill="#374151" />
+                  <rect x="0" y="8" width="0" height="2" fill="#3B82F6">
+                    {isActive ? (
+                      <animate attributeName="width" values="0;200;280" dur="4s" begin="1s" fill="freeze" />
+                    ) : null}
+                  </rect>
+                </g>
+              </svg>
+            ) : index === 3 ? (
+              <div className="w-full max-w-[420px] mx-auto grid grid-cols-2 gap-4 h-full content-center">
+                <div className="group relative bg-gradient-to-br from-slate-900 via-blue-950/40 to-slate-900 rounded-xl border border-gray-700 p-4 hover:border-blue-500 transition-colors duration-300">
+                  <div className="absolute top-4 right-4 text-blue-500/30 group-hover:text-blue-500 transition-colors">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                  </div>
+                  <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-2">Loading Density</div>
+                  <div className="text-3xl font-bold text-white font-mono flex items-baseline">
+                    52<span className="text-xs text-gray-500 ml-1 font-sans font-normal">Units</span>
+                  </div>
+                  <div className="mt-2 flex items-center text-[10px] text-blue-400">
+                    <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    <span>+115% vs CBU</span>
+                  </div>
+                </div>
+
+                <div className="group relative bg-gradient-to-br from-slate-900 via-emerald-950/30 to-slate-900 rounded-xl border border-gray-700 p-4 hover:border-green-500 transition-colors duration-300">
+                  <div className="absolute top-4 right-4 text-green-500/30 group-hover:text-green-500 transition-colors">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-2">Duty Savings</div>
+                  <div className="text-3xl font-bold text-white font-mono flex items-baseline">
+                    -25<span className="text-xs text-gray-500 ml-1 font-sans font-normal">%</span>
+                  </div>
+                  <div className="mt-2 flex items-center text-[10px] text-green-400">
+                    <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    <span>Avg. Reduction</span>
+                  </div>
+                </div>
+
+                <div className="group relative bg-gradient-to-br from-slate-900 via-purple-950/30 to-slate-900 rounded-xl border border-gray-700 p-4 hover:border-purple-500 transition-colors duration-300">
+                  <div className="absolute top-4 right-4 text-purple-500/30 group-hover:text-purple-500 transition-colors">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                  </div>
+                  <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-2">Tech Transfer</div>
+                  <div className="text-3xl font-bold text-white font-mono flex items-baseline">
+                    SOP<span className="text-xs text-gray-500 ml-1 font-sans font-normal">v4</span>
+                  </div>
+                  <div className="mt-2 text-[10px] text-purple-400">Step-by-Step Video Guides</div>
+                </div>
+
+                <div className="group relative bg-gradient-to-br from-slate-900 via-slate-800/60 to-slate-900 rounded-xl border border-gray-700 p-4 hover:border-gray-400 transition-colors duration-300">
+                  <div className="absolute top-4 right-4 text-gray-500/30 group-hover:text-gray-400 transition-colors">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-2">Damage Rate</div>
+                  <div className="text-3xl font-bold text-white font-mono flex items-baseline">
+                    &lt;1<span className="text-xs text-gray-500 ml-1 font-sans font-normal">%</span>
+                  </div>
+                  <div className="mt-2 text-[10px] text-gray-400">Steel Frame Packing</div>
+                </div>
+              </div>
+            ) : (
+              <svg
+                className="card__visual-svg w-full h-full max-h-[400px] overflow-visible text-gray-700"
+                viewBox="0 0 400 420"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient id={flowId} x1="0" y1="200" x2="400" y2="200" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stopColor="#3B82F6" stopOpacity="0" />
+                    <stop offset="0.5" stopColor="#3B82F6" />
+                    <stop offset="1" stopColor="#60A5FA" />
+                  </linearGradient>
+                  <filter id={glowId}>
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <linearGradient id={hqGradientId} x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stopColor="#93C5FD" />
+                    <stop offset="1" stopColor="#3B82F6" />
+                  </linearGradient>
+                </defs>
+
+                <path d="M40 0 V400 M120 0 V400 M200 0 V400 M280 0 V400 M360 0 V400" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="4 4" />
+                <path d="M0 40 H400 M0 120 H400 M0 200 H400 M0 280 H400 M0 360 H400" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="4 4" />
+
+                <circle cx="40" cy="200" r="12" fill="#1D4ED8" stroke="#3B82F6" strokeWidth="2">
+                  {isActive ? (
+                    <animate attributeName="r" values="12;14;12" dur="3s" repeatCount="indefinite" />
+                  ) : null}
+                </circle>
+                <text x="40" y="252" fill={`url(#${hqGradientId})`} fontSize="20" fontFamily="monospace" fontWeight="bold" textAnchor="middle">TYCORUN HQ</text>
+
+                <path d="M52 200 C 120 200, 150 80, 280 80 H 340" stroke={`url(#${flowId})`} strokeWidth="2" fill="none" filter={`url(#${glowId})`} />
+                <circle cx="340" cy="80" r="6" fill="#1E3A8A" stroke="#60A5FA" strokeWidth="2" />
+                <text x="340" y="108" fill="#E5E7EB" fontSize="20" textAnchor="middle">Private Label</text>
+
+                <path d="M52 200 C 120 200, 150 160, 280 160 H 340" stroke={`url(#${flowId})`} strokeWidth="2" fill="none" opacity="0.8" />
+                <circle cx="340" cy="160" r="6" fill="#1E3A8A" stroke="#A78BFA" strokeWidth="2" />
+                <text x="340" y="192" fill="#E5E7EB" fontSize="20" textAnchor="middle">ODM Tuning</text>
+
+                <path d="M52 200 C 120 200, 150 240, 280 240 H 340" stroke={`url(#${flowId})`} strokeWidth="2" fill="none" opacity="0.8" />
+                <circle cx="340" cy="240" r="6" fill="#1E3A8A" stroke="#34D399" strokeWidth="2" />
+                <text x="340" y="272" fill="#E5E7EB" fontSize="20" textAnchor="middle">SKD/CKD</text>
+
+                <path d="M52 200 C 120 200, 150 320, 280 320 H 340" stroke={`url(#${flowId})`} strokeWidth="2" fill="none" opacity="0.6" />
+                <circle cx="340" cy="320" r="6" fill="#1E3A8A" stroke="#FBBF24" strokeWidth="2" />
+                <text x="340" y="352" fill="#E5E7EB" fontSize="20" textAnchor="middle">Distribution</text>
+
+                {isActive ? (
+                  <>
+                    <circle r="3" fill="white">
+                      <animateMotion dur="2s" repeatCount="indefinite" path="M52 200 C 120 200, 150 80, 280 80 H 340" />
+                    </circle>
+                    <circle r="3" fill="white">
+                      <animateMotion dur="2.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 160, 280 160 H 340" />
+                    </circle>
+                    <circle r="3" fill="white">
+                      <animateMotion dur="3s" repeatCount="indefinite" path="M52 200 C 120 200, 150 240, 280 240 H 340" />
+                    </circle>
+                    <circle r="3" fill="white">
+                      <animateMotion dur="3.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 320, 280 320 H 340" />
+                    </circle>
+                  </>
+                ) : null}
+              </svg>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   return (
-    <section className="grid-wrapper relative overflow-hidden">
+    <section className="grid-wrapper process-timeline relative overflow-hidden">
       <div
         className="grid-background pointer-events-none absolute inset-0"
         aria-hidden="true"
@@ -620,267 +1177,36 @@ function ProcessTimeline() {
             className="relative mx-auto w-full max-w-none overflow-visible"
             style={
               {
-                "--carousel-gap": "16px",
+                "--carousel-gap": "25px",
                 "--panel-width": "100%",
               } as React.CSSProperties
             }
           >
             <div
-              className="flex transition-transform duration-500 ease-out"
+              ref={dragRef}
+              className="flex cursor-grab select-none transition-transform duration-700 ease-out active:cursor-grabbing"
               style={{
-                transform: `translateX(calc(-${activeIndex} * (var(--panel-width) + var(--carousel-gap))))`,
+                transform: `translateX(calc(-${activeIndex} * (var(--panel-width) + var(--carousel-gap)) + ${Math.round(dragOffset)}px))`,
                 gap: "var(--carousel-gap)",
                 paddingRight: "var(--peek-space)",
               }}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
+              onPointerLeave={handlePointerUp}
             >
-              <section
-                className="card card--wide card--split relative flex-none"
-                style={{ flex: "0 0 var(--panel-width)" }}
-              >
-                <div
-                  className="process-flow pointer-events-none absolute inset-0"
-                  aria-hidden="true"
-                />
-                <div className="card__border"></div>
-                <div className="card__body">
-                  <div className="card__left">
-                    <div className="card_title__container">
-                      <div className="card_kicker">
-                        <svg
-                          className="card_kicker__icon"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M4 16l6-6 4 4 6-8"
-                            stroke="currentColor"
-                            strokeWidth="1.6"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M17.5 6H20v2.5"
-                            stroke="currentColor"
-                            strokeWidth="1.6"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        <span className="card_title">Define Your Path</span>
-                      </div>
-                      <h3 className="card_heading animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text text-transparent">
-                        One Factory. Four Ways to Scale.
-                      </h3>
-                      <p className="card_paragraph">
-                        We don't force a "take it or leave it" catalog. Select the
-                        cooperation tier that best fits your engineering capabilities
-                        and target market maturity.
-                      </p>
-                    </div>
-                    <ul className="card__list">
-                      {[
-                        "Private Label & Visual OEM",
-                        "ODM & Architecture Tuning",
-                        "SKD/CKD Tariff Optimization",
-                        "Regional Sales & Support",
-                      ].map((item) => (
-                        <li key={item} className="card__list_item">
-                          <span className="check">
-                            <svg
-                              className="check_svg"
-                              fill="currentColor"
-                              viewBox="0 0 16 16"
-                              xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true"
-                            >
-                              <path
-                                clipRule="evenodd"
-                                d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
-                                fillRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                          <span className="list_text">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      href="/contact"
-                      className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-100 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
-                    >
-                      <span className="relative z-20">Contact Us</span>
-                      <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6" />
-                      <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6" />
-                    </Link>
-                  </div>
-                  <div className="card__visual" aria-hidden="true">
-                    <svg
-                      className="card__visual-svg w-full h-full max-h-[400px] overflow-visible text-gray-700"
-                      viewBox="0 0 400 420"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <defs>
-                        <linearGradient id="main-flow" x1="0" y1="200" x2="400" y2="200" gradientUnits="userSpaceOnUse">
-                          <stop offset="0" stopColor="#3B82F6" stopOpacity="0" />
-                          <stop offset="0.5" stopColor="#3B82F6" />
-                          <stop offset="1" stopColor="#60A5FA" />
-                        </linearGradient>
-                        <filter id="glow">
-                          <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-                          <feMerge>
-                            <feMergeNode in="coloredBlur" />
-                            <feMergeNode in="SourceGraphic" />
-                          </feMerge>
-                        </filter>
-                      </defs>
-
-                      <path d="M40 0 V400 M120 0 V400 M200 0 V400 M280 0 V400 M360 0 V400" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="4 4" />
-                      <path d="M0 40 H400 M0 120 H400 M0 200 H400 M0 280 H400 M0 360 H400" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="4 4" />
-
-                      <circle cx="40" cy="200" r="12" fill="#1D4ED8" stroke="#3B82F6" strokeWidth="2">
-                        <animate attributeName="r" values="12;14;12" dur="3s" repeatCount="indefinite" />
-                      </circle>
-                      <linearGradient id="hq-gradient" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0" stopColor="#93C5FD" />
-                        <stop offset="1" stopColor="#3B82F6" />
-                      </linearGradient>
-                      <text x="40" y="252" fill="url(#hq-gradient)" fontSize="20" fontFamily="monospace" fontWeight="bold" textAnchor="middle">TYCORUN HQ</text>
-
-                      <path d="M52 200 C 120 200, 150 80, 280 80 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" filter="url(#glow)" />
-                      <circle cx="340" cy="80" r="6" fill="#1E3A8A" stroke="#60A5FA" strokeWidth="2" />
-                      <text x="340" y="112" fill="#E5E7EB" fontSize="20" textAnchor="middle">Private Label</text>
-
-                      <path d="M52 200 C 120 200, 150 160, 280 160 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" opacity="0.8" />
-                      <circle cx="340" cy="160" r="6" fill="#1E3A8A" stroke="#A78BFA" strokeWidth="2" />
-                      <text x="340" y="192" fill="#E5E7EB" fontSize="20" textAnchor="middle">ODM Tuning</text>
-
-                      <path d="M52 200 C 120 200, 150 240, 280 240 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" opacity="0.8" />
-                      <circle cx="340" cy="240" r="6" fill="#1E3A8A" stroke="#34D399" strokeWidth="2" />
-                      <text x="340" y="272" fill="#E5E7EB" fontSize="20" textAnchor="middle">SKD/CKD</text>
-
-                      <path d="M52 200 C 120 200, 150 320, 280 320 H 340" stroke="url(#main-flow)" strokeWidth="2" fill="none" opacity="0.6" />
-                      <circle cx="340" cy="320" r="6" fill="#1E3A8A" stroke="#FBBF24" strokeWidth="2" />
-                      <text x="340" y="352" fill="#E5E7EB" fontSize="20" textAnchor="middle">Distribution</text>
-
-                      <circle r="3" fill="white">
-                        <animateMotion dur="2s" repeatCount="indefinite" path="M52 200 C 120 200, 150 80, 280 80 H 340" />
-                      </circle>
-                      <circle r="3" fill="white">
-                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 160, 280 160 H 340" />
-                      </circle>
-                      <circle r="3" fill="white">
-                        <animateMotion dur="3s" repeatCount="indefinite" path="M52 200 C 120 200, 150 240, 280 240 H 340" />
-                      </circle>
-                      <circle r="3" fill="white">
-                        <animateMotion dur="3.5s" repeatCount="indefinite" path="M52 200 C 120 200, 150 320, 280 320 H 340" />
-                      </circle>
-                    </svg>
-                  </div>
-                </div>
-              </section>
-
-              {steps.map((step, index) => (
-                <section
-                  key={step.step}
-                  className="relative flex-none overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-6 shadow-lg backdrop-blur-lg md:p-8"
-                  style={{ flex: "0 0 var(--panel-width)" }}
-                >
-                  <div
-                    className="process-flow pointer-events-none absolute inset-0"
-                    aria-hidden="true"
-                  />
-                  <div className="relative grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-                          <div className="space-y-4 text-white/80">
-                            <div className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
-                              Step {step.step} / {step.label}
-                            </div>
-                            <h3 className="text-2xl font-semibold text-white">
-                              {step.title}
-                            </h3>
-                            <p className="text-sm leading-relaxed text-white/70">
-                              {step.description}
-                            </p>
-                            <div className="text-sm text-white/70">
-                              Key timing:{" "}
-                              <strong className="font-semibold text-white">
-                                {step.detailTime}
-                              </strong>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={backToOverview}
-                              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white/80 transition-colors hover:border-white/40 hover:text-white"
-                            >
-                              Back to overview
-                            </button>
-                          </div>
-                          <div className="relative rounded-xl border border-white/15 bg-white/5 p-6">
-                            <div className="mb-4 flex items-center justify-between text-xs uppercase tracking-widest text-white/40">
-                              <span>{step.visual.title}</span>
-                              <span>Module {index + 1}</span>
-                            </div>
-                            <div className="space-y-4">
-                              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-                                <div className="mb-2 text-[10px] uppercase tracking-widest text-white/40">
-                                  Signals
-                                </div>
-                                <div className="grid grid-cols-3 gap-2">
-                                  {step.visual.tags.map((tag) => (
-                                    <div
-                                      key={tag}
-                                      className="rounded-full border border-white/15 bg-white/10 px-2 py-1 text-[10px] text-white/70"
-                                    >
-                                      {tag}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                              <div className="rounded-lg border border-white/10 bg-gradient-to-br from-white/10 to-white/0 p-4">
-                                <div className="mb-3 flex items-center justify-between text-[10px] uppercase tracking-widest text-white/40">
-                                  <span>Status Grid</span>
-                                  <span className="text-blue-200/70">Live</span>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                  {Array.from({ length: 8 }).map((_, tileIndex) => (
-                                    <div
-                                      key={tileIndex}
-                                      className={`h-6 rounded-md border ${
-                                        tileIndex % 3 === 0
-                                          ? "border-blue-300/40 bg-blue-400/20"
-                                          : "border-white/10 bg-white/5"
-                                      }`}
-                                    />
-                                  ))}
-                                </div>
-                              </div>
-                              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-                                <div className="mb-2 text-[10px] uppercase tracking-widest text-white/40">
-                                  Flow Diagram
-                                </div>
-                                <div className="flex items-center gap-2 text-[10px] text-white/60">
-                                  <span className="rounded-full border border-white/20 bg-white/10 px-2 py-1">
-                                    Input
-                                  </span>
-                                  <span className="text-white/30">→</span>
-                                  <span className="rounded-full border border-white/20 bg-white/10 px-2 py-1">
-                                    Review
-                                  </span>
-                                  <span className="text-white/30">→</span>
-                                  <span className="rounded-full border border-white/20 bg-white/10 px-2 py-1">
-                                    Output
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    </section>
-                  ))}
-                </div>
-              </div>
+              {slides.map((slide, index) =>
+                renderOverviewSlide(
+                  slide,
+                  `slide-${index}`,
+                  index,
+                  activeIndex === index,
+                  `slide-${index}`,
+                ),
+              )}
+            </div>
+          </div>
           </div>
         </div>
       </section>
@@ -890,7 +1216,11 @@ function ProcessTimeline() {
 // --- Sub-Component: ProfitTable ---
 function ProfitTable() {
   return (
-    <section className="border-t border-gray-800 bg-gray-900/30">
+    <section
+      className="border-t border-gray-800 bg-gray-900/30"
+      data-animate-on-view
+      data-in-view="false"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="mx-auto max-w-3xl pb-10 text-center">
@@ -944,7 +1274,11 @@ function ProfitTable() {
 // --- Sub-Component: SpecOnlyCards ---
 function SpecOnlyCards() {
   return (
-    <section className="border-t border-gray-800 bg-gray-950">
+    <section
+      className="border-t border-gray-800 bg-gray-950"
+      data-animate-on-view
+      data-in-view="false"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="mx-auto max-w-3xl pb-10 text-center">
@@ -995,7 +1329,7 @@ function SpecOnlyCards() {
 // --- Sub-Component: Workflows ---
 function Workflows() {
   return (
-    <section>
+    <section data-animate-on-view data-in-view="false">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="pb-12 pt-10 md:pb-20 md:pt-20">
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
@@ -1168,7 +1502,7 @@ function Workflows() {
 // --- Sub-Component: Features ---
 function Features() {
   return (
-    <section className="relative">
+    <section className="relative" data-animate-on-view data-in-view="false">
       <div
         className="pointer-events-none absolute left-0 top-0 -z-10 h-full w-1/2 opacity-20"
         aria-hidden="true"
@@ -1600,7 +1934,11 @@ function Testimonials() {
   }, []);
 
   return (
-    <div className="mx-auto w-full border-t border-gray-800 bg-gray-950 overflow-hidden">
+    <div
+      className="mx-auto w-full border-t border-gray-800 bg-gray-950 overflow-hidden"
+      data-animate-on-view
+      data-in-view="false"
+    >
       <div className="py-12 md:py-20">
         <div className="mx-auto max-w-3xl px-4 pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
@@ -1720,7 +2058,11 @@ function Faq() {
   const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqs.map(faq => ({ "@type": "Question", "name": faq.question, "acceptedAnswer": { "@type": "Answer", "text": faq.schemaAnswer } })) };
 
   return (
-    <section className="bg-gray-950 border-t border-gray-800">
+    <section
+      className="bg-gray-950 border-t border-gray-800"
+      data-animate-on-view
+      data-in-view="false"
+    >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 md:py-20">
         <div className="mx-auto max-w-3xl pb-12 text-center">
@@ -1740,6 +2082,30 @@ function Faq() {
 
 // --- Main Export: HomePage ---
 export default function HomePage() {
+  useEffect(() => {
+    const targets = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-animate-on-view]"),
+    );
+    if (!targets.length) return;
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.setAttribute("data-in-view", "true"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.setAttribute(
+            "data-in-view",
+            entry.isIntersecting ? "true" : "false",
+          );
+        });
+      },
+      { threshold: 0.2 },
+    );
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Hero />
