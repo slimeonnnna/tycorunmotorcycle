@@ -1377,6 +1377,17 @@
   transform: scale(1.4);
 }
 
+.product-carousel {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.product-carousel img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
 
 /* 
    ==========================================================================

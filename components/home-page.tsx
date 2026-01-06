@@ -1304,119 +1304,6 @@ function ProcessTimeline() {
   );
 }
 
-// --- Sub-Component: ProfitTable ---
-function ProfitTable() {
-  return (
-    <section
-      className="border-t border-gray-800 bg-gray-900/30"
-      data-animate-on-view
-      data-in-view="false"
-    >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="py-12 md:py-20">
-          <div className="mx-auto max-w-3xl pb-10 text-center">
-            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
-              <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                Margin Advantage
-              </span>
-            </div>
-            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              CBU vs CKD Profit Impact
-            </h2>
-            <p className="text-lg text-gray-400">
-              Reduce duties, shipping, and landed cost with CKD programs.
-            </p>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-gray-800 bg-gray-950/60">
-            <table className="w-full text-left text-sm text-gray-300">
-              <thead className="bg-gray-900/70 text-xs uppercase tracking-wider text-gray-400">
-                <tr>
-                  <th className="px-6 py-4">Import Mode</th>
-                  <th className="px-6 py-4">Duty Rate (Avg)</th>
-                  <th className="px-6 py-4">Shipping Cost/Unit</th>
-                  <th className="px-6 py-4">Assembly Cost</th>
-                  <th className="px-6 py-4">Total Margin Impact</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800">
-                <tr className="bg-gray-950">
-                  <td className="px-6 py-4 font-semibold text-gray-200">CBU (Full Bike)</td>
-                  <td className="px-6 py-4">30-80%</td>
-                  <td className="px-6 py-4">High ($150)</td>
-                  <td className="px-6 py-4">$0</td>
-                  <td className="px-6 py-4 text-gray-400">Standard</td>
-                </tr>
-                <tr className="bg-gray-900/40">
-                  <td className="px-6 py-4 font-semibold text-gray-200">CKD (Parts)</td>
-                  <td className="px-6 py-4">0-10%</td>
-                  <td className="px-6 py-4">Low ($40)</td>
-                  <td className="px-6 py-4">$30</td>
-                  <td className="px-6 py-4 font-semibold text-green-400">+25% Profit</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// --- Sub-Component: SpecOnlyCards ---
-function SpecOnlyCards() {
-  return (
-    <section
-      className="border-t border-gray-800 bg-gray-950"
-      data-animate-on-view
-      data-in-view="false"
-    >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="py-12 md:py-20">
-          <div className="mx-auto max-w-3xl pb-10 text-center">
-            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
-              <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                Spec-Only Cards
-              </span>
-            </div>
-            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Engineering-First Product Deck
-            </h2>
-            <p className="text-lg text-gray-400">
-              No placeholders. Pure technical specification for fast evaluation.
-            </p>
-          </div>
-          <div className="mx-auto max-w-3xl">
-            <div className="relative rounded-2xl border border-gray-800 bg-gray-900/60 p-6 shadow-2xl">
-              <div className="absolute left-6 top-0 -translate-y-1/2 rounded-full bg-gray-950 px-3 py-1 text-[10px] uppercase tracking-widest text-gray-400 ring-1 ring-gray-800">
-                spec_sheet
-              </div>
-              <div className="font-mono text-sm text-gray-300">
-                <div className="text-gray-200">MODEL: R-70 SPORT</div>
-                <div className="text-gray-600">------------------</div>
-                <div className="mt-3 space-y-2">
-                  <div>&gt; Motor: 5000W Brushless</div>
-                  <div>&gt; Battery: 72V 50Ah (CATL Cells)</div>
-                  <div>&gt; Max Speed: 100 km/h</div>
-                  <div>&gt; Tires: 120/70-12 (Tubeless)</div>
-                  <div>&gt; Certification: EEC L3e</div>
-                </div>
-              </div>
-              <div className="mt-6">
-                <Link
-                  className="inline-flex items-center gap-2 rounded-full border border-blue-500/40 bg-blue-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-blue-300 transition-colors hover:bg-blue-500/20"
-                  href="/contact"
-                >
-                  Download Datasheet
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // --- Sub-Component: Workflows ---
 function Workflows() {
   return (
@@ -2202,8 +2089,6 @@ export default function HomePage() {
       <Hero />
       <Workflows />
       <ProcessTimeline />
-      <ProfitTable />
-      <SpecOnlyCards />
       <Features />
       <TechnicalData />
       <Testimonials />
