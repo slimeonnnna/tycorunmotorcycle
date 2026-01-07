@@ -1,5 +1,165 @@
 
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+
+function AboutAuthHero() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isGold, setIsGold] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let particles: {
+      x: number;
+      y: number;
+      speed: number;
+      opacity: number;
+      fadeDelay: number;
+      fadeStart: number;
+      fadingOut: boolean;
+    }[] = [];
+    let particleCount = 0;
+    let rafId = 0;
+
+    const calculateParticleCount = () =>
+      Math.floor((canvas.width * canvas.height) / 6000);
+
+    const resetParticle = (p: {
+      x: number;
+      y: number;
+      speed: number;
+      opacity: number;
+      fadeDelay: number;
+      fadeStart: number;
+      fadingOut: boolean;
+    }) => {
+      p.x = Math.random() * canvas.width;
+      p.y = Math.random() * canvas.height;
+      p.speed = Math.random() / 5 + 0.1;
+      p.opacity = 1;
+      p.fadeDelay = Math.random() * 600 + 100;
+      p.fadeStart = Date.now() + p.fadeDelay;
+      p.fadingOut = false;
+    };
+
+    const initParticles = () => {
+      particles = [];
+      for (let i = 0; i < particleCount; i += 1) {
+        const particle = {
+          x: 0,
+          y: 0,
+          speed: 0,
+          opacity: 1,
+          fadeDelay: 0,
+          fadeStart: 0,
+          fadingOut: false,
+        };
+        resetParticle(particle);
+        particle.y = Math.random() * canvas.height;
+        particles.push(particle);
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((particle) => {
+        particle.y -= particle.speed;
+        if (particle.y < 0) {
+          resetParticle(particle);
+        }
+
+        if (!particle.fadingOut && Date.now() > particle.fadeStart) {
+          particle.fadingOut = true;
+        }
+
+        if (particle.fadingOut) {
+          particle.opacity -= 0.008;
+          if (particle.opacity <= 0) {
+            resetParticle(particle);
+          }
+        }
+
+        ctx.fillStyle = `rgba(${255 - Math.random() * 255 / 2}, 255, 255, ${particle.opacity})`;
+        ctx.fillRect(particle.x, particle.y, 0.4, Math.random() * 2 + 1);
+      });
+      rafId = window.requestAnimationFrame(animate);
+    };
+
+    const onResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particleCount = calculateParticleCount();
+      initParticles();
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+    initParticles();
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  return (
+    <section className={`about-auth-hero${isGold ? " gold" : ""}`}>
+      <div className="header">
+        <div className="mid-spot" onClick={() => setIsGold((prev) => !prev)}></div>
+
+        <div className="spotlight">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+      <canvas id="particleCanvas" ref={canvasRef}></canvas>
+
+      <div className="heroSubP">
+        <p>Introducing</p>
+      </div>
+      <div className="hero">
+        <div className="heroT">
+          <h2>Eclipx</h2>
+          <h2>Eclipx</h2>
+        </div>
+      </div>
+      <p className="heroP">
+        The world's best platform, <br />
+        powered by EclipxOS + React.
+      </p>
+      <div className="mountains">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div className="hero-spacer"></div>
+
+      <div className="content-section">
+        <div className="content-acc">
+          <div></div>
+          <div></div>
+        </div>
+        <p className="subt">Revolutionary by design</p>
+        <h3 className="title">
+          Harness. Empower.<br />
+          Unmatched Versatility.
+        </h3>
+        <p className="subp">
+          At the core lies our revolutionary framework, <br />
+          ensuring adaptability across all application architectures.
+        </p>
+      </div>
+    </section>
+  );
+}
 
 function HeroAbout() {
   return (
@@ -292,6 +452,7 @@ function FactoryTour() {
 export default function AboutPage() {
   return (
     <>
+      <AboutAuthHero />
       <HeroAbout />
       <Mission />
       <Products />
