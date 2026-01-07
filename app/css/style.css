@@ -158,6 +158,13 @@
   html:not(.no-js) body [data-aos="fade-up"] {
     -webkit-transform: translate3d(0, 10px, 0);
     transform: translate3d(0, 10px, 0);
+    opacity: 0;
+  }
+
+  html:not(.no-js) body [data-aos="fade-up"].aos-animate {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 
   html:not(.no-js) body [data-aos="fade-down"] {

@@ -3,7 +3,6 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import imagesLoaded from "imagesloaded";
 import { gsap } from "gsap";
 import * as THREE from "three";
@@ -33,13 +32,6 @@ function useMousePosition(): MousePosition {
   }, []);
 
   return mousePosition;
-}
-
-function fromCenter({ x, y }: { x: number; y: number }) {
-  return Math.min(
-    Math.max(0, Math.sqrt((y - 0.5) * (y - 0.5) + (x - 0.5) * (x - 0.5)) / 0.5),
-    1,
-  );
 }
 
 // --- Sub-Component: Spotlight (Merged) ---
@@ -547,7 +539,6 @@ function CapacityDashboard() {
 // --- Sub-Component: ProcessTimeline ---
 function ProcessTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [clockTime, setClockTime] = useState("");
   const [isInView, setIsInView] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
   const slides = [
@@ -622,19 +613,6 @@ function ProcessTimeline() {
   const prevSlide = () => goToSlide(activeIndex - 1);
 
   useEffect(() => {
-    const formatter = new Intl.DateTimeFormat("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-    });
-    const updateTime = () => {
-      setClockTime(formatter.format(new Date()));
-    };
-    updateTime();
-    const intervalId = window.setInterval(updateTime, 60_000);
-    return () => window.clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
     if (!sectionRef.current) return;
     if (!("IntersectionObserver" in window)) {
       setIsInView(true);
@@ -653,7 +631,6 @@ function ProcessTimeline() {
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const dragThreshold = 12;
-  const dragTriggered = useRef(false);
   const [dragOffset, setDragOffset] = useState(0);
   const getEdgeOffset = () => {
     const containerWidth = dragRef.current?.getBoundingClientRect().width ?? 0;
@@ -674,7 +651,6 @@ function ProcessTimeline() {
       }
     }
     isDragging.current = true;
-    dragTriggered.current = false;
     dragStartX.current = event.clientX;
     dragRef.current?.setPointerCapture(event.pointerId);
   };
@@ -700,7 +676,6 @@ function ProcessTimeline() {
     const isAtStart = activeIndex === 0;
     const isAtEnd = activeIndex === totalSlides - 1;
     isDragging.current = false;
-    dragTriggered.current = false;
     setDragOffset(0);
     if (Math.abs(deltaX) >= dragThreshold) {
       if (deltaX > 0 && !isAtStart) {
@@ -1633,8 +1608,6 @@ function Features() {
         const box = card.getBoundingClientRect();
         const point = { x, y };
         const ratio = { x: point.x / box.width, y: point.y / box.height };
-        fromCenter(ratio);
-
         card.style.setProperty("--ratio-x", `${ratio.x}`);
         card.style.setProperty("--ratio-y", `${ratio.y}`);
       }
