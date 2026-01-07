@@ -35,6 +35,13 @@ function useMousePosition(): MousePosition {
   return mousePosition;
 }
 
+function fromCenter({ x, y }: { x: number; y: number }) {
+  return Math.min(
+    Math.max(0, Math.sqrt((y - 0.5) * (y - 0.5) + (x - 0.5) * (x - 0.5)) / 0.5),
+    1,
+  );
+}
+
 // --- Sub-Component: Spotlight (Merged) ---
 type SpotlightProps = {
   children: React.ReactNode;
@@ -152,11 +159,7 @@ function HeroCard() {
 // --- Sub-Component: Hero ---
 function Hero() {
   return (
-    <section
-      className="hero-grid-bg relative overflow-hidden"
-      data-animate-on-view
-      data-in-view="false"
-    >
+    <section className="hero-grid-bg relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="relative pb-12 pt-32 md:pb-20 md:pt-40">
           <div className="pb-12 text-center md:pb-20">
@@ -204,7 +207,7 @@ function Hero() {
           <div data-aos="fade-up" data-aos-delay={800}>
             <HeroCard />
           </div>
-          <div className="pt-6 md:pt-12">
+          <div data-aos="fade-up" data-aos-delay={300} className="pt-6 md:pt-12">
             <CapacityDashboard />
           </div>
         </div>
@@ -1182,7 +1185,10 @@ function ProcessTimeline() {
   };
 
   return (
-    <section className="grid-wrapper process-timeline relative overflow-hidden" ref={sectionRef}>
+    <section
+      className="grid-wrapper process-timeline relative overflow-hidden"
+      ref={sectionRef}
+    >
       <div
         className="grid-background pointer-events-none absolute inset-0"
         aria-hidden="true"
@@ -1193,7 +1199,7 @@ function ProcessTimeline() {
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="border-t border-gray-800 py-12 md:py-20">
-          <div className="mx-auto pb-10 text-center">
+          <div className="mx-auto pb-10 text-center" data-aos="fade-up" data-aos-delay={200}>
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
                 Commercial Partnership Frameworks
@@ -1254,6 +1260,8 @@ function ProcessTimeline() {
           </div>
           <div
             className="relative mx-auto w-full max-w-none overflow-visible"
+            data-aos="fade-up"
+            data-aos-delay={400}
             style={
               {
                 "--carousel-gap": "25px",
@@ -1306,10 +1314,10 @@ function ProcessTimeline() {
 // --- Sub-Component: Workflows ---
 function Workflows() {
   return (
-    <section data-animate-on-view data-in-view="false">
+    <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="pb-12 pt-10 md:pb-20 md:pt-20">
-          <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
+          <div data-aos="fade-up" data-aos-delay={200} className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
                 Market-Ready Engineering
@@ -1326,7 +1334,7 @@ function Workflows() {
           </div>
           <Spotlight className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3">
             {/* Card 1 */}
-            <a
+            <a data-aos="fade-up" data-aos-delay={200}
               className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
@@ -1375,7 +1383,7 @@ function Workflows() {
               </div>
             </a>
             {/* Card 2 */}
-            <a
+            <a data-aos="fade-up" data-aos-delay={200}
               className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
@@ -1420,7 +1428,7 @@ function Workflows() {
               </div>
             </a>
             {/* Card 3 */}
-            <a
+            <a data-aos="fade-up" data-aos-delay={200}
               className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
@@ -1468,7 +1476,7 @@ function Workflows() {
               </div>
             </a>
           </Spotlight>
-          <div className="mx-auto mt-6 max-w-sm lg:max-w-none">
+          <div data-aos="fade-up" data-aos-delay={200} className="mx-auto mt-6 max-w-sm lg:max-w-none">
             <TrustBadgeStrip />
           </div>
         </div>
@@ -1479,8 +1487,168 @@ function Workflows() {
 
 // --- Sub-Component: Features ---
 function Features() {
+  const cardsRef = useRef<HTMLDivElement>(null);
+  const featureCards = [
+    {
+      title: "Full-Process Traceability",
+      description:
+        "Full batch tracking across assembly, testing, and packaging for audit-ready deliveries.",
+      icon: (
+        <svg
+          className="h-6 w-6 fill-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          aria-hidden="true"
+        >
+          <path d="M0 0h14v17H0V0Zm2 2v13h10V2H2Z" />
+          <path
+            fillOpacity=".48"
+            d="m16.295 5.393 7.528 2.034-4.436 16.412L5.87 20.185l.522-1.93 11.585 3.132 3.392-12.55-5.597-1.514.522-1.93Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: "Compliance-Ready Design",
+      description:
+        "Built to match EEC/COC and DOT documentation requirements with localization support.",
+      icon: (
+        <svg
+          className="h-6 w-6 fill-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          aria-hidden="true"
+        >
+          <path fillOpacity=".48" d="M7 8V0H5v8h2Zm12 16v-4h-2v4h2Z" />
+          <path d="M19 6H0v2h17v8H7v-6H5v8h19v-2h-5V6Z" />
+        </svg>
+      ),
+    },
+    {
+      title: "Serviceability Focus",
+      description:
+        "Modules and components designed for fast service and lower dealer maintenance cost.",
+      icon: (
+        <svg
+          className="h-6 w-6 fill-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          aria-hidden="true"
+        >
+          <path d="M23.414 6 18 .586 16.586 2l3 3H7a6 6 0 0 0-6 6h2a4 4 0 0 1 4-4h12.586l-3 3L18 11.414 23.414 6Z" />
+          <path
+            fillOpacity=".48"
+            d="M13.01 12.508a2.5 2.5 0 0 0-3.502.482L1.797 23.16.203 21.952l7.71-10.17a4.5 4.5 0 1 1 7.172 5.437l-4.84 6.386-1.594-1.209 4.841-6.385a2.5 2.5 0 0 0-.482-3.503Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: "Reliability Testing",
+      description:
+        "100% functional testing, burn-in, and road simulation to reduce warranty claims.",
+      icon: (
+        <svg
+          className="h-6 w-6 fill-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          aria-hidden="true"
+        >
+          <path
+            fillOpacity=".48"
+            d="m3.031 9.05-.593-.805 1.609-1.187.594.804a6.966 6.966 0 0 1 0 8.276l-.594.805-1.61-1.188.594-.805a4.966 4.966 0 0 0 0-5.9Z"
+          />
+          <path d="m7.456 6.676-.535-.845 1.69-1.07.534.844a11.944 11.944 0 0 1 0 12.789l-.535.845-1.69-1.071.536-.845a9.944 9.944 0 0 0 0-10.647Z" />
+          <path
+            d="m11.888 4.35-.514-.858 1.717-1.027.513.858a16.9 16.9 0 0 1 2.4 8.677 16.9 16.9 0 0 1-2.4 8.676l-.513.859-1.717-1.028.514-.858A14.9 14.9 0 0 0 14.003 12a14.9 14.9 0 0 0-2.115-7.65Z"
+            opacity=".48"
+          />
+          <path d="m16.321 2-.5-.866 1.733-1 .5.866A22 22 0 0 1 21 12c0 3.852-1.017 7.636-2.948 10.97l-.502.865-1.73-1.003.501-.865A19.878 19.878 0 0 0 19 12a20 20 0 0 0-2.679-10Z" />
+        </svg>
+      ),
+    },
+    {
+      title: "Logistics Optimization",
+      description:
+        "Packaging engineered for container loading efficiency and reduced shipping damage.",
+      icon: (
+        <svg
+          className="h-6 w-6 fill-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          aria-hidden="true"
+        >
+          <path
+            fillOpacity=".48"
+            d="M12 8.8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"
+          />
+          <path d="m7.454 2.891.891-.454L7.437.655l-.891.454a12 12 0 0 0 0 21.382l.89.454.91-1.781-.892-.455a10 10 0 0 1 0-17.818ZM17.456 1.11l-.891-.454-.909 1.782.891.454a10 10 0 0 1 0 17.819l-.89.454.908 1.781.89-.454a12 12 0 0 0 0-21.382Z" />
+        </svg>
+      ),
+    },
+    {
+      title: "Global Supply Assurance",
+      description:
+        "Stable sourcing for motor, controller, and pack components with long-term availability.",
+      icon: (
+        <svg
+          className="h-6 w-6 fill-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          aria-hidden="true"
+        >
+          <path
+            fillOpacity=".48"
+            d="M19 8h5v2h-5V8Zm-4 5h9v2h-9v-2Zm9 5H11v2h13v-2Z"
+          />
+          <path d="M19.406 3.844 6.083 20.497.586 15 2 13.586l3.917 3.917L17.844 2.595l1.562 1.25Z" />
+        </svg>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    const cards = cardsRef.current;
+    if (!cards) return;
+
+    const cardElements = Array.from(
+      cards.getElementsByClassName("glitter-card"),
+    ) as HTMLElement[];
+
+    const handlePointerMove = (e: PointerEvent) => {
+      for (const card of cardElements) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+
+        const box = card.getBoundingClientRect();
+        const point = { x, y };
+        const ratio = { x: point.x / box.width, y: point.y / box.height };
+        fromCenter(ratio);
+
+        card.style.setProperty("--ratio-x", `${ratio.x}`);
+        card.style.setProperty("--ratio-y", `${ratio.y}`);
+      }
+    };
+
+    cards.addEventListener("pointermove", handlePointerMove);
+    return () => {
+      cards.removeEventListener("pointermove", handlePointerMove);
+    };
+  }, []);
+
+
   return (
-    <section className="relative" data-animate-on-view data-in-view="false">
+    <section className="relative">
       <div
         className="pointer-events-none absolute left-0 top-0 -z-10 h-full w-1/2 opacity-20"
         aria-hidden="true"
@@ -1506,7 +1674,7 @@ function Features() {
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
-          <div className="mx-auto max-w-3xl pb-4 text-center md:pb-12">
+          <div data-aos="fade-up" data-aos-delay={200} className="mx-auto max-w-3xl pb-4 text-center md:pb-12">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
                 B2B Ready
@@ -1521,261 +1689,36 @@ function Features() {
             </p>
           </div>
           
-          <div className="flex justify-center pb-4 md:pb-12" data-aos="fade-up">
-            <svg
-              className="max-w-none drop-shadow-2xl"
-              width="800"
-              height="300"
-              viewBox="0 0 800 300"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect x="50" y="50" width="700" height="200" rx="10" stroke="#374151" strokeWidth="2" fill="#111827" fillOpacity="0.5" />
-              <g transform="translate(100, 80)">
-                 <rect width="40" height="80" rx="4" stroke="#2563EB" strokeWidth="2" fill="#1E40AF" fillOpacity="0.2" />
-                 <path d="M20 0 V 80" stroke="#2563EB" strokeWidth="1" strokeDasharray="4 2"/>
-              </g>
-              <g transform="translate(160, 80)">
-                 <rect width="40" height="80" rx="4" stroke="#2563EB" strokeWidth="2" fill="#1E40AF" fillOpacity="0.2" />
-                 <path d="M20 0 V 80" stroke="#2563EB" strokeWidth="1" strokeDasharray="4 2"/>
-              </g>
-              <g transform="translate(220, 80)">
-                 <rect width="40" height="80" rx="4" stroke="#2563EB" strokeWidth="2" fill="#1E40AF" fillOpacity="0.2" />
-                 <path d="M20 0 V 80" stroke="#2563EB" strokeWidth="1" strokeDasharray="4 2"/>
-              </g>
-              <g transform="translate(400, 80)">
-                 <rect width="200" height="140" stroke="#4B5563" strokeWidth="2" fill="#1F2937" />
-                 <text x="100" y="70" textAnchor="middle" fill="#9CA3AF" fontFamily="monospace" fontSize="14">QC + CERTS</text>
-                 <path d="M10 20 H 190" stroke="#374151" />
-                 <path d="M10 40 H 190" stroke="#374151" />
-                 <rect x="20" y="80" width="40" height="40" fill="#374151" />
-                 <rect x="80" y="80" width="40" height="40" fill="#374151" />
-                 <rect x="140" y="80" width="40" height="40" fill="#374151" />
-              </g>
-              <path d="M 260 120 H 400" stroke="#60A5FA" strokeWidth="2" strokeDasharray="4 4" />
-              <circle cx="260" cy="120" r="4" fill="#60A5FA" />
-              <circle cx="400" cy="120" r="4" fill="#60A5FA" />
-              <path d="M 120 160 V 220 H 140" stroke="#9CA3AF" strokeWidth="1" />
-              <text x="150" y="225" fill="#9CA3AF" fontSize="12" fontFamily="monospace">Export Platform</text>
-            </svg>
-          </div>
+          <section data-aos="fade-up" data-aos-delay={200} className="glitter-cards-section">
+            <img
+              className="glitter"
+              src="/webp/noise-base.webp"
+              loading="lazy"
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="glitter"
+              src="/webp/noise-top.png"
+              loading="lazy"
+              alt=""
+              aria-hidden="true"
+            />
 
-          <div className="mx-auto grid max-w-sm gap-12 sm:max-w-none sm:grid-cols-2 md:gap-x-14 md:gap-y-16 lg:grid-cols-3">
-            <article>
-              <svg
-                className="mb-3 fill-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M0 0h14v17H0V0Zm2 2v13h10V2H2Z" />
-                <path
-                  fillOpacity=".48"
-                  d="m16.295 5.393 7.528 2.034-4.436 16.412L5.87 20.185l.522-1.93 11.585 3.132 3.392-12.55-5.597-1.514.522-1.93Z"
-                />
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
-                Full-Process Traceability
-              </h3>
-              <p className="text-gray-400">
-                Full batch tracking across assembly, testing, and packaging for
-                audit-ready deliveries.
-              </p>
-            </article>
-            <article>
-              <svg
-                className="mb-3 fill-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path fillOpacity=".48" d="M7 8V0H5v8h2Zm12 16v-4h-2v4h2Z" />
-                <path d="M19 6H0v2h17v8H7v-6H5v8h19v-2h-5V6Z" />
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
-                Compliance-Ready Design
-              </h3>
-              <p className="text-gray-400">
-                Built to match EEC/COC and DOT documentation requirements with
-                localization support.
-              </p>
-            </article>
-            <article>
-              <svg
-                className="mb-3 fill-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M23.414 6 18 .586 16.586 2l3 3H7a6 6 0 0 0-6 6h2a4 4 0 0 1 4-4h12.586l-3 3L18 11.414 23.414 6Z" />
-                <path
-                  fillOpacity=".48"
-                  d="M13.01 12.508a2.5 2.5 0 0 0-3.502.482L1.797 23.16.203 21.952l7.71-10.17a4.5 4.5 0 1 1 7.172 5.437l-4.84 6.386-1.594-1.209 4.841-6.385a2.5 2.5 0 0 0-.482-3.503Z"
-                />
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
-                Serviceability Focus
-              </h3>
-              <p className="text-gray-400">
-                Modules and components designed for fast service and lower
-                dealer maintenance cost.
-              </p>
-            </article>
-            <article>
-              <svg
-                className="mb-3 fill-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path
-                  fillOpacity=".48"
-                  d="m3.031 9.05-.593-.805 1.609-1.187.594.804a6.966 6.966 0 0 1 0 8.276l-.594.805-1.61-1.188.594-.805a4.966 4.966 0 0 0 0-5.9Z"
-                />
-                <path d="m7.456 6.676-.535-.845 1.69-1.07.534.844a11.944 11.944 0 0 1 0 12.789l-.535.845-1.69-1.071.536-.845a9.944 9.944 0 0 0 0-10.647Z" />
-                <path
-                  d="m11.888 4.35-.514-.858 1.717-1.027.513.858a16.9 16.9 0 0 1 2.4 8.677 16.9 16.9 0 0 1-2.4 8.676l-.513.859-1.717-1.028.514-.858A14.9 14.9 0 0 0 14.003 12a14.9 14.9 0 0 0-2.115-7.65Z"
-                  opacity=".48"
-                />
-                <path d="m16.321 2-.5-.866 1.733-1 .5.866A22 22 0 0 1 21 12c0 3.852-1.017 7.636-2.948 10.97l-.502.865-1.73-1.003.501-.865A19.878 19.878 0 0 0 19 12a20 20 0 0 0-2.679-10Z" />
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
-                Reliability Testing
-              </h3>
-              <p className="text-gray-400">
-                100% functional testing, burn-in, and road simulation to reduce
-                warranty claims.
-              </p>
-            </article>
-            <article>
-              <svg
-                className="mb-3 fill-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path
-                  fillOpacity=".48"
-                  d="M12 8.8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"
-                />
-                <path d="m7.454 2.891.891-.454L7.437.655l-.891.454a12 12 0 0 0 0 21.382l.89.454.91-1.781-.892-.455a10 10 0 0 1 0-17.818ZM17.456 1.11l-.891-.454-.909 1.782.891.454a10 10 0 0 1 0 17.819l-.89.454.908 1.781.89-.454a12 12 0 0 0 0-21.382Z" />
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
-                Logistics Optimization
-              </h3>
-              <p className="text-gray-400">
-                Packaging engineered for container loading efficiency and
-                reduced shipping damage.
-              </p>
-            </article>
-            <article>
-              <svg
-                className="mb-3 fill-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path
-                  fillOpacity=".48"
-                  d="M19 8h5v2h-5V8Zm-4 5h9v2h-9v-2Zm9 5H11v2h13v-2Z"
-                />
-                <path d="M19.406 3.844 6.083 20.497.586 15 2 13.586l3.917 3.917L17.844 2.595l1.562 1.25Z" />
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
-                Global Supply Assurance
-              </h3>
-              <p className="text-gray-400">
-                Stable sourcing for motor, controller, and pack components with
-                long-term availability.
-              </p>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// --- Sub-Component: TechnicalData ---
-function TechnicalData() {
-  return (
-    <section className="relative">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="py-12 md:py-20">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
-            <div>
-              <h2 className="mb-6 font-nacelle text-3xl font-semibold text-gray-200">
-                Export Readiness & Commercial Metrics
-              </h2>
-              <div className="space-y-6 text-lg text-gray-400">
-                <p>
-                  We design for repeatable production and global distribution.
-                  QC checkpoints, certification support, and packaging are built
-                  into every program.
-                </p>
-                <p>
-                  <strong>Partnership Models:</strong> OEM branding, ODM
-                  customization, and SKD/CKD programs to fit local policy and
-                  duties.
-                </p>
-                <p>
-                  <strong>Quality Control:</strong> 100% functional testing,
-                  end-of-line inspection, and shipment documentation.
-                </p>
-              </div>
+            <div id="cards" ref={cardsRef}>
+              {featureCards.map((card) => (
+                <div key={card.title} className="glitter-card">
+                  <div className="card-content">
+                    {card.icon}
+                    <h3 className="text-base font-semibold text-white">
+                      {card.title}
+                    </h3>
+                    <p className="text-sm text-gray-400">{card.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="relative rounded-lg border border-gray-800 bg-gray-900/50 p-6 font-mono text-sm shadow-2xl">
-              <div className="absolute top-0 right-0 -mt-3 -mr-3 bg-blue-600 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">
-                System_Spec_v2.4
-              </div>
-              <div className="space-y-4">
-                <div className="border-b border-gray-800 pb-2">
-                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Commercial Metrics</h4>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">MOQ</span>
-                    <span className="text-blue-400">50 units / model</span>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Lead_Time</span>
-                    <span className="text-blue-400">45 to 60 days</span>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Spare_Parts</span>
-                    <span className="text-blue-400">1% free spares</span>
-                  </div>
-                </div>
-                <div className="border-b border-gray-800 pb-2">
-                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Compliance & Safety</h4>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Certifications</span>
-                    <span className="text-blue-400">EEC/COC, DOT</span>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Quality Tests</span>
-                    <span className="text-blue-400">100% functional</span>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Packaging</span>
-                    <span className="text-blue-400">Steel rack options</span>
-                  </div>
-                </div>
-                <div>
-                  <h4 className="mb-2 text-xs uppercase tracking-widest text-gray-500">Trade Terms</h4>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Incoterms</span>
-                    <span className="text-blue-400">FOB / CIF</span>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1">
-                    <span className="text-gray-300">Payment</span>
-                    <span className="text-blue-400">T/T, LC</span>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-6 border-t border-dashed border-gray-700 pt-4 text-xs text-gray-500">
-                * Commercial terms and certifications vary by region and model.
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
@@ -2247,10 +2190,8 @@ function Product() {
       className={`product-slider${
         isLoading ? "product-slider--loading" : ""
       }`}
-      data-animate-on-view
-      data-in-view="false"
     >
-      <div className="py-12 mx-auto max-w-6xl px-4 text-center relative z-10">
+      <div data-aos="fade-up" data-aos-delay={200} className="py-12 mx-auto max-w-6xl px-4 text-center relative z-10">
         <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
           <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
             Commercial Partnership Frameworks
@@ -2267,14 +2208,14 @@ function Product() {
         </p>
         <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
       </div>
-      <div className="product-bubbles" aria-hidden="true">
+      <div data-aos="fade-up" data-aos-delay={400} className="product-bubbles" aria-hidden="true">
         <ul className="product-bubbles__list">
           {Array.from({ length: 10 }).map((_, index) => (
             <li key={`bubble-${index}`}></li>
           ))}
         </ul>
       </div>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div data-aos="fade-up" data-aos-delay={400} className="mx-auto max-w-6xl px-4 sm:px-6">
         <div id="product-slider" ref={sliderRef}>
           <div className="slider-inner">
             <div id="product-slider-content">
@@ -2464,13 +2405,9 @@ function Testimonials() {
   }, []);
 
   return (
-    <div
-      className="mx-auto w-full border-t border-gray-800 bg-gray-950 overflow-hidden"
-      data-animate-on-view
-      data-in-view="false"
-    >
+    <div className="mx-auto w-full border-t border-gray-800 bg-gray-950 overflow-hidden">
       <div className="py-12 md:py-20">
-        <div className="mx-auto max-w-3xl px-4 pb-12 text-center">
+        <div data-aos="fade-up" data-aos-delay={200} className="mx-auto max-w-3xl px-4 pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
             Trusted by Global Distributors
           </h2>
@@ -2480,7 +2417,7 @@ function Testimonials() {
           </p>
         </div>
 
-        <div className="group relative w-full">
+        <div data-aos="fade-up" data-aos-delay={400} className="group relative w-full">
           <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-20 w-12 bg-linear-to-r from-gray-950 to-transparent md:w-32" />
           <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-20 w-12 bg-linear-to-l from-gray-950 to-transparent md:w-32" />
           <div
@@ -2494,10 +2431,10 @@ function Testimonials() {
               const marginTop = staggerOffsets[relativeIndex % staggerOffsets.length];
               const isKeyClient = testimonial.company.includes("Siemens") || testimonial.company.includes("Lockheed") || testimonial.company.includes("Boston");
               const widthClass = "w-[300px] flex-none";
-              const bgClass = isKeyClient ? "bg-linear-to-br from-gray-900 via-blue-900/10 to-gray-900 border-blue-500/40 shadow-[0_0_30px_-10px_rgba(59,130,246,0.15)]" : "bg-linear-to-br from-gray-900 via-gray-800/20 to-gray-900 border-gray-800 hover:border-gray-700";
+              const bgClass = isKeyClient ? "bg-linear-to-br from-gray-900 via-blue-900/10 to-gray-900 border-blue-500/40 shadow-[0_0_30px_-10px_rgba(59,130,246,0.15)]" : "bg-linear-to-br from-gray-900 via-gray-800/20 to-gray-900 border-gray-800 hover:border-blue-500/40";
 
               return (
-                <div key={index} className={`relative flex flex-col justify-between rounded-xl border p-6 backdrop-blur-sm transition-transform duration-300 ${widthClass} ${marginTop} ${bgClass}`}>
+                <div key={index} className={`testimonial-card relative flex flex-col justify-between rounded-xl border p-6 backdrop-blur-sm transition-[border-color,box-shadow] duration-500 ${widthClass} ${marginTop} ${bgClass}`}>
                   <div>
                     <div className="mb-4 flex items-center justify-between">
                       <div className={`inline-flex items-center gap-2 rounded-full px-2 py-1 text-[10px] font-medium tracking-wide ring-1 ring-inset ${isKeyClient ? 'bg-blue-900/20 text-blue-300 ring-blue-500/30' : 'bg-gray-800/50 text-gray-400 ring-gray-700'}`}>
@@ -2575,7 +2512,7 @@ function FaqItem({ faq, isOpen, onToggle }: { faq: { question: string; answer: R
       </button>
       <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
         <div className="overflow-hidden">
-          <div className="px-5 pb-4 text-sm leading-relaxed text-gray-400">{faq.answer}</div>
+          <div className="px-5 pb-4 pt-4 text-sm leading-relaxed text-gray-400">{faq.answer}</div>
         </div>
       </div>
     </div>
@@ -2588,20 +2525,16 @@ function Faq() {
   const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqs.map(faq => ({ "@type": "Question", "name": faq.question, "acceptedAnswer": { "@type": "Answer", "text": faq.schemaAnswer } })) };
 
   return (
-    <section
-      className="bg-gray-950 border-t border-gray-800"
-      data-animate-on-view
-      data-in-view="false"
-    >
+    <section className="bg-gray-950 border-t border-gray-800">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 md:py-20">
-        <div className="mx-auto max-w-3xl pb-12 text-center">
+        <div data-aos="fade-up" data-aos-delay={200} className="mx-auto max-w-3xl pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
             OEM / ODM FAQ
           </h2>
           <p className="text-lg text-gray-400">Commercial terms, compliance support, and partnership details.</p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div data-aos="fade-up" data-aos-delay={400} className="grid gap-6 md:grid-cols-2">
           <div className="flex flex-col gap-4">{faqs.slice(0, 3).map((faq, index) => <FaqItem key={index} faq={faq} isOpen={openIndex === index} onToggle={() => handleToggle(index)} />)}</div>
           <div className="flex flex-col gap-4">{faqs.slice(3, 6).map((faq, index) => <FaqItem key={index + 3} faq={faq} isOpen={openIndex === index + 3} onToggle={() => handleToggle(index + 3)} />)}</div>
         </div>
@@ -2612,30 +2545,6 @@ function Faq() {
 
 // --- Main Export: HomePage ---
 export default function HomePage() {
-  useEffect(() => {
-    const targets = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-animate-on-view]"),
-    );
-    if (!targets.length) return;
-    if (!("IntersectionObserver" in window)) {
-      targets.forEach((target) => target.setAttribute("data-in-view", "true"));
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.setAttribute(
-            "data-in-view",
-            entry.isIntersecting ? "true" : "false",
-          );
-        });
-      },
-      { threshold: 0.2 },
-    );
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       <Hero />
@@ -2643,7 +2552,6 @@ export default function HomePage() {
       <ProcessTimeline />
       <Product />
       <Features />
-      <TechnicalData />
       <Testimonials />
       <Faq />
     </>

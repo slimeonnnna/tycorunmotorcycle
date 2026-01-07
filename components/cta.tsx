@@ -8,7 +8,7 @@ export default function Cta() {
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
-          <div className="relative w-full" data-aos="fade-up">
+          <div className="relative w-full" data-aos="fade-up" data-aos-delay={500}>
             {/* 
               Main Card Container 
               - Inherits 'hc-card' class for base transitions and hover states (border rotation).
