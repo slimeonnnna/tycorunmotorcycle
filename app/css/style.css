@@ -2175,7 +2175,7 @@
 .about-auth-hero {
   position: relative;
   overflow: hidden;
-  background: #05060f linear-gradient(0deg, rgba(216, 236, 248, 0.06), rgba(152, 192, 239, 0.06));
+  background: transparent;
   font-family: var(--font-inter), sans-serif;
   font-size: max(calc(var(--_size) * 0.03), 10px);
   --_factor: min(600px, 80vh);
@@ -2484,6 +2484,25 @@
   width: 100%;
   height: 10em;
   pointer-events: none;
+}
+
+.about-auth-hero .globe {
+  position: absolute;
+  left: 50%;
+  top: 28em;
+  width: min(420px, 70vw);
+  height: min(420px, 70vw);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.about-auth-hero .globe canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .about-auth-hero .mountains::before {

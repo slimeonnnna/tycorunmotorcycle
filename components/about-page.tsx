@@ -2,10 +2,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import * as THREE from "three";
+
+import { cities } from "./cities-data";
 
 function AboutAuthHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const globeRef = useRef<HTMLDivElement>(null);
   const [isGold, setIsGold] = useState(false);
 
   useEffect(() => {
@@ -108,6 +111,104 @@ function AboutAuthHero() {
     };
   }, []);
 
+  useEffect(() => {
+    const container = globeRef.current;
+    if (!container) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, 1, 1, 1500);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const geometry = new THREE.BufferGeometry();
+    const material = new THREE.PointsMaterial({ color: 0x22aaff, size: 3 });
+    const radius = 500;
+
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    const positions = new Float32Array(cities.length * 3);
+    const directions = new Float32Array(cities.length * 3);
+    const factors = new Float32Array(cities.length);
+    const growths = new Float32Array(cities.length);
+
+    const geoToCartesian = (lat: number, lon: number) => {
+      const latRad = (lat * Math.PI) / 180;
+      const lonRad = (lon * Math.PI) / 180;
+      const x = -400 * Math.cos(latRad) * Math.cos(lonRad);
+      const y = 400 * Math.sin(latRad);
+      const z = 400 * Math.cos(latRad) * Math.sin(lonRad);
+      return [x, y, z] as const;
+    };
+
+    cities.forEach((city: [number, number], index: number) => {
+      const [x, y, z] = geoToCartesian(city[0], city[1]);
+      const offset = index * 3;
+      positions[offset] = x;
+      positions[offset + 1] = y;
+      positions[offset + 2] = z;
+
+      const length = Math.sqrt(x * x + y * y + z * z) || 1;
+      directions[offset] = x / length;
+      directions[offset + 1] = y / length;
+      directions[offset + 2] = z / length;
+
+      factors[index] = 100 + Math.random() * 1000;
+      growths[index] = Math.min(0.9, 0.35 + Math.random());
+    });
+
+    geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    const onResize = () => {
+      const { clientWidth, clientHeight } = container;
+      if (!clientWidth || !clientHeight) return;
+      camera.aspect = clientWidth / clientHeight;
+      renderer.setSize(clientWidth, clientHeight, false);
+      camera.position.z = 1500;
+      camera.updateProjectionMatrix();
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+
+    let rafId = 0;
+    const animate = () => {
+      rafId = window.requestAnimationFrame(animate);
+
+      for (let i = 0; i < cities.length; i += 1) {
+        if (factors[i] > 1) {
+          factors[i] *= growths[i];
+        }
+        const offset = i * 3;
+        const scale = radius + factors[i];
+        positions[offset] = directions[offset] * scale;
+        positions[offset + 1] = directions[offset + 1] * scale;
+        positions[offset + 2] = directions[offset + 2] * scale;
+      }
+
+      geometry.attributes.position.needsUpdate = true;
+
+      const time = Date.now() * 0.00005;
+      const hue = ((360 * (1.0 + time)) % 360) / 360;
+      material.color.setHSL(hue, 0.5, 0.5);
+      particles.rotation.y += 0.006;
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.cancelAnimationFrame(rafId);
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+      container.removeChild(renderer.domElement);
+    };
+  }, []);
+
   return (
     <section className={`about-auth-hero${isGold ? " gold" : ""}`}>
       <div className="header">
@@ -135,10 +236,9 @@ function AboutAuthHero() {
         The world's best platform, <br />
         powered by EclipxOS + React.
       </p>
-      <div className="mountains">
-        <div></div>
-        <div></div>
-        <div></div>
+
+      <div data-aos="fade-up" data-aos-delay={2500}>
+        <div id="bucket" className="globe" ref={globeRef} aria-hidden="true"></div>
       </div>
       <div className="hero-spacer"></div>
 
