@@ -236,7 +236,7 @@ function TrustBadgeStrip() {
               </div>
 
               <div className="mb-4">
-                <h3 className="mb-2 text-xs font-semibold text-white/80">Core Features</h3>
+                <h3 className="mb-2 text-xs font-semibold text-white">Core Features</h3>
                 <div className="flex flex-wrap -mx-1">
                   {[
                     "OEM / ODM Programs",
@@ -257,7 +257,7 @@ function TrustBadgeStrip() {
 
             <div className="p-4 md:w-1/2">
               <div>
-                <h3 className="mb-2 text-xs font-semibold text-white/80">Other Features</h3>
+                <h3 className="mb-2 text-xs font-semibold text-white">Other Features</h3>
                 <ul className="grid grid-cols-1 gap-2 text-xs text-blue-100/70">
                   {[
                     "EEC Certified",
@@ -820,11 +820,7 @@ function ProcessTimeline() {
                 {kickerIcon}
                 <span className="card_title">{slide.kicker}</span>
               </div>
-              <h3
-                className={`card_heading process-card-heading ${
-                  isActive ? "animate-[gradient_6s_linear_infinite]" : ""
-                } bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text text-transparent`}
-              >
+              <h3 className="card_heading process-card-heading text-white">
                 {slide.heading}
               </h3>
               <p className="card_paragraph">{slide.paragraph}</p>
@@ -1326,6 +1322,7 @@ function Workflows() {
               We engineer products for compliance, serviceability, and margin.
               Documentation, certification support, and QC are built in.
             </p>
+            <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent z-10" />
           </div>
           <Spotlight className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3">
             {/* Card 1 */}
@@ -1577,7 +1574,7 @@ function Features() {
                   d="m16.295 5.393 7.528 2.034-4.436 16.412L5.87 20.185l.522-1.93 11.585 3.132 3.392-12.55-5.597-1.514.522-1.93Z"
                 />
               </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
+              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
                 Full-Process Traceability
               </h3>
               <p className="text-gray-400">
@@ -1595,7 +1592,7 @@ function Features() {
                 <path fillOpacity=".48" d="M7 8V0H5v8h2Zm12 16v-4h-2v4h2Z" />
                 <path d="M19 6H0v2h17v8H7v-6H5v8h19v-2h-5V6Z" />
               </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
+              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
                 Compliance-Ready Design
               </h3>
               <p className="text-gray-400">
@@ -1616,7 +1613,7 @@ function Features() {
                   d="M13.01 12.508a2.5 2.5 0 0 0-3.502.482L1.797 23.16.203 21.952l7.71-10.17a4.5 4.5 0 1 1 7.172 5.437l-4.84 6.386-1.594-1.209 4.841-6.385a2.5 2.5 0 0 0-.482-3.503Z"
                 />
               </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
+              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
                 Serviceability Focus
               </h3>
               <p className="text-gray-400">
@@ -1642,7 +1639,7 @@ function Features() {
                 />
                 <path d="m16.321 2-.5-.866 1.733-1 .5.866A22 22 0 0 1 21 12c0 3.852-1.017 7.636-2.948 10.97l-.502.865-1.73-1.003.501-.865A19.878 19.878 0 0 0 19 12a20 20 0 0 0-2.679-10Z" />
               </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
+              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
                 Reliability Testing
               </h3>
               <p className="text-gray-400">
@@ -1663,7 +1660,7 @@ function Features() {
                 />
                 <path d="m7.454 2.891.891-.454L7.437.655l-.891.454a12 12 0 0 0 0 21.382l.89.454.91-1.781-.892-.455a10 10 0 0 1 0-17.818ZM17.456 1.11l-.891-.454-.909 1.782.891.454a10 10 0 0 1 0 17.819l-.89.454.908 1.781.89-.454a12 12 0 0 0 0-21.382Z" />
               </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
+              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
                 Logistics Optimization
               </h3>
               <p className="text-gray-400">
@@ -1684,7 +1681,7 @@ function Features() {
                 />
                 <path d="M19.406 3.844 6.083 20.497.586 15 2 13.586l3.917 3.917L17.844 2.595l1.562 1.25Z" />
               </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
+              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-white">
                 Global Supply Assurance
               </h3>
               <p className="text-gray-400">
@@ -1869,12 +1866,33 @@ function Product() {
       });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setClearColor(0x000000, 0);
-      renderer.setSize(renderW, renderH);
-      renderer.domElement.style.width = "500px";
-      renderer.domElement.style.height = "500px";
-      renderer.domElement.style.left = "55%";
-      renderer.domElement.style.top = "0";
-      renderer.domElement.style.transform = "none";
+      const setRendererSize = () => {
+        const parentWidth = opts.parent.clientWidth || baseWidth;
+        const isMobile = window.matchMedia("(max-width: 1024px)").matches;
+        const maxSize = isMobile ? parentWidth : 500;
+        const nextSize = Math.max(260, Math.round(maxSize));
+        renderW = nextSize;
+        renderH = nextSize;
+        renderer.setSize(renderW, renderH);
+        renderer.domElement.style.width = `${nextSize}px`;
+        renderer.domElement.style.height = `${nextSize}px`;
+        renderer.domElement.style.maxWidth = "500px";
+        renderer.domElement.style.maxHeight = "500px";
+        if (isMobile) {
+          renderer.domElement.style.left = "0";
+          renderer.domElement.style.top = "0";
+          renderer.domElement.style.transform = "none";
+          renderer.domElement.style.margin = "0 auto";
+          renderer.domElement.style.display = "block";
+        } else {
+          renderer.domElement.style.left = "55%";
+          renderer.domElement.style.top = "15%";
+          renderer.domElement.style.transform = "none";
+          renderer.domElement.style.margin = "0";
+          renderer.domElement.style.display = "block";
+        }
+      };
+      setRendererSize();
       opts.parent.appendChild(renderer.domElement);
 
       const loader = new THREE.TextureLoader();
@@ -1953,34 +1971,7 @@ function Product() {
           }
         };
 
-        const goToSlide = (slideId: number) => {
-          if (isAnimating || slideId === currentIndex) return;
-          isAnimating = true;
-
-          const active = pagination.querySelector(".active");
-          if (active) active.className = "";
-          pagButtons[slideId].className = "active";
-
-          currentIndex = slideId;
-          setProgress(0);
-
-          mat.uniforms.nextImage.value = sliderImages[slideId];
-          mat.uniforms.nextImage.needsUpdate = true;
-
-          gsap.to(mat.uniforms.dispFactor, {
-            duration: 1,
-            value: 1,
-            ease: "expo.inOut",
-            onComplete: () => {
-              mat.uniforms.currentImage.value = sliderImages[slideId];
-              mat.uniforms.currentImage.needsUpdate = true;
-              mat.uniforms.dispFactor.value = 0.0;
-              isAnimating = false;
-              startTime = performance.now();
-              setProgress(0);
-            },
-          });
-
+        const applySlideContent = (slideId: number) => {
           const slideSubtitleEl = opts.parent.querySelector(
             "#product-slide-subtitle",
           ) as HTMLElement | null;
@@ -2067,6 +2058,40 @@ function Product() {
           }
         };
 
+        const goToSlide = (slideId: number, startFactor = 0) => {
+          if (isAnimating || slideId === currentIndex) return;
+          isAnimating = true;
+
+          const active = pagination.querySelector(".active");
+          if (active) active.className = "";
+          pagButtons[slideId].className = "active";
+
+          currentIndex = slideId;
+          setProgress(0);
+
+          mat.uniforms.nextImage.value = sliderImages[slideId];
+          mat.uniforms.nextImage.needsUpdate = true;
+          if (startFactor > 0) {
+            mat.uniforms.dispFactor.value = startFactor;
+          }
+
+          gsap.to(mat.uniforms.dispFactor, {
+            duration: Math.max(0.2, 1 - startFactor),
+            value: 1,
+            ease: "expo.inOut",
+            onComplete: () => {
+              mat.uniforms.currentImage.value = sliderImages[slideId];
+              mat.uniforms.currentImage.needsUpdate = true;
+              mat.uniforms.dispFactor.value = 0.0;
+              isAnimating = false;
+              startTime = performance.now();
+              setProgress(0);
+            },
+          });
+
+          applySlideContent(slideId);
+        };
+
         pagButtons.forEach((el) => {
           el.addEventListener("click", function handleClick() {
             const slideId = parseInt(this.dataset.slide || "0", 10);
@@ -2074,26 +2099,70 @@ function Product() {
           });
         });
 
-        const sliderContent = opts.parent.querySelector(
-          "#product-slider-content",
-        ) as HTMLElement | null;
-        const handlePointerMove = (event: PointerEvent) => {
-          const rect = opts.parent.getBoundingClientRect();
-          const relX = event.clientX - rect.left;
-          const relY = event.clientY - rect.top;
-          const inMiddleBand =
-            relY >= rect.height * 0.25 && relY <= rect.height * 0.75;
-          if (inMiddleBand) {
+        const hoverTarget = opts.parent.parentElement || opts.parent;
+        let isTouchMode = false;
+        const handlePointerEnter = (event: PointerEvent) => {
+          if (event.pointerType === "touch") return;
+          pause();
+        };
+        const handlePointerLeave = (event: PointerEvent) => {
+          if (event.pointerType === "touch" || isTouchMode) return;
+          resume();
+        };
+        const handlePointerDown = (event: PointerEvent) => {
+          if (event.pointerType !== "touch") return;
+          isTouchMode = true;
+          if (pausedAt === null) {
             pause();
           } else {
             resume();
           }
         };
-        const handlePointerLeave = () => {
-          resume();
+        hoverTarget.addEventListener("pointerenter", handlePointerEnter);
+        hoverTarget.addEventListener("pointerleave", handlePointerLeave);
+        hoverTarget.addEventListener("pointerdown", handlePointerDown);
+
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let isDragging = false;
+        const dragThreshold = 30;
+
+        const handleDragEnd = (event: PointerEvent) => {
+          if (!isDragging) return;
+          const deltaX = event.clientX - dragStartX;
+          const absX = Math.abs(deltaX);
+          const absY = Math.abs(event.clientY - dragStartY);
+          isDragging = false;
+          window.removeEventListener("pointerup", handleDragEnd);
+          window.removeEventListener("pointercancel", handleDragEnd);
+          if (absX < dragThreshold || absX < absY * 1.73) return;
+          const goNext = deltaX < 0;
+          const nextIndex = goNext
+            ? (currentIndex + 1) % sliderImages.length
+            : (currentIndex - 1 + sliderImages.length) % sliderImages.length;
+          goToSlide(nextIndex);
         };
-        opts.parent.addEventListener("pointermove", handlePointerMove);
-        opts.parent.addEventListener("pointerleave", handlePointerLeave);
+
+        const handleDragStart = (event: PointerEvent) => {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          const rect = renderer.domElement.getBoundingClientRect();
+          const isInsideCanvas =
+            event.clientX >= rect.left &&
+            event.clientX <= rect.right &&
+            event.clientY >= rect.top &&
+            event.clientY <= rect.bottom;
+          if (!isInsideCanvas) return;
+          isDragging = true;
+          dragStartX = event.clientX;
+          dragStartY = event.clientY;
+          if (event.pointerType === "touch") {
+            event.preventDefault();
+          }
+          window.addEventListener("pointerup", handleDragEnd);
+          window.addEventListener("pointercancel", handleDragEnd);
+        };
+
+        opts.parent.addEventListener("pointerdown", handleDragStart);
 
         const observer = new IntersectionObserver(
           (entries) => {
@@ -2127,8 +2196,12 @@ function Product() {
         rafId = requestAnimationFrame(tick);
 
         cleanup = () => {
-          opts.parent.removeEventListener("pointermove", handlePointerMove);
-          opts.parent.removeEventListener("pointerleave", handlePointerLeave);
+          hoverTarget.removeEventListener("pointerenter", handlePointerEnter);
+          hoverTarget.removeEventListener("pointerleave", handlePointerLeave);
+          hoverTarget.removeEventListener("pointerdown", handlePointerDown);
+          opts.parent.removeEventListener("pointerdown", handleDragStart);
+          window.removeEventListener("pointerup", handleDragEnd);
+          window.removeEventListener("pointercancel", handleDragEnd);
           observer.disconnect();
           cancelAnimationFrame(rafId);
         };
@@ -2137,21 +2210,21 @@ function Product() {
       addEvents();
 
       const handleResize = () => {
-        renderW = 500;
-        renderH = 500;
-        renderer.setSize(renderW, renderH);
-        renderer.domElement.style.width = "500px";
-        renderer.domElement.style.height = "500px";
-
-
-        renderer.domElement.style.transform = "none";
+        setRendererSize();
+        const isMobile = window.matchMedia("(max-width: 1024px)").matches;
+        const fitScale = isMobile ? 1 : 1;
         camera.left = renderW / -2;
         camera.right = renderW / 2;
         camera.top = renderH / 2;
         camera.bottom = renderH / -2;
         camera.updateProjectionMatrix();
-        object.scale.set(renderW / baseWidth, renderH / baseHeight, 1);
+        object.scale.set(
+          (renderW / baseWidth) * fitScale,
+          (renderH / baseHeight) * fitScale,
+          1,
+        );
       };
+      handleResize();
       window.addEventListener("resize", handleResize);
       cleanup = () => window.removeEventListener("resize", handleResize);
 
@@ -2171,13 +2244,13 @@ function Product() {
 
   return (
     <section
-      className={`product-slider py-12 md:py-20 ${
+      className={`product-slider${
         isLoading ? "product-slider--loading" : ""
       }`}
       data-animate-on-view
       data-in-view="false"
     >
-      <div className="mx-auto max-w-6xl px-4 pb-6 text-center relative z-10">
+      <div className="py-12 mx-auto max-w-6xl px-4 text-center relative z-10">
         <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
           <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
             Commercial Partnership Frameworks
@@ -2192,6 +2265,7 @@ function Product() {
           integrate with your specific business strategy—whether that requires
           total brand control, tariff mitigation, or rapid market entry.
         </p>
+        <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
       </div>
       <div className="product-bubbles" aria-hidden="true">
         <ul className="product-bubbles__list">
@@ -2205,15 +2279,13 @@ function Product() {
           <div className="slider-inner">
             <div id="product-slider-content">
               <div id="product-slide-subtitle">{productSlides[0].subtitle}</div>
-              <h3 id="product-slide-title">
-                {productSlides[0].title[0]} <br />
-                {productSlides[0].title[1]}
+              <h3 id="product-slide-title" className="process-card-heading text-white">
+                {productSlides[0].title[0]} {productSlides[0].title[1]}
               </h3>
               <p id="product-slide-desc">{productSlides[0].description}</p>
               {productSlides.map((slide, index) => (
                 <span key={slide.image} data-slide-title={index}>
-                  {slide.title[0]} <br />
-                  {slide.title[1]}
+                  {slide.title[0]} {slide.title[1]}
                 </span>
               ))}
               {productSlides.map((slide, index) => (
