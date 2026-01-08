@@ -224,39 +224,22 @@ function AboutAuthHero() {
       <canvas id="particleCanvas" ref={canvasRef}></canvas>
 
       <div className="heroSubP">
-        <p>Introducing</p>
+        <span>Discover</span>
       </div>
       <div className="hero">
         <div className="heroT">
-          <h2>Eclipx</h2>
-          <h2>Eclipx</h2>
+          <span>TYCORUN</span>
+          <span>TYCORUN</span>
         </div>
       </div>
-      <p className="heroP">
-        The world's best platform, <br />
-        powered by EclipxOS + React.
-      </p>
+      <h1 className="heroP">
+        A Global Electric Motorcycle Manufacturer, <br />
+        Built for OEM Excellence.
+      </h1>
 
-      <div data-aos="fade-up" data-aos-delay={2500}>
-        <div id="bucket" className="globe" ref={globeRef} aria-hidden="true"></div>
-      </div>
+      <div id="bucket" className="globe" ref={globeRef} aria-hidden="true"></div>
       <div className="hero-spacer"></div>
 
-      <div className="content-section">
-        <div className="content-acc">
-          <div></div>
-          <div></div>
-        </div>
-        <p className="subt">Revolutionary by design</p>
-        <h3 className="title">
-          Harness. Empower.<br />
-          Unmatched Versatility.
-        </h3>
-        <p className="subp">
-          At the core lies our revolutionary framework, <br />
-          ensuring adaptability across all application architectures.
-        </p>
-      </div>
     </section>
   );
 }
