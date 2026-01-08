@@ -258,6 +258,7 @@ class TycCarousel {
   viewRect: DOMRect | null = null;
   pointerMoveRafId = 0;
   lastPointerEvent: PointerEvent | null = null;
+  lastRenderTs = 0;
   dots: HTMLButtonElement[] = [];
   slideW = 0;
   state = {
@@ -267,6 +268,7 @@ class TycCarousel {
     height: 0,
     gap: 28,
     dragging: false,
+    hovering: false,
     pointerId: null as number | null,
     x0: 0,
     dragDx: 0,
@@ -440,6 +442,13 @@ class TycCarousel {
     this._on(pe, "pointermove", (e) => this._onPointerMove(e as PointerEvent));
     this._on(pe, "pointerup", (e) => this._onDragEnd(e as PointerEvent));
     this._on(pe, "pointercancel", (e) => this._onDragEnd(e as PointerEvent));
+    this._on(pe, "pointerenter", () => {
+      this.state.hovering = true;
+    });
+    this._on(pe, "pointerleave", () => {
+      this.state.hovering = false;
+      if (!this.state.dragging) this._resetTilt();
+    });
     this.ro = new ResizeObserver(() => this._measure());
     this.ro.observe(this.viewport);
     this.opts.breakpoints.forEach((bp) => {
@@ -492,13 +501,16 @@ class TycCarousel {
   }
 
   _onPointerMove(e: PointerEvent) {
+    if (!this.state.dragging && !this.state.hovering) return;
     this.lastPointerEvent = e;
     if (this.pointerMoveRafId) return;
     this.pointerMoveRafId = window.requestAnimationFrame(() => {
       this.pointerMoveRafId = 0;
       const evt = this.lastPointerEvent;
       if (!evt) return;
-      this._applyTilt(evt);
+      if (this.state.dragging || this.state.hovering) {
+        this._applyTilt(evt);
+      }
       this._applyDrag(evt);
     });
   }
@@ -511,10 +523,17 @@ class TycCarousel {
     this.root.style.setProperty("--mzaTiltY", (mx * 6).toFixed(3));
   }
 
+  _resetTilt() {
+    this.root.style.setProperty("--mzaTiltX", "0");
+    this.root.style.setProperty("--mzaTiltY", "0");
+  }
+
   _onDragStart(e: PointerEvent) {
     if (this.state.animating) return;
-    if (e.pointerType === "mouse" && e.button !== 0) return;
-    e.preventDefault();
+    if (e.pointerType === "mouse") {
+      if (e.button !== 0) return;
+      e.preventDefault();
+    }
     this.state.dragging = true;
     this.state.pointerId = e.pointerId;
     this.viewport.setPointerCapture(e.pointerId);
@@ -546,6 +565,7 @@ class TycCarousel {
       }
     } catch {}
     this.state.pointerId = null;
+    if (!this.state.hovering) this._resetTilt();
     const slideSpan = this.slideW + this.state.gap;
     const v = this.state.v;
     const dx = this.state.dragDx;
@@ -606,6 +626,13 @@ class TycCarousel {
   }
 
   _render(markActive = false) {
+    if (!markActive) {
+      const now = performance.now();
+      if (now - this.lastRenderTs < 16) return;
+      this.lastRenderTs = now;
+    } else {
+      this.lastRenderTs = performance.now();
+    }
     const span = this.slideW + this.state.gap;
     const tiltX = parseFloat(this.root.style.getPropertyValue("--mzaTiltX") || "0");
     const tiltY = parseFloat(this.root.style.getPropertyValue("--mzaTiltY") || "0");
@@ -616,10 +643,12 @@ class TycCarousel {
       const weight = Math.max(0, 1 - Math.abs(d) * 2);
       const biasActive = -this.slideW * this.opts.activeLeftBias * weight;
       const tx = d * span + biasActive;
-      const depth = -Math.abs(d) * this.opts.zDepth;
-      const rot = -d * this.opts.rotateY;
+      const isActiveLike = Math.abs(d) < 0.55;
+      const depth = -Math.abs(d) * this.opts.zDepth * (isActiveLike ? 1 : 0.55);
+      const rot = -d * this.opts.rotateY * (isActiveLike ? 1 : 0.6);
       const scale = 1 - Math.min(Math.abs(d) * this.opts.scaleDrop, 0.42);
-      const blur = Math.min(Math.abs(d) * this.opts.blurMax, this.opts.blurMax);
+      const blurMax = this.opts.blurMax * (isActiveLike ? 1 : 0.45);
+      const blur = Math.min(Math.abs(d) * blurMax, blurMax);
       const z = Math.round(1000 - Math.abs(d) * 10);
       const s = this.slides[i];
       if (this.isFF) {
@@ -630,9 +659,9 @@ class TycCarousel {
         s.style.filter = `blur(${blur}px)`;
       }
       s.style.zIndex = `${z}`;
-      if (markActive) {
-        s.dataset.state = Math.round(this.state.index) === i ? "active" : "rest";
-      }
+      const dAbs = Math.abs(d);
+      s.dataset.state =
+        Math.round(this.state.index) === i ? "active" : dAbs <= 1.1 ? "near" : "rest";
       const card = s.querySelector(".mzaCard") as HTMLElement | null;
       if (!card) continue;
       const parBase = Math.max(-1, Math.min(1, -d));
@@ -685,24 +714,25 @@ function AboutCarousel() {
                 style={
                   {
                     "--mzaCard-bg":
-                      "url('https://picsum.photos/id/1015/1600/1000')",
+                      "url('/webp/1.webp')",
                   } as CSSProperties
                 }
               >
                 <header className="mzaCard-head mzaPar-1">
-                  <p className="mzaCard-kicker">Design systems that breathe</p>
-                  <h2 className="mzaCard-title">Edge Visuals</h2>
+                  <p className="mzaCard-kicker">Capacity in motion</p>
+                  <h2 className="mzaCard-title">Manufacturing Plant</h2>
                 </header>
                 <p className="mzaCard-text mzaPar-2">
-                  Build adaptive UI foundations with tokens, motion, and accessible
-                  color ramps. Ship faster without sameness.
+                  Automated precision drives consistency.
+                  <br />
+                  200,000 units annual capacity ready for scale.
                 </p>
                 <footer className="mzaCard-actions mzaPar-3">
                   <a
                     className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
                     href="/contact"
                   >
-                    <span className="relative z-20">Contact Us</span>
+                    <span className="relative z-20">Explore Facility</span>
                     <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
                     <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
                   </a>
@@ -721,24 +751,25 @@ function AboutCarousel() {
                 style={
                   {
                     "--mzaCard-bg":
-                      "url('https://picsum.photos/id/1011/1600/1000')",
+                      "url('/webp/2.webp')",
                   } as CSSProperties
                 }
               >
                 <header className="mzaCard-head mzaPar-1">
-                  <p className="mzaCard-kicker">Signal over noise</p>
-                  <h2 className="mzaCard-title">Realtime Dashboards</h2>
+                  <p className="mzaCard-kicker">Power unified</p>
+                  <h2 className="mzaCard-title">Vertical Integration</h2>
                 </header>
                 <p className="mzaCard-text mzaPar-2">
-                  Stream metrics, smooth spikes, and highlight deltas. Clarity
-                  first, chrome last.
+                  In-house battery meets chassis logic.
+                  <br />
+                  Controlling cost and quality at the source.
                 </p>
                 <footer className="mzaCard-actions mzaPar-3">
                   <a
                     className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
                     href="/contact"
                   >
-                    <span className="relative z-20">Contact Us</span>
+                    <span className="relative z-20">See Technology</span>
                     <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
                     <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
                   </a>
@@ -757,24 +788,25 @@ function AboutCarousel() {
                 style={
                   {
                     "--mzaCard-bg":
-                      "url('https://picsum.photos/id/1018/1600/1000')",
+                      "url('/webp/3.webp')",
                   } as CSSProperties
                 }
               >
                 <header className="mzaCard-head mzaPar-1">
-                  <p className="mzaCard-kicker">Identity in motion</p>
-                  <h2 className="mzaCard-title">Brand Motion</h2>
+                  <p className="mzaCard-kicker">Design evolution</p>
+                  <h2 className="mzaCard-title">R&amp;D Engineering</h2>
                 </header>
                 <p className="mzaCard-text mzaPar-2">
-                  Translate marks into kinetic systems. Timing, easing, and
-                  restraint create memory.
+                  From concept sketches to homologation.
+                  <br />
+                  Building innovation into every production model.
                 </p>
                 <footer className="mzaCard-actions mzaPar-3">
                   <a
                     className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
                     href="/contact"
                   >
-                    <span className="relative z-20">Contact Us</span>
+                    <span className="relative z-20">View Capabilities</span>
                     <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
                     <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
                   </a>
@@ -793,24 +825,25 @@ function AboutCarousel() {
                 style={
                   {
                     "--mzaCard-bg":
-                      "url('https://picsum.photos/id/1021/1600/1000')",
+                      "url('/webp/4.webp')",
                   } as CSSProperties
                 }
               >
                 <header className="mzaCard-head mzaPar-1">
-                  <p className="mzaCard-kicker">Frictionless paths</p>
-                  <h2 className="mzaCard-title">E-commerce UX</h2>
+                  <p className="mzaCard-kicker">Standards verified</p>
+                  <h2 className="mzaCard-title">Quality Control</h2>
                 </header>
                 <p className="mzaCard-text mzaPar-2">
-                  Model intent, compress choice, and keep the dopamine loop
-                  honest. Checkout in one breath.
+                  ISO 9001 protocols at every stage.
+                  <br />
+                  Rigorous testing ensures zero defects globally.
                 </p>
                 <footer className="mzaCard-actions mzaPar-3">
                   <a
                     className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
                     href="/contact"
                   >
-                    <span className="relative z-20">Contact Us</span>
+                    <span className="relative z-20">Check Standards</span>
                     <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
                     <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
                   </a>
@@ -829,24 +862,25 @@ function AboutCarousel() {
                 style={
                   {
                     "--mzaCard-bg":
-                      "url('https://picsum.photos/id/1005/1600/1000')",
+                      "url('/webp/5.webp')",
                   } as CSSProperties
                 }
               >
                 <header className="mzaCard-head mzaPar-1">
-                  <p className="mzaCard-kicker">Scale without sludge</p>
-                  <h2 className="mzaCard-title">Content Engines</h2>
+      <p className="mzaCard-kicker">Supply unbound</p>
+      <h2 className="mzaCard-title">Global Logistics</h2>
                 </header>
                 <p className="mzaCard-text mzaPar-2">
-                  Structured content, image policy, and smart defaults. Publish
-                  daily, stay sharp.
+                  Seamless SKD and CKD solutions.
+                  <br />
+                  Delivering efficiency from our dock to yours.
                 </p>
                 <footer className="mzaCard-actions mzaPar-3">
                   <a
                     className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
                     href="/contact"
                   >
-                    <span className="relative z-20">Contact Us</span>
+                    <span className="relative z-20">Shipping Terms</span>
                     <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
                     <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
                   </a>
