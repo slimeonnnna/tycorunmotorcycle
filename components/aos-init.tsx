@@ -7,10 +7,7 @@ export default function AOSInit() {
   useEffect(() => {
     let cancelled = false;
     const init = async () => {
-      const [{ default: AOS }] = await Promise.all([
-        import("aos"),
-        import("aos/dist/aos.css"),
-      ]);
+      const { default: AOS } = await import("aos");
       if (cancelled) return;
       AOS.init({
         once: true,

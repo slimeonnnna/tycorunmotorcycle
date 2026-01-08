@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 export default function LenisInit() {
+  const pathname = usePathname();
+  const lenisRef = useRef<import("lenis").default | null>(null);
+
   useEffect(() => {
     let cancelled = false;
-    let lenis: import("lenis").default | null = null;
     let rafId = 0;
+    const originalRestoration = history.scrollRestoration;
+    history.scrollRestoration = "manual";
     const handleAnchorClick = (event: MouseEvent) => {
-      if (!lenis) return;
+      if (!lenisRef.current) return;
       const target = event.target as HTMLElement | null;
       if (!target) return;
       const anchor = target.closest("a[href^='#']") as HTMLAnchorElement | null;
@@ -21,21 +26,21 @@ export default function LenisInit() {
       if (!element) return;
 
       event.preventDefault();
-      lenis.scrollTo(element, { offset: -80, immediate: false });
+      lenisRef.current.scrollTo(element, { offset: -80, immediate: false });
       history.replaceState(null, "", hash);
     };
 
     const init = async () => {
       const { default: Lenis } = await import("lenis");
       if (cancelled) return;
-      lenis = new Lenis({
+      lenisRef.current = new Lenis({
         duration: 1.1,
         smoothWheel: true,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
 
       const raf = (time: number) => {
-        lenis?.raf(time);
+        lenisRef.current?.raf(time);
         rafId = requestAnimationFrame(raf);
       };
 
@@ -49,9 +54,26 @@ export default function LenisInit() {
       cancelled = true;
       document.removeEventListener("click", handleAnchorClick);
       cancelAnimationFrame(rafId);
-      lenis?.destroy();
+      lenisRef.current?.destroy();
+      lenisRef.current = null;
+      history.scrollRestoration = originalRestoration;
     };
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    history.scrollRestoration = "manual";
+    const reset = () => {
+      lenisRef.current?.scrollTo(0, { immediate: true });
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    };
+    const rafId = requestAnimationFrame(reset);
+    const timeoutId = window.setTimeout(reset, 0);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [pathname]);
 
   return null;
 }
