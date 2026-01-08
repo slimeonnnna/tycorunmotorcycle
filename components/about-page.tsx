@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import * as THREE from "three";
 
 import { cities } from "./cities-data";
@@ -240,6 +240,645 @@ function AboutAuthHero() {
       <div id="bucket" className="globe" ref={globeRef} aria-hidden="true"></div>
       <div className="hero-spacer"></div>
 
+    </section>
+  );
+}
+
+class TycCarousel {
+  root: HTMLDivElement;
+  viewport: HTMLDivElement;
+  track: HTMLDivElement;
+  slides: HTMLElement[];
+  prevBtn: HTMLButtonElement | null;
+  nextBtn: HTMLButtonElement | null;
+  pagination: HTMLDivElement | null;
+  isFF: boolean;
+  n: number;
+  ro: ResizeObserver | null = null;
+  viewRect: DOMRect | null = null;
+  pointerMoveRafId = 0;
+  lastPointerEvent: PointerEvent | null = null;
+  dots: HTMLButtonElement[] = [];
+  slideW = 0;
+  state = {
+    index: 0,
+    pos: 0,
+    width: 0,
+    height: 0,
+    gap: 28,
+    dragging: false,
+    pointerId: null as number | null,
+    x0: 0,
+    dragDx: 0,
+    v: 0,
+    t0: 0,
+    animating: false,
+  };
+  opts: {
+    gap: number;
+    peek: number;
+    rotateY: number;
+    zDepth: number;
+    scaleDrop: number;
+    blurMax: number;
+    activeLeftBias: number;
+    transitionMs: number;
+    keyboard: boolean;
+    breakpoints: {
+      mq: string;
+      gap: number;
+      peek: number;
+      rotateY: number;
+      zDepth: number;
+      scaleDrop: number;
+      activeLeftBias: number;
+    }[];
+  };
+  handlers: Array<{ target: EventTarget; type: string; handler: EventListener }> =
+    [];
+
+  constructor(root: HTMLDivElement, opts: Partial<TycCarousel["opts"]> = {}) {
+    this.root = root;
+    this.viewport = root.querySelector(".tycCarousel-viewport") as HTMLDivElement;
+    this.track = root.querySelector(".tycCarousel-track") as HTMLDivElement;
+    this.slides = Array.from(
+      root.querySelectorAll(".tycCarousel-slide")
+    ) as HTMLElement[];
+    this.prevBtn = root.querySelector(".tycCarousel-prev");
+    this.nextBtn = root.querySelector(".tycCarousel-next");
+    this.pagination = root.querySelector(".tycCarousel-pagination");
+    this.isFF = typeof (window as Window & { InstallTrigger?: unknown })
+      .InstallTrigger !== "undefined";
+    this.n = this.slides.length;
+    this.opts = Object.assign(
+      {
+        gap: 28,
+        peek: 0.15,
+        rotateY: 34,
+        zDepth: 150,
+        scaleDrop: 0.09,
+        blurMax: 2.0,
+        activeLeftBias: 0.12,
+        transitionMs: 900,
+        keyboard: false,
+        breakpoints: [
+          {
+            mq: "(max-width: 1200px)",
+            gap: 24,
+            peek: 0.12,
+            rotateY: 28,
+            zDepth: 120,
+            scaleDrop: 0.08,
+            activeLeftBias: 0.1,
+          },
+          {
+            mq: "(max-width: 1000px)",
+            gap: 18,
+            peek: 0.09,
+            rotateY: 22,
+            zDepth: 90,
+            scaleDrop: 0.07,
+            activeLeftBias: 0.09,
+          },
+          {
+            mq: "(max-width: 768px)",
+            gap: 14,
+            peek: 0.06,
+            rotateY: 16,
+            zDepth: 70,
+            scaleDrop: 0.06,
+            activeLeftBias: 0.08,
+          },
+          {
+            mq: "(max-width: 560px)",
+            gap: 12,
+            peek: 0.05,
+            rotateY: 12,
+            zDepth: 60,
+            scaleDrop: 0.05,
+            activeLeftBias: 0.07,
+          },
+        ],
+      },
+      opts
+    );
+    if (this.isFF) {
+      this.opts.rotateY = 10;
+      this.opts.zDepth = 0;
+      this.opts.blurMax = 0;
+    }
+    this._init();
+  }
+
+  destroy() {
+    this.handlers.forEach(({ target, type, handler }) => {
+      target.removeEventListener(type, handler);
+    });
+    this.handlers = [];
+    if (this.ro) {
+      this.ro.disconnect();
+      this.ro = null;
+    }
+  }
+
+  _on(target: EventTarget, type: string, handler: EventListener) {
+    target.addEventListener(type, handler);
+    this.handlers.push({ target, type, handler });
+  }
+
+  _init() {
+    this._setupDots();
+    this._bind();
+    this._preloadImages();
+    this._measure();
+    this.goTo(0, false);
+  }
+
+  _setupDots() {
+    if (!this.pagination) return;
+    this.pagination.innerHTML = "";
+    this.dots = this.slides.map((_, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "tycCarousel-dot";
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+      b.addEventListener("click", () => {
+        this.goTo(i);
+      });
+      this.pagination?.appendChild(b);
+      return b;
+    });
+  }
+
+  _preloadImages() {
+    this.slides.forEach((sl) => {
+      const card = sl.querySelector(".mzaCard");
+      if (!card) return;
+      const bg = getComputedStyle(card).getPropertyValue("--mzaCard-bg");
+      const m = /url\((?:'|")?([^'")]+)(?:'|")?\)/.exec(bg);
+      if (m && m[1]) {
+        const img = new Image();
+        img.src = m[1];
+      }
+    });
+  }
+
+  _bind() {
+    if (this.prevBtn) {
+      this._on(this.prevBtn, "click", () => {
+        this.prev();
+      });
+    }
+    if (this.nextBtn) {
+      this._on(this.nextBtn, "click", () => {
+        this.next();
+      });
+    }
+    const pe = this.viewport;
+    this._on(pe, "pointerdown", (e) => this._onDragStart(e as PointerEvent));
+    this._on(pe, "pointermove", (e) => this._onPointerMove(e as PointerEvent));
+    this._on(pe, "pointerup", (e) => this._onDragEnd(e as PointerEvent));
+    this._on(pe, "pointercancel", (e) => this._onDragEnd(e as PointerEvent));
+    this.ro = new ResizeObserver(() => this._measure());
+    this.ro.observe(this.viewport);
+    this.opts.breakpoints.forEach((bp) => {
+      const m = window.matchMedia(bp.mq);
+      const apply = () => {
+        Object.keys(bp).forEach((k) => {
+          if (k !== "mq") {
+            this.opts[k as keyof TycCarousel["opts"]] =
+              bp[k as keyof typeof bp] as never;
+          }
+        });
+        this._measure();
+        this._render();
+      };
+      if (m.addEventListener) {
+        m.addEventListener("change", apply);
+        this.handlers.push({ target: m, type: "change", handler: apply });
+      } else if (m.addListener) {
+        m.addListener(apply);
+        this.handlers.push({
+          target: m,
+          type: "change",
+          handler: apply as EventListener,
+        });
+      }
+      if (m.matches) apply();
+    });
+    this._on(window, "orientationchange", () =>
+      setTimeout(() => this._measure(), 250)
+    );
+  }
+
+  _measure() {
+    const viewRect = this.viewport.getBoundingClientRect();
+    this.viewRect = viewRect;
+    const rootRect = this.root.getBoundingClientRect();
+    const pagRect = this.pagination?.getBoundingClientRect();
+    const pagBottom = pagRect?.bottom ?? rootRect.bottom;
+    const pagHeight = pagRect?.height ?? 0;
+    const bottomGap = Math.max(12, Math.round(rootRect.bottom - pagBottom));
+    const pagSpace = pagHeight + bottomGap;
+    const availH = viewRect.height - pagSpace;
+    const cardH = Math.max(220, Math.min(430, Math.round(availH * 0.67)));
+    this.state.width = viewRect.width;
+    this.state.height = viewRect.height;
+    this.state.gap = this.opts.gap;
+    this.slideW = Math.min(880, this.state.width * (1 - this.opts.peek * 2));
+    this.root.style.setProperty("--mzaPagH", `${pagSpace}px`);
+    this.root.style.setProperty("--mzaCardH", `${cardH}px`);
+  }
+
+  _onPointerMove(e: PointerEvent) {
+    this.lastPointerEvent = e;
+    if (this.pointerMoveRafId) return;
+    this.pointerMoveRafId = window.requestAnimationFrame(() => {
+      this.pointerMoveRafId = 0;
+      const evt = this.lastPointerEvent;
+      if (!evt) return;
+      this._applyTilt(evt);
+      this._applyDrag(evt);
+    });
+  }
+
+  _applyTilt(e: PointerEvent) {
+    const r = this.viewRect || this.viewport.getBoundingClientRect();
+    const mx = (e.clientX - r.left) / r.width - 0.5;
+    const my = (e.clientY - r.top) / r.height - 0.5;
+    this.root.style.setProperty("--mzaTiltX", (my * -6).toFixed(3));
+    this.root.style.setProperty("--mzaTiltY", (mx * 6).toFixed(3));
+  }
+
+  _onDragStart(e: PointerEvent) {
+    if (this.state.animating) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    e.preventDefault();
+    this.state.dragging = true;
+    this.state.pointerId = e.pointerId;
+    this.viewport.setPointerCapture(e.pointerId);
+    this.state.x0 = e.clientX;
+    this.state.dragDx = 0;
+    this.state.t0 = performance.now();
+    this.state.v = 0;
+  }
+
+  _applyDrag(e: PointerEvent) {
+    if (!this.state.dragging || e.pointerId !== this.state.pointerId) return;
+    const dx = e.clientX - this.state.x0;
+    const dt = Math.max(16, performance.now() - this.state.t0);
+    this.state.v = dx / dt;
+    this.state.dragDx = dx;
+    const slideSpan = this.slideW + this.state.gap;
+    this.state.pos = this._mod(this.state.index - dx / slideSpan, this.n);
+    this._render();
+  }
+
+  _onDragEnd(e?: PointerEvent) {
+    if (!this.state.dragging || (e && e.pointerId !== this.state.pointerId)) {
+      return;
+    }
+    this.state.dragging = false;
+    try {
+      if (this.state.pointerId != null) {
+        this.viewport.releasePointerCapture(this.state.pointerId);
+      }
+    } catch {}
+    this.state.pointerId = null;
+    const slideSpan = this.slideW + this.state.gap;
+    const v = this.state.v;
+    const dx = this.state.dragDx;
+    const velocityThreshold = 0.12;
+    const distanceThreshold = 0.06;
+    const distanceMove = Math.abs(dx) > slideSpan * distanceThreshold;
+    const velocityMove = Math.abs(v) > velocityThreshold;
+    let target = Math.round(this.state.pos);
+    if (distanceMove || velocityMove) {
+      const dir = Math.sign(distanceMove ? dx : v);
+      if (dir !== 0) target = this.state.index - dir;
+    }
+    this.goTo(this._mod(target, this.n));
+  }
+
+  prev() {
+    this.goTo(this._mod(this.state.index - 1, this.n));
+  }
+
+  next() {
+    this.goTo(this._mod(this.state.index + 1, this.n));
+  }
+
+  goTo(i: number, animate = true) {
+    const start = this.state.pos || this.state.index;
+    const end = this._nearest(start, i);
+    const dur = animate ? this.opts.transitionMs : 0;
+    const t0 = performance.now();
+    const ease = (x: number) => 1 - Math.pow(1 - x, 4);
+    this.state.animating = true;
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / dur);
+      const p = dur ? ease(t) : 1;
+      this.state.pos = start + (end - start) * p;
+      this._render();
+      if (t < 1) window.requestAnimationFrame(step);
+      else this._afterSnap(i);
+    };
+    window.requestAnimationFrame(step);
+  }
+
+  _afterSnap(i: number) {
+    this.state.index = this._mod(Math.round(this.state.pos), this.n);
+    this.state.pos = this.state.index;
+    this.state.animating = false;
+    this._render(true);
+  }
+
+  _nearest(from: number, target: number) {
+    let d = target - Math.round(from);
+    if (d > this.n / 2) d -= this.n;
+    if (d < -this.n / 2) d += this.n;
+    return Math.round(from) + d;
+  }
+
+  _mod(i: number, n: number) {
+    return ((i % n) + n) % n;
+  }
+
+  _render(markActive = false) {
+    const span = this.slideW + this.state.gap;
+    const tiltX = parseFloat(this.root.style.getPropertyValue("--mzaTiltX") || "0");
+    const tiltY = parseFloat(this.root.style.getPropertyValue("--mzaTiltY") || "0");
+    for (let i = 0; i < this.n; i += 1) {
+      let d = i - this.state.pos;
+      if (d > this.n / 2) d -= this.n;
+      if (d < -this.n / 2) d += this.n;
+      const weight = Math.max(0, 1 - Math.abs(d) * 2);
+      const biasActive = -this.slideW * this.opts.activeLeftBias * weight;
+      const tx = d * span + biasActive;
+      const depth = -Math.abs(d) * this.opts.zDepth;
+      const rot = -d * this.opts.rotateY;
+      const scale = 1 - Math.min(Math.abs(d) * this.opts.scaleDrop, 0.42);
+      const blur = Math.min(Math.abs(d) * this.opts.blurMax, this.opts.blurMax);
+      const z = Math.round(1000 - Math.abs(d) * 10);
+      const s = this.slides[i];
+      if (this.isFF) {
+        s.style.transform = `translate(${tx}px,-50%) scale(${scale})`;
+        s.style.filter = "none";
+      } else {
+        s.style.transform = `translate3d(${tx}px,-50%,${depth}px) rotateY(${rot}deg) scale(${scale})`;
+        s.style.filter = `blur(${blur}px)`;
+      }
+      s.style.zIndex = `${z}`;
+      if (markActive) {
+        s.dataset.state = Math.round(this.state.index) === i ? "active" : "rest";
+      }
+      const card = s.querySelector(".mzaCard") as HTMLElement | null;
+      if (!card) continue;
+      const parBase = Math.max(-1, Math.min(1, -d));
+      const parX = parBase * 48 + tiltY * 2.0;
+      const parY = tiltX * -1.5;
+      const bgX = parBase * -64 + tiltY * -2.4;
+      card.style.setProperty("--mzaParX", `${parX.toFixed(2)}px`);
+      card.style.setProperty("--mzaParY", `${parY.toFixed(2)}px`);
+      card.style.setProperty("--mzaParBgX", `${bgX.toFixed(2)}px`);
+      card.style.setProperty("--mzaParBgY", `${(parY * 0.35).toFixed(2)}px`);
+    }
+    const active = this._mod(Math.round(this.state.pos), this.n);
+    this.dots.forEach((d, i) =>
+      d.setAttribute("aria-selected", i === active ? "true" : "false")
+    );
+  }
+}
+
+function AboutCarousel() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = carouselRef.current;
+    if (!root) return;
+    const instance = new TycCarousel(root, { transitionMs: 900 });
+    return () => {
+      instance.destroy();
+    };
+  }, []);
+
+  return (
+    <section className="tycCarouselSection">
+      <div
+        className="tycCarousel"
+        id="tycCarousel"
+        aria-roledescription="carousel"
+        aria-label="Featured cards"
+        ref={carouselRef}
+      >
+        <div className="tycCarousel-viewport" tabIndex={0}>
+          <div className="tycCarousel-track">
+            <article
+              className="tycCarousel-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="1 of 5"
+            >
+              <div
+                className="mzaCard"
+                style={
+                  {
+                    "--mzaCard-bg":
+                      "url('https://picsum.photos/id/1015/1600/1000')",
+                  } as CSSProperties
+                }
+              >
+                <header className="mzaCard-head mzaPar-1">
+                  <p className="mzaCard-kicker">Design systems that breathe</p>
+                  <h2 className="mzaCard-title">Edge Visuals</h2>
+                </header>
+                <p className="mzaCard-text mzaPar-2">
+                  Build adaptive UI foundations with tokens, motion, and accessible
+                  color ramps. Ship faster without sameness.
+                </p>
+                <footer className="mzaCard-actions mzaPar-3">
+                  <a
+                    className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                    href="/contact"
+                  >
+                    <span className="relative z-20">Contact Us</span>
+                    <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
+                    <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
+                  </a>
+                </footer>
+              </div>
+            </article>
+
+            <article
+              className="tycCarousel-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="2 of 5"
+            >
+              <div
+                className="mzaCard"
+                style={
+                  {
+                    "--mzaCard-bg":
+                      "url('https://picsum.photos/id/1011/1600/1000')",
+                  } as CSSProperties
+                }
+              >
+                <header className="mzaCard-head mzaPar-1">
+                  <p className="mzaCard-kicker">Signal over noise</p>
+                  <h2 className="mzaCard-title">Realtime Dashboards</h2>
+                </header>
+                <p className="mzaCard-text mzaPar-2">
+                  Stream metrics, smooth spikes, and highlight deltas. Clarity
+                  first, chrome last.
+                </p>
+                <footer className="mzaCard-actions mzaPar-3">
+                  <a
+                    className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                    href="/contact"
+                  >
+                    <span className="relative z-20">Contact Us</span>
+                    <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
+                    <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
+                  </a>
+                </footer>
+              </div>
+            </article>
+
+            <article
+              className="tycCarousel-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="3 of 5"
+            >
+              <div
+                className="mzaCard"
+                style={
+                  {
+                    "--mzaCard-bg":
+                      "url('https://picsum.photos/id/1018/1600/1000')",
+                  } as CSSProperties
+                }
+              >
+                <header className="mzaCard-head mzaPar-1">
+                  <p className="mzaCard-kicker">Identity in motion</p>
+                  <h2 className="mzaCard-title">Brand Motion</h2>
+                </header>
+                <p className="mzaCard-text mzaPar-2">
+                  Translate marks into kinetic systems. Timing, easing, and
+                  restraint create memory.
+                </p>
+                <footer className="mzaCard-actions mzaPar-3">
+                  <a
+                    className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                    href="/contact"
+                  >
+                    <span className="relative z-20">Contact Us</span>
+                    <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
+                    <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
+                  </a>
+                </footer>
+              </div>
+            </article>
+
+            <article
+              className="tycCarousel-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="4 of 5"
+            >
+              <div
+                className="mzaCard"
+                style={
+                  {
+                    "--mzaCard-bg":
+                      "url('https://picsum.photos/id/1021/1600/1000')",
+                  } as CSSProperties
+                }
+              >
+                <header className="mzaCard-head mzaPar-1">
+                  <p className="mzaCard-kicker">Frictionless paths</p>
+                  <h2 className="mzaCard-title">E-commerce UX</h2>
+                </header>
+                <p className="mzaCard-text mzaPar-2">
+                  Model intent, compress choice, and keep the dopamine loop
+                  honest. Checkout in one breath.
+                </p>
+                <footer className="mzaCard-actions mzaPar-3">
+                  <a
+                    className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                    href="/contact"
+                  >
+                    <span className="relative z-20">Contact Us</span>
+                    <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
+                    <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
+                  </a>
+                </footer>
+              </div>
+            </article>
+
+            <article
+              className="tycCarousel-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="5 of 5"
+            >
+              <div
+                className="mzaCard"
+                style={
+                  {
+                    "--mzaCard-bg":
+                      "url('https://picsum.photos/id/1005/1600/1000')",
+                  } as CSSProperties
+                }
+              >
+                <header className="mzaCard-head mzaPar-1">
+                  <p className="mzaCard-kicker">Scale without sludge</p>
+                  <h2 className="mzaCard-title">Content Engines</h2>
+                </header>
+                <p className="mzaCard-text mzaPar-2">
+                  Structured content, image policy, and smart defaults. Publish
+                  daily, stay sharp.
+                </p>
+                <footer className="mzaCard-actions mzaPar-3">
+                  <a
+                    className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                    href="/contact"
+                  >
+                    <span className="relative z-20">Contact Us</span>
+                    <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
+                    <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
+                  </a>
+                </footer>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div className="tycCarousel-controls" aria-label="Controls">
+          <button
+            className="tycCarousel-prev"
+            aria-label="Previous slide"
+            type="button"
+          >
+            ‹
+          </button>
+          <button
+            className="tycCarousel-next"
+            aria-label="Next slide"
+            type="button"
+          >
+            ›
+          </button>
+        </div>
+
+        <div
+          className="tycCarousel-pagination"
+          role="tablist"
+          aria-label="Slide navigation"
+        ></div>
+      </div>
     </section>
   );
 }
@@ -536,6 +1175,7 @@ export default function AboutPage() {
   return (
     <>
       <AboutAuthHero />
+      <AboutCarousel />
       <HeroAbout />
       <Mission />
       <Products />
