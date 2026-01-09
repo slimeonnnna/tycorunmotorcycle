@@ -245,22 +245,36 @@ function AboutAuthHero() {
 }
 
 function WhoWeAreSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="who-we-are pt-24 pb-16 md:pt-42 md:pb-24">
+    <section className="who-we-are pt-24 pb-16 md:pt-42 md:pb-24" ref={sectionRef}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 text-center">
-        <div
-          className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
+        <div className="who-subP mb-3">
           <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
             Who We Are
           </span>
         </div>
         <h2
           className="text-white text-3xl md:text-4xl xl:text-5xl font-semibold max-w-3xl mx-auto mb-10 leading-snug"
-          data-aos="fade-up"
-          data-aos-delay="200"
         >
           <span className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text text-transparent">
             The Industrial Backbone of Electric Mobility
@@ -268,8 +282,6 @@ function WhoWeAreSection() {
         </h2>
         <div
           className="grid-offer text-left grid sm:grid-cols-2 md:grid-cols-2 gap-6"
-          data-aos="fade-up"
-          data-aos-delay="400"
         >
           <div className="who-card p-8 md:p-10 relative">
             <div className="circle"></div>
@@ -332,6 +344,92 @@ function WhoWeAreSection() {
             </p>
           </div>
         </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CoreAdvantageSection() {
+  const tiltRef = useRef<HTMLDivElement | null>(null);
+
+  const handleTiltMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const el = tiltRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / rect.width;
+    const py = (event.clientY - rect.top) / rect.height;
+    const rx = (0.5 - py) * 12;
+    const ry = (px - 0.5) * 18;
+    const tx = (px - 0.5) * 24;
+    const ty = (py - 0.5) * 18;
+    const brx = (0.5 - py) * 8;
+    const bry = (px - 0.5) * 10;
+    el.style.setProperty("--core-advantage-tilt-x", `${rx.toFixed(2)}deg`);
+    el.style.setProperty("--core-advantage-tilt-y", `${ry.toFixed(2)}deg`);
+    el.style.setProperty("--core-advantage-parallax-x", `${tx.toFixed(2)}px`);
+    el.style.setProperty("--core-advantage-parallax-y", `${ty.toFixed(2)}px`);
+    el.style.setProperty("--core-advantage-bird-tilt-x", `${brx.toFixed(2)}deg`);
+    el.style.setProperty("--core-advantage-bird-tilt-y", `${bry.toFixed(2)}deg`);
+  };
+
+  const handleTiltLeave = () => {
+    const el = tiltRef.current;
+    if (!el) return;
+    el.style.setProperty("--core-advantage-tilt-x", "0deg");
+    el.style.setProperty("--core-advantage-tilt-y", "0deg");
+    el.style.setProperty("--core-advantage-parallax-x", "0px");
+    el.style.setProperty("--core-advantage-parallax-y", "0px");
+    el.style.setProperty("--core-advantage-bird-tilt-x", "0deg");
+    el.style.setProperty("--core-advantage-bird-tilt-y", "0deg");
+  };
+
+  return (
+    <section className="core-advantage py-16 md:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
+              <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent text-sm uppercase tracking-widest">
+                Our Core Advantage
+              </span>
+            </div>
+            <h2 className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
+              True Vertical Integration: Battery + Vehicle
+            </h2>
+            <p className="mt-6 text-gray-400 leading-relaxed">
+              Unlike assemblers who outsource power systems, TYCORUN manufactures
+              both the lithium battery pack and the vehicle chassis. This unique
+              synergy eliminates compatibility risks, optimizes BMS performance,
+              and significantly lowers the BOM cost for our partners.
+            </p>
+            <ul className="mt-6 space-y-3 text-sm text-gray-300">
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+                Unified Engineering: BMS mapped directly to motor logic.
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+                Cost Efficiency: No middleman markups on the battery.
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+                Supply Security: Core components made in-house.
+              </li>
+            </ul>
+          </div>
+          <div
+            ref={tiltRef}
+            className="relative core-advantage-tilt-wrap"
+            onMouseMove={handleTiltMove}
+            onMouseLeave={handleTiltLeave}
+          >
+            <img
+              className="core-advantage-tilt"
+              src="/webp/1.webp"
+              alt="Core advantage visual"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -631,6 +729,7 @@ export default function AboutPage() {
     <>
       <AboutAuthHero />
       <WhoWeAreSection />
+      <CoreAdvantageSection />
       <HeroAbout />
       <Mission />
       <Products />

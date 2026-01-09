@@ -9,7 +9,7 @@
   background: transparent;
   font-family: var(--font-inter), sans-serif;
   font-size: max(calc(var(--_size) * 0.03), 10px);
-  --_factor: min(750px, 100vh);
+  --_factor: min(650px, 100vh);
   --_size: min(var(--_factor), 100vw);
   --hero-text: #dbeafe;
   --hero-accent: #93c5fd;
@@ -84,6 +84,169 @@
     inset 0em 0em 0em 2px #d8a910,
     inset 0.2em 0.3em 0.2em -0.2em #c2ccff,
     inset 10.2em 10.3em 2em -10em #d4e6ff2f;
+}
+
+.core-advantage .icon-design {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.core-advantage .icon-design .origin-center {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.core-advantage .icon-design .origin-left {
+  transform-box: fill-box;
+  transform-origin: left top;
+}
+
+.core-advantage .icon-design .anchor-part {
+  animation: icon-move 2s linear infinite;
+}
+
+.core-advantage .icon-design .anchor-part--2 {
+  animation: icon-move2 2s linear infinite;
+}
+
+.core-advantage .icon-design .pen-part {
+  animation: icon-bounce2 2s ease-in-out infinite;
+  transform-origin: 140px 180px;
+}
+
+.core-advantage .icon-design .ruler-part {
+  animation: icon-bounce 1s ease-in-out infinite;
+  transform-origin: 140px 180px;
+}
+
+.core-advantage .icon-design .circle-part {
+  animation: icon-rotate 4s linear infinite;
+  transform-origin: 139.8px 167.8px;
+}
+
+.core-advantage .icon-design .cursor-part {
+  animation: icon-bounceBFt2 2s ease-in-out infinite;
+}
+
+.core-advantage .icon-design .star {
+  animation: icon-twinkle 4s ease-in-out infinite;
+}
+
+.core-advantage .icon-design .star-2 {
+  animation-delay: 1s;
+}
+
+.core-advantage .icon-design .hover {
+  animation-play-state: paused;
+}
+
+.core-advantage .icon-design:hover .hover {
+  animation-play-state: running;
+}
+.core-advantage .core-advantage-tilt {
+  --core-advantage-size: 320px;
+  width: var(--core-advantage-size);
+  aspect-ratio: 1;
+  box-sizing: border-box;
+  padding-inline: calc(var(--core-advantage-size) / 20);
+  object-fit: cover;
+  transform: translate3d(
+      var(--core-advantage-parallax-x, 0px),
+      var(--core-advantage-parallax-y, 0px),
+      0
+    )
+    rotateX(var(--core-advantage-bird-tilt-x, 0deg))
+    rotateY(var(--core-advantage-bird-tilt-y, 0deg));
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.core-advantage .core-advantage-tilt-wrap {
+  --core-advantage-tilt-x: 0deg;
+  --core-advantage-tilt-y: 0deg;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: url("/webp/2.webp") 50% / cover;
+  box-shadow: 0 24px 50px rgba(3, 7, 18, 0.6);
+  transform: perspective(520px) rotateX(var(--core-advantage-tilt-x))
+    rotateY(var(--core-advantage-tilt-y));
+  transition: transform 0.2s ease;
+}
+
+@media (max-width: 1024px) {
+  .core-advantage .core-advantage-tilt {
+    --core-advantage-size: 260px;
+  }
+}
+
+@media (max-width: 640px) {
+  .core-advantage .core-advantage-tilt {
+    --core-advantage-size: 220px;
+  }
+}
+
+@keyframes icon-move {
+  0%,
+  100% {
+    transform: translate(1px, 1px);
+  }
+  50% {
+    transform: translate(-1px, -1px);
+  }
+}
+
+@keyframes icon-move2 {
+  0%,
+  100% {
+    transform: translate(-1px, -1px);
+  }
+  50% {
+    transform: translate(1px, 1px);
+  }
+}
+
+@keyframes icon-bounce {
+  50% {
+    transform: rotate(-6deg);
+  }
+}
+
+@keyframes icon-bounce2 {
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes icon-bounceBFt2 {
+  0%,
+  100% {
+    transform: rotate(4.6deg);
+  }
+  50% {
+    transform: rotate(-4.6deg);
+  }
+}
+
+@keyframes icon-rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes icon-twinkle {
+  0%,
+  50%,
+  100% {
+    transform: scale(1);
+  }
+  25%,
+  75% {
+    transform: scale(1.6);
+  }
 }
 
 
@@ -441,7 +604,7 @@
 }
 
 .about-auth-hero .hero-spacer {
-  height: 45em;
+  height: 50em;
   pointer-events: none;
 }
 
@@ -575,10 +738,95 @@
 
 .who-we-are {
   background: var(--color-gray-950);
+  --who-shift: 32px;
 }
 
 .who-we-are .grid-offer {
   margin-top: 1.5rem;
+}
+
+.who-we-are .who-subP,
+.who-we-are h2,
+.who-we-are .grid-offer {
+  opacity: 0;
+  transform: translateY(var(--who-shift));
+  will-change: transform, opacity;
+}
+
+.who-we-are .who-subP {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.who-we-are .who-subP span {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+}
+
+.who-we-are .who-subP span::before,
+.who-we-are .who-subP span::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 2rem;
+  height: 1px;
+  opacity: 0.6;
+  transform: translateY(-50%);
+}
+
+.who-we-are .who-subP span::before {
+  right: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(191, 219, 254, 0.6) 100%);
+}
+
+.who-we-are .who-subP span::after {
+  left: 120%;
+  background: linear-gradient(90deg, rgba(191, 219, 254, 0.6) 0%, transparent 100%);
+}
+
+.who-we-are.is-visible .who-subP,
+.who-we-are.is-visible h2,
+.who-we-are.is-visible .grid-offer {
+  animation: whoFadeUp 900ms ease-out forwards;
+}
+
+.who-we-are.is-visible .who-subP {
+  animation-delay: 200ms;
+}
+
+.who-we-are.is-visible h2 {
+  animation-delay: 200ms;
+}
+
+.who-we-are.is-visible .grid-offer {
+  animation-delay: 400ms;
+}
+
+@keyframes whoFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(var(--who-shift));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .who-we-are .who-subP,
+  .who-we-are h2,
+  .who-we-are .grid-offer {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
 }
 
 .who-we-are h2 {
