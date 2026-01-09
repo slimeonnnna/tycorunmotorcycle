@@ -424,6 +424,36 @@ function CoreAdvantageSection() {
             onMouseMove={handleTiltMove}
             onMouseLeave={handleTiltLeave}
           >
+            <div className="core-advantage-neon-pattern" aria-hidden="true">
+              <span className="core-advantage-data-stream"></span>
+              <svg className="core-advantage-texture-filter">
+                <filter id="core-advantage-neon-texture">
+                  <feTurbulence
+                    result="noise"
+                    numOctaves="2"
+                    baseFrequency="0.6"
+                    type="fractalNoise"
+                  ></feTurbulence>
+                  <feSpecularLighting
+                    result="specular"
+                    lightingColor="#80808011"
+                    specularExponent="5"
+                    specularConstant="0.9"
+                    surfaceScale="1"
+                    in="noise"
+                  >
+                    <fePointLight z="90" y="100" x="100"></fePointLight>
+                  </feSpecularLighting>
+                  <feComposite
+                    result="litNoise"
+                    operator="over"
+                    in2="SourceGraphic"
+                    in="specular"
+                  ></feComposite>
+                  <feBlend mode="screen" in2="litNoise" in="SourceGraphic"></feBlend>
+                </filter>
+              </svg>
+            </div>
             <img
               className="core-advantage-tilt"
               src="/webp/1.webp"

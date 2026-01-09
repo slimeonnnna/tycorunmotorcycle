@@ -151,6 +151,11 @@
   box-sizing: border-box;
   padding-inline: calc(var(--core-advantage-size) / 20);
   object-fit: cover;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(4px 4px 0 rgba(59, 130, 246, 0.14))
+    drop-shadow(8px 8px 0 rgba(59, 130, 246, 0.08))
+    drop-shadow(12px 12px 0 rgba(59, 130, 246, 0.04));
   transform: translate3d(
       var(--core-advantage-parallax-x, 0px),
       var(--core-advantage-parallax-y, 0px),
@@ -170,11 +175,60 @@
   padding: 24px;
   border-radius: 24px;
   border: 1px solid rgba(59, 130, 246, 0.2);
-  background: url("/webp/2.webp") 50% / cover;
+  background: transparent;
   box-shadow: 0 24px 50px rgba(3, 7, 18, 0.6);
+  overflow: hidden;
   transform: perspective(520px) rotateX(var(--core-advantage-tilt-x))
     rotateY(var(--core-advantage-tilt-y));
   transition: transform 0.2s ease;
+}
+
+.core-advantage .core-advantage-neon-pattern {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(2, 3, 4, 0.35),
+    rgba(4, 6, 9, 0.55) 50%,
+    rgba(6, 9, 14, 0.35)
+  );
+  filter: url(#core-advantage-neon-texture);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.core-advantage .core-advantage-data-stream {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      circle at 30% 40%,
+      rgba(115, 117, 255, 0.2) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(5, 47, 173, 0.15) 0%,
+      transparent 15%
+    );
+  animation: core-advantage-pulse-stream 3s ease-in-out infinite;
+}
+
+.core-advantage .core-advantage-texture-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  }
+
+@keyframes core-advantage-pulse-stream {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
 }
 
 @media (max-width: 1024px) {
