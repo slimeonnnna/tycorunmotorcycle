@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 export default function LenisInit() {
   const pathname = usePathname();
   const lenisRef = useRef<import("lenis").default | null>(null);
+  const pendingPauseRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -38,6 +39,9 @@ export default function LenisInit() {
         smoothWheel: true,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
+      if (pendingPauseRef.current) {
+        lenisRef.current.stop();
+      }
 
       const raf = (time: number) => {
         lenisRef.current?.raf(time);
@@ -57,6 +61,24 @@ export default function LenisInit() {
       lenisRef.current?.destroy();
       lenisRef.current = null;
       history.scrollRestoration = originalRestoration;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handlePause = () => {
+      pendingPauseRef.current = true;
+      lenisRef.current?.stop();
+    };
+    const handleResume = () => {
+      pendingPauseRef.current = false;
+      lenisRef.current?.start();
+    };
+    window.addEventListener("lenis:pause", handlePause as EventListener);
+    window.addEventListener("lenis:resume", handleResume as EventListener);
+    return () => {
+      window.removeEventListener("lenis:pause", handlePause as EventListener);
+      window.removeEventListener("lenis:resume", handleResume as EventListener);
     };
   }, []);
 

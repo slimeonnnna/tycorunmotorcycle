@@ -4,7 +4,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import imagesLoaded from "imagesloaded";
-import { gsap } from "gsap";
+import { TweenMax } from "gsap";
 import * as THREE from "three";
 
 // --- Utility Hook: useMousePosition (Merged) ---
@@ -1541,8 +1541,8 @@ function Product() {
           ) as HTMLElement | null;
 
           if (slideSubtitleEl && nextSlideSubtitle) {
-            gsap.killTweensOf(slideSubtitleEl);
-            gsap.fromTo(
+            TweenMax.killTweensOf(slideSubtitleEl);
+            TweenMax.fromTo(
               slideSubtitleEl,
               { autoAlpha: 1, y: 0 },
               {
@@ -1552,7 +1552,7 @@ function Product() {
                 ease: "expo.in",
                 onComplete: () => {
                   slideSubtitleEl.innerHTML = nextSlideSubtitle.innerHTML;
-                  gsap.to(slideSubtitleEl, {
+                  TweenMax.to(slideSubtitleEl, {
                     duration: 0.5,
                     autoAlpha: 1,
                     y: 0,
@@ -1563,8 +1563,8 @@ function Product() {
           }
 
           if (slideTitleEl && nextSlideTitle) {
-            gsap.killTweensOf(slideTitleEl);
-            gsap.fromTo(
+            TweenMax.killTweensOf(slideTitleEl);
+            TweenMax.fromTo(
               slideTitleEl,
               { autoAlpha: 1, y: 0 },
               {
@@ -1574,7 +1574,7 @@ function Product() {
                 ease: "expo.in",
                 onComplete: () => {
                   slideTitleEl.innerHTML = nextSlideTitle.innerHTML;
-                  gsap.to(slideTitleEl, {
+                  TweenMax.to(slideTitleEl, {
                     duration: 0.5,
                     autoAlpha: 1,
                     y: 0,
@@ -1585,8 +1585,8 @@ function Product() {
           }
 
           if (slideDescEl && nextSlideDesc) {
-            gsap.killTweensOf(slideDescEl);
-            gsap.fromTo(
+            TweenMax.killTweensOf(slideDescEl);
+            TweenMax.fromTo(
               slideDescEl,
               { autoAlpha: 1, y: 0 },
               {
@@ -1596,7 +1596,7 @@ function Product() {
                 ease: "expo.in",
                 onComplete: () => {
                   slideDescEl.innerHTML = nextSlideDesc.innerHTML;
-                  gsap.to(slideDescEl, {
+                  TweenMax.to(slideDescEl, {
                     duration: 0.5,
                     autoAlpha: 1,
                     y: 0,
@@ -1624,7 +1624,7 @@ function Product() {
             mat.uniforms.dispFactor.value = startFactor;
           }
 
-          gsap.to(mat.uniforms.dispFactor, {
+          TweenMax.to(mat.uniforms.dispFactor, {
             duration: Math.max(0.2, 1 - startFactor),
             value: 1,
             ease: "expo.inOut",

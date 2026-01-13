@@ -77,61 +77,34 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex">
-            <ul className="flex gap-6 text-sm font-medium text-gray-300">
-              <li>
-                <Link
-                  href="/"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/product"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  Product
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/solution"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  Solution
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-            </ul>
+            <div className="flex gap-6 text-sm font-medium text-gray-300">
+              <Link href="/" className="hover:text-blue-500 transition-colors">
+                Home
+              </Link>
+              <Link href="/about" className="hover:text-blue-500 transition-colors">
+                About
+              </Link>
+              <Link href="/product" className="hover:text-blue-500 transition-colors">
+                Product
+              </Link>
+              <Link href="/solution" className="hover:text-blue-500 transition-colors">
+                Solution
+              </Link>
+              <Link href="/blog" className="hover:text-blue-500 transition-colors">
+                Blog
+              </Link>
+            </div>
           </nav>
 
           {/* Desktop sign in links */}
-          <ul className="hidden flex-1 items-center justify-end gap-3 md:flex">
-            <li>
-              <Link
-                href="/contact"
-                className="btn-sm bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] py-[5px] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
-              >
-                Contact
-              </Link>
-            </li>
-          </ul>
+          <div className="hidden flex-1 items-center justify-end gap-3 md:flex">
+            <Link
+              href="/contact"
+              className="btn-sm bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] py-[5px] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+            >
+              Contact
+            </Link>
+          </div>
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden">
@@ -192,53 +165,43 @@ export default function Header() {
         >
           <div className="px-4 py-4 space-y-4">
             <nav>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/"
-                    className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/about"
-                    className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/product"
-                    className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Product
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/solution"
-                    className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Solution
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/blog"
-                    className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Blog
-                  </Link>
-                </li>
-              </ul>
+              <div className="space-y-3">
+                <Link
+                  href="/"
+                  className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/about"
+                  className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  About
+                </Link>
+                <Link
+                  href="/product"
+                  className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Product
+                </Link>
+                <Link
+                  href="/solution"
+                  className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Solution
+                </Link>
+                <Link
+                  href="/blog"
+                  className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Blog
+                </Link>
+              </div>
             </nav>
             <div className="border-t border-gray-800 pt-4">
               <Link

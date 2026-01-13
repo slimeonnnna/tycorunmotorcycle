@@ -84,6 +84,16 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+
+  ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+  }
 }
 
 /* 
@@ -1336,31 +1346,44 @@
   position: absolute;
   top: 0;
   left: 0;
+  transition: transform 0.4s;
 }
 
 .carousel-arrow-button .button-elem {
-  display: block;
-  width: 20px;
-  height: 20px;
-  margin: 17px 18px 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0;
   transform: rotate(180deg);
   fill: var(--color-gray-200);
 }
 
+.carousel-arrow-button .button-elem svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.carousel-arrow-button--next .button-elem {
+  transform: rotate(0deg);
+}
+
 .carousel-arrow-button:hover .button-box,
 .carousel-arrow-button:focus-visible .button-box {
-  transition: 0.4s;
   transform: translateX(-56px);
 }
 
-.carousel-arrow-button:disabled:hover .button-box,
-.carousel-arrow-button:disabled:focus-visible .button-box {
-  transform: none;
+.carousel-arrow-button--next .button-box {
+  transform: translateX(-56px);
 }
 
-.carousel-arrow-button--next {
-  transform: rotate(180deg);
+.carousel-arrow-button--next:hover .button-box,
+.carousel-arrow-button--next:focus-visible .button-box {
+  transform: translateX(0);
 }
+
 
 .carousel-dot {
   height: 10px;
