@@ -1544,19 +1544,15 @@ function Product() {
             TweenMax.killTweensOf(slideSubtitleEl);
             TweenMax.fromTo(
               slideSubtitleEl,
+              0.5,
               { autoAlpha: 1, y: 0 },
               {
-                duration: 0.5,
                 autoAlpha: 0,
                 y: 20,
                 ease: "expo.in",
                 onComplete: () => {
                   slideSubtitleEl.innerHTML = nextSlideSubtitle.innerHTML;
-                  TweenMax.to(slideSubtitleEl, {
-                    duration: 0.5,
-                    autoAlpha: 1,
-                    y: 0,
-                  });
+                  TweenMax.to(slideSubtitleEl, 0.5, { autoAlpha: 1, y: 0 });
                 },
               },
             );
@@ -1566,19 +1562,15 @@ function Product() {
             TweenMax.killTweensOf(slideTitleEl);
             TweenMax.fromTo(
               slideTitleEl,
+              0.5,
               { autoAlpha: 1, y: 0 },
               {
-                duration: 0.5,
                 autoAlpha: 0,
                 y: 20,
                 ease: "expo.in",
                 onComplete: () => {
                   slideTitleEl.innerHTML = nextSlideTitle.innerHTML;
-                  TweenMax.to(slideTitleEl, {
-                    duration: 0.5,
-                    autoAlpha: 1,
-                    y: 0,
-                  });
+                  TweenMax.to(slideTitleEl, 0.5, { autoAlpha: 1, y: 0 });
                 },
               },
             );
@@ -1588,19 +1580,15 @@ function Product() {
             TweenMax.killTweensOf(slideDescEl);
             TweenMax.fromTo(
               slideDescEl,
+              0.5,
               { autoAlpha: 1, y: 0 },
               {
-                duration: 0.5,
                 autoAlpha: 0,
                 y: 20,
                 ease: "expo.in",
                 onComplete: () => {
                   slideDescEl.innerHTML = nextSlideDesc.innerHTML;
-                  TweenMax.to(slideDescEl, {
-                    duration: 0.5,
-                    autoAlpha: 1,
-                    y: 0,
-                  });
+                  TweenMax.to(slideDescEl, 0.5, { autoAlpha: 1, y: 0 });
                 },
               },
             );
@@ -1624,19 +1612,22 @@ function Product() {
             mat.uniforms.dispFactor.value = startFactor;
           }
 
-          TweenMax.to(mat.uniforms.dispFactor, {
-            duration: Math.max(0.2, 1 - startFactor),
-            value: 1,
-            ease: "expo.inOut",
-            onComplete: () => {
-              mat.uniforms.currentImage.value = sliderImages[slideId];
-              mat.uniforms.currentImage.needsUpdate = true;
-              mat.uniforms.dispFactor.value = 0.0;
-              isAnimating = false;
-              startTime = performance.now();
-              setProgress(0);
+          TweenMax.to(
+            mat.uniforms.dispFactor,
+            Math.max(0.2, 1 - startFactor),
+            {
+              value: 1,
+              ease: "expo.inOut",
+              onComplete: () => {
+                mat.uniforms.currentImage.value = sliderImages[slideId];
+                mat.uniforms.currentImage.needsUpdate = true;
+                mat.uniforms.dispFactor.value = 0.0;
+                isAnimating = false;
+                startTime = performance.now();
+                setProgress(0);
+              },
             },
-          });
+          );
 
           applySlideContent(slideId);
         };
