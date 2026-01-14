@@ -68,3 +68,10 @@ FOUC（样式闪烁）	CSS 加载晚于 HTML / CSS-in-JS 未配置 SSR	检查 he
 滚动条位置异常	浏览器自动滚动恢复冲突	设 history.scrollRestoration = "manual"
 Hydration error	HTML 结构不合法或渲染差异	检查嵌套语义；延迟客户端渲染
 动画位置偏移	图片/字体未加载完成	监听 onLoad 或预设宽高比
+
+Battle Notes (Product Page / SSR + CSR)
+- Split copy into SSR wrappers and client-only interactive shells to keep text in HTML source.
+- Move all UI strings/data into server components; pass via props to client components.
+- Avoid direct DOM mutations (innerHTML) on nodes managed by React; use state + refs for animation.
+- For browser translation conflicts, keep interactive regions stable; prefer SSR text and minimize DOM reparenting.
+- When unavoidable, keep both normal/anomaly DOM blocks mounted and toggle visibility to prevent removeChild errors.

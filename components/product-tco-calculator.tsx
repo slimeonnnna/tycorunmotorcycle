@@ -1,69 +1,120 @@
-"use client";
+import ProductTcoCalculatorClient from "./product-tco-calculator-client";
 
-import { useMemo, useState } from "react";
+const EASTER_EGGS = [
+  {
+    headline: "Are you charging these with AA batteries?",
+    subtext:
+      "Unless you're buying electricity from a luxury boutique, let's double-check those numbers.",
+  },
+  {
+    headline: "Wait, is your fleet located on Mars?",
+    subtext:
+      "Here on Earth, electricity is usually cheaper than liquid dinosaur remains.",
+  },
+  {
+    headline: "Running on Liquid Gold?",
+    subtext:
+      "At this electricity rate, it would literally be cheaper to fuel your bikes with vintage Champagne.",
+  },
+  {
+    headline: "Stop mining Bitcoin on your bikes!",
+    subtext:
+      "That's the only logical explanation for an electricity rate this high. Seriously, check the bill.",
+  },
+  {
+    headline: "Are you using Printer Ink as fuel?",
+    subtext:
+      "Because that's the only liquid we know that costs more than what you just entered.",
+  },
+  {
+    headline: "Time Travel Detected!",
+    subtext:
+      "These gas prices look like they are from 1998. Can you take us back with you?",
+  },
+  {
+    headline: "Do you own a private oil refinery?",
+    subtext:
+      "If you're getting gas this cheap, forget the bikes—we want to buy fuel from YOU.",
+  },
+  {
+    headline: "Error 404: Physics Not Found.",
+    subtext:
+      "Our algorithm is crying. It cannot compute a universe where electrons cost more than hydrocarbons.",
+  },
+  {
+    headline: "System Flag: Reality Distortion Field.",
+    subtext:
+      "Our servers suggest you might be typing with boxing gloves on. Try sliding it back left.",
+  },
+  {
+    headline: "Calculation Result: NaN (Not a Normal-scenario)",
+    subtext:
+      "You found the edge case! Achievement unlocked: 'The Impossible Fleet'.",
+  },
+  {
+    headline: "Okay, you win. Stick with gas.",
+    subtext:
+      "Just kidding. Please adjust the sliders to reality, or call your utility provider immediately.",
+  },
+  {
+    headline: "We surrender.",
+    subtext:
+      "If these numbers are real, we will personally come and push your bikes to save energy.",
+  },
+  {
+    headline: "Are you paying per electron?",
+    subtext:
+      "We recommend buying electricity in bulk. It's usually cheaper than buying it one electron at a time.",
+  },
+  {
+    headline: "Is your charger plugged into a lemon?",
+    subtext:
+      "Because the efficiency rating here suggests you are using fruit-based power generation.",
+  },
+  {
+    headline: "Hamsters on strike?",
+    subtext:
+      "If your power comes from hamsters running in wheels, you need to stop paying them overtime.",
+  },
+  {
+    headline: "Did you buy electricity from a Scalper?",
+    subtext:
+      "Don't buy power from guys in trench coats in alleyways. Use the grid. It's cheaper.",
+  },
+  {
+    headline: "Gas is free? Lucky you.",
+    subtext:
+      "If fuel is this cheap, why are you on an Electric Vehicle website? Go enjoy your free gas!",
+  },
+];
 
-const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(value);
+const labels = {
+  headerKicker: "Fleet TCO Console",
+  headerTitle: "EV vs Gas Analyzer",
+  headerStatus: "Live",
+  fieldFleetSize: "Fleet Size",
+  fieldDailyMiles: "Daily Miles per Vehicle",
+  fieldFuelPrice: "Fuel Price (USD / gallon)",
+  fieldElectricityRate: "Electricity Rate (USD / kWh)",
+  maintenanceLabel: "Include Maintenance Savings?",
+  maintenanceHelp: "Includes $0.05/mi gas maintenance vs. $0.01/mi EV maintenance.",
+  tcoHorizon: "TCO Horizon",
+  formula:
+    "Formula: (Gas Price / MPG + Maintenance) - (Elec Price / Efficiency + EV Maintenance)",
+  estimatedSavings: "Estimated Savings",
+  anomalyLabel: "Anomaly Detected",
+  savingsSummarySuffix: "savings across",
+  gasFleetLabel: "Gas Fleet TCO",
+  evFleetLabel: "Electric Fleet TCO",
+  co2Label: "CO2 Reduced",
+  co2Suffix: "tons",
+  equivalentPrefix: "Equivalent to adding",
+  equivalentSuffix: "new bikes to your fleet for free.",
+  annualMileageLabel: "Annual mileage",
+  gasLabel: "Gas",
+  evLabel: "EV",
+};
 
 export default function ProductTcoCalculator() {
-  const [fleetSize, setFleetSize] = useState(50);
-  const [dailyMiles, setDailyMiles] = useState(65);
-  const [fuelPrice, setFuelPrice] = useState(3.9);
-
-  const yearlySavings = useMemo(() => {
-    const annualMiles = Math.max(fleetSize, 0) * Math.max(dailyMiles, 0) * 365;
-    const gasCostPerMile = Math.max(fuelPrice, 0) / 40;
-    const evCostPerMile = 0.02;
-    const savings = (gasCostPerMile - evCostPerMile) * annualMiles;
-    return Math.max(savings, 0);
-  }, [fleetSize, dailyMiles, fuelPrice]);
-
-  return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-start">
-      <div className="space-y-5">
-        <label className="block space-y-2">
-          <span className="text-sm uppercase tracking-wide text-gray-400">Fleet Size</span>
-          <input
-            type="number"
-            min={1}
-            value={fleetSize}
-            onChange={(event) => setFleetSize(Number(event.target.value))}
-            className="w-full rounded-xl border border-gray-800 bg-gray-950/60 px-4 py-3 text-lg text-gray-100 focus:border-blue-500 focus:outline-none"
-          />
-        </label>
-        <label className="block space-y-2">
-          <span className="text-sm uppercase tracking-wide text-gray-400">Daily Miles per Vehicle</span>
-          <input
-            type="number"
-            min={1}
-            value={dailyMiles}
-            onChange={(event) => setDailyMiles(Number(event.target.value))}
-            className="w-full rounded-xl border border-gray-800 bg-gray-950/60 px-4 py-3 text-lg text-gray-100 focus:border-blue-500 focus:outline-none"
-          />
-        </label>
-        <label className="block space-y-2">
-          <span className="text-sm uppercase tracking-wide text-gray-400">Fuel Price (USD / gallon)</span>
-          <input
-            type="number"
-            min={0}
-            step={0.1}
-            value={fuelPrice}
-            onChange={(event) => setFuelPrice(Number(event.target.value))}
-            className="w-full rounded-xl border border-gray-800 bg-gray-950/60 px-4 py-3 text-lg text-gray-100 focus:border-blue-500 focus:outline-none"
-          />
-        </label>
-      </div>
-      <div className="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-8 text-center">
-        <div className="text-sm uppercase tracking-widest text-blue-200">Estimated Yearly Savings</div>
-        <div className="mt-4 text-4xl font-semibold text-white">{formatCurrency(yearlySavings)}</div>
-        <p className="mt-3 text-sm text-blue-200/80">
-          Based on fuel cost vs. electric operating cost. Adjust inputs to match your fleet.
-        </p>
-      </div>
-    </div>
-  );
+  return <ProductTcoCalculatorClient labels={labels} easterEggs={EASTER_EGGS} />;
 }

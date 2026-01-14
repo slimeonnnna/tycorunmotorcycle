@@ -239,10 +239,12 @@
   }
 }
 
-@media (max-width: 470px) {
+@media (max-width: 640px) {
   .product-core-advantage .core-advantage-swiper-slider {
-    width: 300px;
-    height: 400px;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 4 / 5;
   }
 }
 
@@ -290,5 +292,139 @@
   50% {
     transform: translateY(-100px) rotate(180deg);
     opacity: 0.02;
+  }
+}
+
+.product-services .service-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem;
+}
+
+.product-services .service-card {
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.18);
+  position: relative;
+  width: 100%;
+  min-height: 22rem;
+  padding: 1.75rem;
+  border-radius: 2rem;
+  background: radial-gradient(
+    ellipse at right top,
+    var(--accent-soft) 0%,
+    rgba(2, 6, 23, 0.95) 55%,
+    rgba(2, 6, 23, 0.98) 100%
+  );
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 20px 40px rgba(2, 6, 23, 0.7);
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.product-services .service-card--teal {
+  --accent: #22d3ee;
+  --accent-soft: rgba(34, 211, 238, 0.18);
+}
+
+.product-services .service-card--cyan {
+  --accent: #60a5fa;
+  --accent-soft: rgba(96, 165, 250, 0.16);
+}
+
+.product-services .service-card--navy {
+  --accent: #1d4ed8;
+  --accent-soft: rgba(29, 78, 216, 0.16);
+}
+
+.product-services .service-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-services .service-card-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.7);
+}
+
+.product-services .service-card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--accent);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.product-services .service-card-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.product-services .service-card-body h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.product-services .service-card-body p {
+  font-size: 1rem;
+  color: rgba(226, 232, 240, 0.75);
+  line-height: 1.6;
+}
+
+.product-services .service-metric {
+  margin-top: 1.25rem;
+}
+
+.product-services .service-metric-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.product-services .service-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.product-services .service-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.product-services .service-tag {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: rgba(226, 232, 240, 0.85);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .product-services .service-card {
+    max-width: 100%;
+  }
+
+  .product-services .service-card-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

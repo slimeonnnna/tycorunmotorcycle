@@ -5,10 +5,10 @@ import {
   Features,
   Faq,
   ProcessTimeline,
-  Product,
   Spotlight,
   Testimonials,
 } from "@/components/home-page-client";
+import { Product } from "@/components/product-section";
 
 // --- Sub-Component: HeroCard ---
 function HeroCard() {
