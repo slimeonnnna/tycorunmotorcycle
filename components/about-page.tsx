@@ -202,7 +202,7 @@ function CoreAdvantageSection() {
                 <SwiperSlide key={slide.title}>
                   <img src={slide.image} alt={slide.title} draggable={false} />
                   <div className="overlay">
-                    <h1>{slide.title}</h1>
+                    <h3>{slide.title}</h3>
                     <p>{slide.copy}</p>
                   </div>
                 </SwiperSlide>

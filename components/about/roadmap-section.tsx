@@ -494,9 +494,20 @@ export default function RoadmapSection() {
           }
 
           function drawParticles() {
+            const queue: any[] = [];
             for (let i = 0; i < engine.particleSettings.length; i += 1) {
               const ball = engine.particleSettings[i];
               for (let s = 0; s < ball.num; s += 1) {
+                queue.push(ball);
+              }
+            }
+
+            let idx = 0;
+            const batchSize = 24;
+            const buildBatch = () => {
+              const end = Math.min(queue.length, idx + batchSize);
+              for (let i = idx; i < end; i += 1) {
+                const ball = queue[i];
                 let circle;
                 if (ball.fill) {
                   circle = new createjs.Shape();
@@ -525,7 +536,14 @@ export default function RoadmapSection() {
                 animateBall(circle);
                 engine.particleArray.push(circle);
               }
-            }
+
+              idx = end;
+              if (idx < queue.length) {
+                requestAnimationFrame(buildBatch);
+              }
+            };
+
+            buildBatch();
           }
 
           engine.applySettings = (circle: any, positionX: number, totalWidth: number, areaHeight: number) => {
@@ -612,7 +630,7 @@ export default function RoadmapSection() {
         particleEngine = new (ParticleEngine as any)("projector");
         tickHandler = engineRender;
         resizeHandler = engineResize;
-        createjs.Ticker.framerate = 30;
+        createjs.Ticker.framerate = 24;
         createjs.Ticker.addEventListener("tick", tickHandler);
         window.addEventListener("resize", resizeHandler);
       };
@@ -664,56 +682,56 @@ export default function RoadmapSection() {
 <div class="carousel">
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">Factory Launch</div>
+      <h3 class="title">Factory Launch</h3>
       <div class="num">2019</div>
       <div class="carousel-media"></div>
     </div>
   </div>
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">First OEM Program</div>
+      <h3 class="title">First OEM Program</h3>
       <div class="num">2020</div>
       <div class="carousel-media"></div>
     </div>
   </div>
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">Model Lineup Expansion</div>
+      <h3 class="title">Model Lineup Expansion</h3>
       <div class="num">2021</div>
       <div class="carousel-media"></div>
     </div>
   </div>
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">QC System Upgrade</div>
+      <h3 class="title">QC System Upgrade</h3>
       <div class="num">2022</div>
       <div class="carousel-media"></div>
     </div>
   </div>
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">Export Markets Opened</div>
+      <h3 class="title">Export Markets Opened</h3>
       <div class="num">2023</div>
       <div class="carousel-media"></div>
     </div>
   </div>
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">High-Speed Platform</div>
+      <h3 class="title">High-Speed Platform</h3>
       <div class="num">2024</div>
       <div class="carousel-media"></div>
     </div>
   </div>
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">ODM Customization</div>
+      <h3 class="title">ODM Customization</h3>
       <div class="num">2025</div>
       <div class="carousel-media"></div>
     </div>
   </div>
   <div class="carousel-item">
     <div class="carousel-box">
-      <div class="title">Next-Gen Preview</div>
+      <h3 class="title">Next-Gen Preview</h3>
       <div class="num">2026</div>
       <div class="carousel-media"></div>
     </div>
