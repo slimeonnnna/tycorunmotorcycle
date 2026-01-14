@@ -1,7 +1,6 @@
-
-import Image from "next/image";
 import ProductHeroBackground from "./product-hero-background";
 import ProductCoreAdvantageSwiper from "./product-core-advantage-swiper";
+import ProductTcoCalculator from "./product-tco-calculator";
 
 function ProductHero() {
   return (
@@ -14,44 +13,57 @@ function ProductHero() {
             data-aos="fade-up"
             data-aos-delay="100"
           >
-            <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent font-mono text-sm tracking-wider uppercase">OEM / ODM Platform</span>
+            <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent font-mono text-sm tracking-wider uppercase">
+              Commercial Electric Motorcycle Platform
+            </span>
           </div>
-          <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl" data-aos="fade-up">
-            Built for Global Distribution
+          <h1
+            className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
+            data-aos="fade-up"
+          >
+            Heavy-Duty Commercial Electric Motorcycles for Global Fleets
           </h1>
-          <p className="mx-auto text-xl text-gray-400" data-aos="fade-up" data-aos-delay="200">
-            TYCORUN delivers export-ready electric motorcycles with OEM branding,
-            compliance support, and scalable supply chain execution.
+          <p className="mx-auto max-w-3xl text-xl text-gray-400" data-aos="fade-up" data-aos-delay="200">
+            Engineered for last-mile delivery and logistics: high payload, long-range swappable
+            batteries, and minimal maintenance costs.
           </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <button className="btn-sm bg-blue-600 text-white hover:bg-blue-500">
+              Download Fleet Catalog
+            </button>
+            <button className="btn-sm border border-gray-700 text-gray-200 hover:border-blue-500">
+              Request Bulk Pricing
+            </button>
+          </div>
           <div className="hero-image-wrapper" data-aos="fade-up" data-aos-delay="300">
             <div className="hero-image-container">
               <div className="profile-image-glow"></div>
               <div className="profile-image-frame">
                 <div className="profile-image" id="profileImage">
                   <div className="profile-placeholder">
-                    <i className="fas fa-code"></i>
+                    <i className="fas fa-motorcycle"></i>
                   </div>
                 </div>
               </div>
               <div className="floating-badge badge-1">
-                <i className="fab fa-react"></i>
+                <i className="fas fa-boxes-stacked"></i>
                 <div className="badge-content">
-                  <span className="badge-title">React</span>
-                  <span className="badge-libs">Redux, Router, Hooks</span>
+                  <span className="badge-title">High Payload</span>
+                  <span className="badge-libs">Reinforced chassis, 200kg+ rating</span>
                 </div>
               </div>
               <div className="floating-badge badge-2">
-                <i className="fab fa-node-js"></i>
+                <i className="fas fa-bolt"></i>
                 <div className="badge-content">
-                  <span className="badge-title">Node.js</span>
-                  <span className="badge-libs">Express, Socket.io, MongoDB</span>
+                  <span className="badge-title">Swap Ready</span>
+                  <span className="badge-libs">30s battery swap, nonstop shifts</span>
                 </div>
               </div>
               <div className="floating-badge badge-3">
-                <i className="fab fa-js"></i>
+                <i className="fas fa-shield-halved"></i>
                 <div className="badge-content">
-                  <span className="badge-title">JavaScript</span>
-                  <span className="badge-libs">ES6+, TypeScript, jQuery</span>
+                  <span className="badge-title">Fleet Durable</span>
+                  <span className="badge-libs">Built for daily commercial duty</span>
                 </div>
               </div>
             </div>
@@ -62,176 +74,240 @@ function ProductHero() {
   );
 }
 
-function SystemLayers() {
-  const layers = [
+function CommercialDifference() {
+  const cards = [
     {
-      id: "01",
-      title: "Motor + Controller",
-      subtitle: "Power Delivery",
-      description: "High-efficiency motor paired with tuned controller mapping for smooth torque and consistent regen.",
-      features: ["Ride-mode mapping", "Regen calibration", "Quiet drivetrain"],
+      title: "Reinforced Chassis",
+      copy: "Tested for 200kg+ payloads vs. consumer 150kg limits.",
     },
     {
-      id: "02",
-      title: "Battery Pack",
-      subtitle: "Energy Core",
-      description: "High-density pack integrated into the frame for a low center of gravity and real-world range.",
-      features: ["Frame-integrated pack", "Balanced weight", "Thermal monitoring"],
+      title: "Fleet Battery Life",
+      copy: "2000+ cycle LFP packs vs. standard Li-ion degradation.",
     },
     {
-      id: "03",
-      title: "Chassis + Suspension",
-      subtitle: "Market Durability",
-      description: "Geometry and durability tuned for long-term service and regional road conditions.",
-      features: ["Optimized rake/trail", "Adjustable suspension", "Predictable braking"],
+      title: "Maintenance Free",
+      copy: "Hub motor (no belt/chain) vs. frequent drivetrain service.",
     },
-    {
-      id: "04",
-      title: "Safety Systems",
-      subtitle: "Compliance",
-      description: "ABS, lighting, and diagnostics aligned with regional certification needs.",
-      features: ["ABS braking", "Traction management", "Diagnostic alerts"],
-    }
   ];
 
   return (
     <section className="relative border-t border-gray-800 bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12 md:mb-16 text-center">
-           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Anatomy of a TYCORUN Platform</h2>
-           <p className="text-gray-400 max-w-2xl mx-auto">A platform is a system of systems. We optimize every layer for compliance, durability, and serviceability.</p>
+          <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">
+            Why Choose Commercial Grade Over Consumer Models?
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Consumer scooters look cheaper upfront, but fleet downtime destroys margins. Commercial
+            specs are engineered for daily routes, heavier loads, and predictable maintenance.
+          </p>
         </div>
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-           <div className="relative order-2 lg:order-1 product-core-advantage" data-aos="fade-right">
-              <ProductCoreAdvantageSwiper />
-           </div>
-           <div className="order-1 lg:order-2 space-y-8">
-              {layers.map((layer, index) => (
-                 <div key={index} className="group" data-aos="fade-up" data-aos-delay={index * 100}>
-                    <div className="flex items-baseline gap-4 mb-2">
-                       <span className="text-sm font-mono text-blue-500 font-bold">{layer.id}</span>
-                       <h3 className="text-xl font-semibold text-gray-200 group-hover:text-white transition-colors">{layer.title} <span className="text-gray-600 font-normal text-base ml-2">/ {layer.subtitle}</span></h3>
-                    </div>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-3 pl-10 border-l border-gray-800 group-hover:border-blue-500/30 transition-colors">{layer.description}</p>
-                    <ul className="pl-10 flex gap-4 text-xs font-mono text-gray-500">{layer.features.map((feat, i) => (<li key={i} className="flex items-center gap-1"><span className="w-1 h-1 bg-blue-500 rounded-full"></span>{feat}</li>))}</ul>
-                 </div>
-              ))}
-           </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {cards.map((card) => (
+            <div
+              key={card.title}
+              className="rounded-2xl border border-gray-800 bg-gray-900/60 p-6"
+              data-aos="fade-up"
+            >
+              <h3 className="text-xl font-semibold text-gray-100">{card.title}</h3>
+              <p className="mt-3 text-sm text-gray-400">{card.copy}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function SpecGrid() {
-  const specs = [
-    { category: "Performance", items: [{ label: "Top Speed", value: "110 to 130 km/h" }, { label: "Motor Output", value: "8 to 15 kW" }, { label: "Range (Real)", value: "120 to 180 km" }] },
-    { category: "Certification", items: [{ label: "Road Class", value: "EEC L3e / DOT" }, { label: "Docs", value: "COC + compliance pack" }, { label: "Testing", value: "100% functional" }] },
-    { category: "Logistics", items: [{ label: "Loading Qty", value: "50 units / 40HQ" }, { label: "Packaging", value: "Steel rack options" }, { label: "Incoterms", value: "FOB / CIF" }] },
-    { category: "Partnership", items: [{ label: "OEM / ODM", value: "Branding + trims" }, { label: "SKD / CKD", value: "Duty-friendly" }, { label: "MOQ", value: "50 units / model" }] }
+function Lineup() {
+  const models = [
+    {
+      title: "Model A: The City Runner",
+      copy:
+        "Lightweight Electric Delivery Scooter for food delivery electric bike fleets. Quick swap access and agile handling.",
+    },
+    {
+      title: "Model B: The Cargo King",
+      copy:
+        "Heavy-Duty Cargo Bike platform for logistics with extended wheelbase, oversized racks, and high torque.",
+    },
+    {
+      title: "Model C: The Patrol / Utility",
+      copy:
+        "Multi-purpose Fleet Management EV for security, patrol, and rental programs with impact-resistant trims.",
+    },
   ];
 
   return (
-    <section className="relative">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
-         <div className="mb-12">
-            <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Technical Capabilities</h2>
-            <p className="text-gray-400">Commercial specs designed for importers, distributors, and regional assembly partners.</p>
-         </div>
-         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {specs.map((group, idx) => (
-               <div key={idx} className="bg-gray-900/50 border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 transition-colors">
-                  <div className="bg-gray-800/50 px-6 py-3 border-b border-gray-800"><h3 className="font-semibold text-gray-200 text-sm">{group.category}</h3></div>
-                  <div className="p-6 space-y-4">{group.items.map((item, i) => (<div key={i}><div className="text-xs text-gray-500 uppercase tracking-wider mb-1">{item.label}</div><div className="text-sm font-mono text-blue-400">{item.value}</div></div>))}</div>
-               </div>
-            ))}
-         </div>
-         <div className="mt-12 flex justify-center">
-            <button className="btn-sm bg-gray-800 text-gray-200 hover:bg-gray-700 border border-gray-700 flex items-center gap-2">
-               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-               Download OEM Catalog (PDF)
-            </button>
-         </div>
-      </div>
-    </section>
-  );
-}
-
-function ProcessSteps() {
-  const steps = [
-    { title: "Inquiry", desc: "Model selection and target market fit." },
-    { title: "Sampling", desc: "Pre-production samples and approvals." },
-    { title: "Compliance", desc: "EEC/DOT docs and testing support." },
-    { title: "Production", desc: "QC-controlled manufacturing runs." },
-    { title: "Shipping", desc: "Packaging, loading, and export docs." },
-  ];
-
-  return (
-    <section className="bg-gray-950 border-t border-gray-800">
+    <section className="relative border-t border-gray-800 bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12 text-center">
-           <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">From Inquiry to Shipment</h2>
-           <p className="text-gray-400">A structured B2B process for predictable delivery and compliance.</p>
+          <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">
+            Specialized Platforms for Every Business
+          </h2>
+          <p className="text-gray-400">
+            A commercial electric motorcycle lineup tuned for last-mile delivery solution fleets.
+          </p>
         </div>
-        <div className="relative">
-           <div className="hidden md:block absolute top-6 left-0 right-0 h-0.5 bg-gray-800 z-0"></div>
-           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-              {steps.map((step, idx) => (
-                 <div key={idx} className="relative z-10 flex flex-col items-center text-center group">
-                    <div className="w-12 h-12 rounded-full bg-gray-900 border-2 border-gray-700 text-gray-400 flex items-center justify-center font-bold mb-4 group-hover:border-blue-500 group-hover:text-blue-500 transition-colors">{idx + 1}</div>
-                    <h3 className="text-lg font-semibold text-gray-200 mb-2">{step.title}</h3>
-                    <p className="text-sm text-gray-500 max-w-[150px]">{step.desc}</p>
-                 </div>
-              ))}
-           </div>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            {models.map((model) => (
+              <div key={model.title} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
+                <h3 className="text-lg font-semibold text-gray-100">{model.title}</h3>
+                <p className="mt-3 text-sm text-gray-400">{model.copy}</p>
+              </div>
+            ))}
+          </div>
+          <div className="product-core-advantage" data-aos="fade-left">
+            <ProductCoreAdvantageSwiper />
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Applications() {
+function TechSpecs() {
+  const specs = [
+    {
+      title: "Swappable Battery System",
+      copy: "30-second swap keeps vehicles on the road while riders rotate shifts.",
+    },
+    {
+      title: "IoT Fleet Management",
+      copy: "Remote monitoring for location, battery health, and rider behavior.",
+    },
+    {
+      title: "Customizable Cargo System",
+      copy: "Compatible with pizza boxes, 200L trunks, and front racks.",
+    },
+  ];
+
   return (
-    <section className="relative">
+    <section className="relative border-t border-gray-800 bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
-         <div className="mb-12">
-            <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">Built for Global Markets</h2>
-         </div>
-         <div className="grid md:grid-cols-3 gap-6">
-            <div className="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 aspect-[4/3]">
-               <div className="absolute inset-0 bg-linear-to-t from-gray-950 to-transparent opacity-90 z-10" />
-               <div className="absolute bottom-0 left-0 p-6 z-20">
-                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Retail</div>
-                  <h3 className="text-xl font-semibold text-gray-100">Consumer Distribution</h3>
-                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Dealer-friendly trims with compliance documents and sales-ready specs.</p>
-               </div>
-               <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
-                  <svg width="100%" height="100%"><pattern id="app-grid-1" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#4B5563" /></pattern><rect width="100%" height="100%" fill="url(#app-grid-1)" /></svg>
-               </div>
+        <div className="mb-12 text-center">
+          <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">
+            Built for 99% Uptime
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Commercial-grade systems engineered for predictable availability and lower operating
+            costs.
+          </p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {specs.map((spec) => (
+            <div key={spec.title} className="rounded-2xl border border-gray-800 bg-gray-900/60 p-6">
+              <h3 className="text-lg font-semibold text-gray-100">{spec.title}</h3>
+              <p className="mt-3 text-sm text-gray-400">{spec.copy}</p>
             </div>
-            <div className="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 aspect-[4/3]">
-               <div className="absolute inset-0 bg-linear-to-t from-gray-950 to-transparent opacity-90 z-10" />
-               <div className="absolute bottom-0 left-0 p-6 z-20">
-                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Fleet</div>
-                  <h3 className="text-xl font-semibold text-gray-100">Delivery & Operations</h3>
-                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Low running cost, reliable uptime, and spare parts planning for operators.</p>
-               </div>
-               <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
-                   <svg width="100%" height="100%"><path d="M0 0 L 100 100" stroke="#4B5563" strokeWidth="1"/><path d="M100 0 L 0 100" stroke="#4B5563" strokeWidth="1"/></svg>
-               </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TcoCalculatorSection() {
+  return (
+    <section className="relative border-t border-gray-800 bg-gray-950">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
+        <div className="mb-12 text-center">
+          <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">
+            Calculate Your ROI
+          </h2>
+          <p className="text-gray-400">
+            See yearly savings when replacing fuel fleets with commercial EVs.
+          </p>
+        </div>
+        <ProductTcoCalculator />
+      </div>
+    </section>
+  );
+}
+
+function Branding() {
+  return (
+    <section className="relative border-t border-gray-800 bg-gray-950">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
+        <div className="grid gap-10 lg:grid-cols-2 items-center">
+          <div>
+            <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">
+              Your Brand on The Road
+            </h2>
+            <p className="text-gray-400 mb-6">
+              We offer full livery customization for fleets of 50+ units, including colorways,
+              decals, and cargo box branding.
+            </p>
+            <div className="flex gap-3">
+              {["#1e40af", "#2563eb", "#0f172a", "#0ea5e9"].map((color) => (
+                <span
+                  key={color}
+                  className="h-10 w-10 rounded-full border border-gray-700"
+                  style={{ background: color }}
+                />
+              ))}
             </div>
-            <div className="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 aspect-[4/3]">
-               <div className="absolute inset-0 bg-linear-to-t from-gray-950 to-transparent opacity-90 z-10" />
-               <div className="absolute bottom-0 left-0 p-6 z-20">
-                  <div className="text-blue-500 text-xs font-mono uppercase tracking-widest mb-1">Swap</div>
-                  <h3 className="text-xl font-semibold text-gray-100">Battery Swap Programs</h3>
-                  <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Swap-ready architecture for high-ROI mobility networks and public programs.</p>
-               </div>
-               <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
-                  <svg width="100%" height="100%"><rect x="0" y="0" width="100%" height="100%" fill="none" stroke="#4B5563" strokeWidth="20" strokeDasharray="10 10" /></svg>
-               </div>
+          </div>
+          <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-6 text-gray-300">
+            <p className="text-sm uppercase tracking-widest text-blue-300">Customization Options</p>
+            <ul className="mt-4 space-y-3 text-sm">
+              <li>Fleet color palette + reflective decals</li>
+              <li>Custom cargo box sizes and mounts</li>
+              <li>Embossed branding on seat and panels</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SocialProof() {
+  return (
+    <section className="relative border-t border-gray-800 bg-gray-950">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
+        <div className="mb-12 text-center">
+          <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">
+            Trusted by Logistics Leaders
+          </h2>
+        </div>
+        <div className="grid gap-6 md:grid-cols-5 text-center text-gray-400 text-sm">
+          {["SwiftFleet", "MetroLogix", "QuickDrop", "UrbanFresh", "PrimeCourier"].map((logo) => (
+            <div
+              key={logo}
+              className="rounded-xl border border-gray-800 bg-gray-900/50 py-4"
+            >
+              {logo}
             </div>
-         </div>
+          ))}
+        </div>
+        <div className="mt-10 rounded-2xl border border-gray-800 bg-gray-900/60 p-6 text-gray-300">
+          <p className="text-lg text-gray-100">
+            “TYCORUN helped us cut delivery costs by 32% while improving rider uptime.”
+          </p>
+          <p className="mt-3 text-sm text-gray-400">
+            Operations Director, National Pizza Chain
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BottomCta() {
+  return (
+    <section className="relative border-t border-gray-800 bg-gray-950">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24 text-center">
+        <h2 className="font-nacelle text-3xl font-semibold text-gray-100 mb-4">
+          Ready to Electrify Your Fleet?
+        </h2>
+        <p className="text-gray-400 mb-6">
+          Speak with a commercial specialist and build your fleet roadmap.
+        </p>
+        <button className="btn-sm bg-blue-600 text-white hover:bg-blue-500">
+          Speak to a Commercial Specialist
+        </button>
       </div>
     </section>
   );
@@ -241,10 +317,13 @@ export default function ProductPage() {
   return (
     <>
       <ProductHero />
-      <SystemLayers />
-      <SpecGrid />
-      <Applications />
-      <ProcessSteps />
+      <CommercialDifference />
+      <Lineup />
+      <TechSpecs />
+      <TcoCalculatorSection />
+      <Branding />
+      <SocialProof />
+      <BottomCta />
     </>
   );
 }

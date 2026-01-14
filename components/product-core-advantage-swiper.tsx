@@ -8,27 +8,18 @@ import "swiper/css/effect-cube";
 const slides = [
   {
     image: "/about/unified-powertrain-logic.webp",
-    title: "Unified Powertrain Logic",
-    copy:
-      "BMS algorithms are calibrated directly to motor controllers for maximum range and energy efficiency.",
+    title: "Model A: The City Runner",
+    copy: "Lightweight platform tuned for food delivery and tight urban routes.",
   },
   {
     image: "/about/direct-bom-savings.webp",
-    title: "Direct BOM Savings",
-    copy:
-      "Eliminating third-party battery suppliers removes markups, delivering the market's most competitive landing cost.",
+    title: "Model B: The Cargo King",
+    copy: "Extended wheelbase, oversized racks, and heavy-duty logistics torque.",
   },
   {
     image: "/about/secured-core-supply.webp",
-    title: "Secured Core Supply",
-    copy:
-      "In-house pack assembly guarantees production continuity, protecting your orders from global component shortages.",
-  },
-  {
-    image: "/about/system-level-qc.webp",
-    title: "System-Level QC",
-    copy:
-      "Batteries are tested under actual chassis loads, ensuring perfect compatibility and thermal safety.",
+    title: "Model C: The Patrol / Utility",
+    copy: "Durable multi-purpose trim for security, rentals, and public programs.",
   },
 ];
 
