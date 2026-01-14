@@ -1,0 +1,70 @@
+全站高标准构建与 SEO 最佳实践指南
+
+一、工程架构与样式管理 (Architecture & Styling)
+核心原则：模块隔离，拒绝熵增，确定性优先。
+1. 样式作用域与隔离 (Scope & Isolation)
+【深度实践】组件级隔离：坚决避免全局样式覆盖。使用 CSS Modules、Styled Components 或 Tailwind 组件类，确保样式仅对当前组件生效。
+专业术语：CSS Encapsulation（CSS 封装）。
+避雷：禁止在 Page A 的 CSS 文件中修改 .header 等公共组件样式，公共组件样式应由组件自身 props 或局部样式控制。
+【避雷】全局选择器的克制：仅允许用于 Reset/Normalize 或全站基线（字体/背景）。避免滥用 div {}、span {} 等标签选择器。
+【最佳实践】层叠上下文管理：统一管理 z-index，建议用变量或 Tailwind 配置表，避免层级军备竞赛。
+2. 资源管理 (Asset Management)
+【深度实践】资源本地化验证：
+字体 (Fonts)：使用 font-display: swap 防止 FOIT；自托管字体需预加载关键字重。
+图标 (Icons)：优先 SVG Component 或 Sprite，避免引入庞大字体库导致体积膨胀。
+【避雷】兜底策略：外部资源转本地后，清理无效的 dns-prefetch/preconnect，且避免误删仍在使用的 CDN 资源。
+
+二、渲染机制与交互体验 (Rendering & Interaction)
+核心原则：视觉稳定性（CLS 优化），SSR 与 CSR 平滑交接。
+1. 解决抖动与偏移 (CLS Optimization)
+【痛点】首次渲染跳动、路由切换偏移。
+【专业方案】
+容器占位：图片/视频/Canvas 容器必须显式 width/height 或使用 aspect-ratio，在资源加载前撑开空间。
+布局锁定：路由切换时管理滚动位置，避免页头跳变。
+【避雷】避免在 useEffect（挂载后）读取 DOM 尺寸决定布局；必须计算时用 useLayoutEffect 或提供 min-height 兜底。
+2. SSR 与 Hydration 一致性
+【痛点】“Text content does not match server-rendered HTML” 警告。
+【专业方案】
+随机数/时间：涉及随机数、当前时间、window 尺寸的渲染，推迟到客户端执行（useEffect 设置状态）。
+条件渲染：仅在 isMounted 为 true 后渲染依赖浏览器 API 的组件。
+【避雷】动画库（GSAP/Lenis）必须在 useEffect 或 useIsomorphicLayoutEffect 初始化，禁止在组件顶层直接调用 window。
+3. 动效生命周期管理
+【深度实践】清理机制：useEffect 绑定的事件监听器、定时器、动画实例必须在 return 中销毁，防止内存泄漏与跨页冲突。
+【避雷】避免依赖字体加载瞬间初始化动画。可用 document.fonts.ready.then() 等待字体就绪。
+
+三、构建与部署 (Build & Deployment)
+核心原则：环境一致性，零运行时错误。
+1. 预构建检查 (Pre-build Checklist)
+【关键点】环境隔离：确保构建环境能访问所有资源；无法访问外网时需提前本地化。
+【避雷】window/document 保护：仅在客户端使用 window/document；Client Component 中建议放在 useEffect。
+2. 产物优化
+【深度实践】Tree Shaking：检查 Bundle Analyzer，避免错误引入导致全库打包。
+【避雷】CSS 顺序：确保生产环境 CSS 提取顺序正确，避免线上样式覆盖与开发不一致。
+【补充】清理调试/占位脚本，避免被打包残留。
+
+四、SEO 深度优化与避雷 (Advanced SEO)
+核心原则：机器可读，语义清晰，内容为王。
+1. 可抓取性 (Crawlability)
+【红线】核心内容（产品介绍、价格、联系方式）必须 SSR/SSG；纯交互内容可 CSR。
+检测方法：禁用 JS 刷新，内容是否仍可见。
+【避雷】避免用 opacity:0 或 display:none 长期隐藏核心关键词。
+2. 语义化与结构 (Semantics)
+【标准】标题层级：H1 每页仅一个，包含核心关键词；H2-H6 逻辑嵌套不跳级。
+【避雷】不要用 <div class="h1"> 替代 <h1>；Logo 不应占用 H1（除首页）。
+【图像 SEO】
+文件名：electric-motorcycle-battery.jpg，而非 IMG_001.jpg。
+Alt：描述内容；装饰图用 alt=""。
+3. 技术 SEO (Technical SEO)
+【深度实践】元数据管理：Canonical 防止参数重复收录；OG/Twitter 卡片提升分享点击率。
+【深度实践】结构化数据：Product/Article/Organization Schema，提升富摘要展示。
+4. 链接策略
+【避雷】避免孤岛页面；每页至少有一个内链指向。
+【最佳实践】锚文本具描述性，避免“点击这里”。
+
+五、客户端加载问题排查速查表 (Quick Fixes)
+现象	可能原因	解决方案
+FOUC（样式闪烁）	CSS 加载晚于 HTML / CSS-in-JS 未配置 SSR	检查 head 引入顺序；配置 ServerStyleSheet
+图标先显示方块	字体图标加载延迟	预加载字体；改用 SVG
+滚动条位置异常	浏览器自动滚动恢复冲突	设 history.scrollRestoration = "manual"
+Hydration error	HTML 结构不合法或渲染差异	检查嵌套语义；延迟客户端渲染
+动画位置偏移	图片/字体未加载完成	监听 onLoad 或预设宽高比

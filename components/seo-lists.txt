@@ -1,0 +1,29 @@
+本地可用资源清单（适合构建页面的现有依赖/资源）
+
+UI/交互类库（已安装，可本地引用）
+- swiper: 轮播/卡片滑动
+- aos: 滚动触发动画
+- gsap: 复杂动效编排
+- lenis: 平滑滚动
+- imagesloaded: 图片加载状态控制
+- three: 3D 场景/效果
+- @createjs/easeljs: 2D 画布渲染
+- @headlessui/react: 无样式交互组件
+- @tailwindcss/typography: 富文本排版
+- @tailwindcss/forms: 表单基础样式
+
+图标与字体（本地依赖）
+- @fortawesome/fontawesome-free: 图标字体（本地引用 CSS/字体文件）
+- public/fonts: 本地字体（nacelle 系列）
+
+内容处理
+- gray-matter: 解析 Markdown front-matter
+- remark / remark-html: Markdown 处理与渲染
+
+项目内已有静态资源
+- public/svg: SVG 图形资源
+- public/webp: 图片资源
+- public/css/product.css: 产品页样式
+- app/css/style.css: 全站样式
+- public/js/main.js: 页面交互脚本
+- public/js/animations.js: 动画脚本

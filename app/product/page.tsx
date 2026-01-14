@@ -1,4 +1,6 @@
 
+import "../css/product.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import PageIllustration from "@/components/page-illustration";
 import ProductPage from "@/components/product-page";
 import Cta from "@/components/cta";

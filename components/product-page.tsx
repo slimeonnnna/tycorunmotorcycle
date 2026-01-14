@@ -1,99 +1,60 @@
 
 import Image from "next/image";
+import ProductHeroBackground from "./product-hero-background";
+import ProductCoreAdvantageSwiper from "./product-core-advantage-swiper";
 
 function ProductHero() {
   return (
-    <section className="relative pt-32 pb-12 md:pt-40 md:pb-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <section className="relative pt-32 pb-12 md:pt-40 md:pb-20 product-hero">
+      <ProductHeroBackground />
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 product-hero-content">
         <div className="text-center pb-12 md:pb-16">
-          <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
+          <div
+            className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
             <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent font-mono text-sm tracking-wider uppercase">OEM / ODM Platform</span>
           </div>
           <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl" data-aos="fade-up">
             Built for Global Distribution
           </h1>
-          <p className="mx-auto max-w-3xl text-xl text-gray-400" data-aos="fade-up" data-aos-delay="200">
+          <p className="mx-auto text-xl text-gray-400" data-aos="fade-up" data-aos-delay="200">
             TYCORUN delivers export-ready electric motorcycles with OEM branding,
             compliance support, and scalable supply chain execution.
           </p>
-        </div>
-        <div className="relative mx-auto max-w-5xl" data-aos="fade-up" data-aos-delay="400">
-          <div className="relative rounded-2xl border border-gray-800 bg-gray-900/40 p-1 backdrop-blur-sm">
-             <div className="absolute inset-0 z-0 opacity-20">
-                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                   <pattern id="prod-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="1" height="1" fill="#4B5563"/></pattern>
-                   <rect width="100%" height="100%" fill="url(#prod-grid)"/>
-                </svg>
-             </div>
-             <div className="aspect-[16/7] relative z-10 flex items-center justify-center overflow-hidden rounded-xl bg-gray-950/80">
-                <svg viewBox="0 0 900 400" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                   <defs>
-                      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6" /></marker>
-                   </defs>
-                   <g transform="translate(50, 140)">
-                      <rect x="0" y="0" width="160" height="120" rx="16" fill="#111827" stroke="#2563EB" strokeWidth="2" />
-                      <rect x="60" y="30" width="40" height="6" rx="2" fill="#3B82F6" />
-                      <rect x="50" y="45" width="60" height="6" rx="2" fill="#3B82F6" opacity="0.8" />
-                      <rect x="40" y="60" width="80" height="6" rx="2" fill="#3B82F6" opacity="0.6" />
-                      <text x="80" y="95" textAnchor="middle" fill="#E5E7EB" fontSize="14" fontWeight="600" fontFamily="var(--font-nacelle)">TYCORUN</text>
-                      <text x="80" y="112" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontFamily="monospace">Unified Platform</text>
-                   </g>
-                   <path d="M 210 200 H 260" stroke="#3B82F6" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrowhead)" />
-                   <text x="235" y="190" textAnchor="middle" fill="#3B82F6" fontSize="10" fontWeight="bold">INTEGRATED</text>
-                   <g transform="translate(270, 50)">
-                      <rect x="0" y="0" width="360" height="300" rx="20" fill="#1F2937" fillOpacity="0.2" stroke="#4B5563" strokeWidth="2" strokeDasharray="8 8" />
-                      <rect x="100" y="-12" width="160" height="24" rx="12" fill="#111827" stroke="#4B5563" />
-                      <text x="180" y="4" textAnchor="middle" fill="#9CA3AF" fontSize="11" fontWeight="600" letterSpacing="1">MOTORCYCLE PLATFORM</text>
-                      <g transform="translate(30, 40)">
-                         <rect width="90" height="220" rx="8" fill="#111827" stroke="#374151" strokeWidth="1" />
-                         <g transform="translate(25, 30)">
-                            <circle cx="10" cy="10" r="8" stroke="#3B82F6" strokeWidth="1.5" />
-                            <circle cx="30" cy="10" r="8" stroke="#3B82F6" strokeWidth="1.5" />
-                            <circle cx="10" cy="35" r="8" stroke="#3B82F6" strokeWidth="1.5" />
-                            <circle cx="30" cy="35" r="8" stroke="#3B82F6" strokeWidth="1.5" />
-                            <circle cx="10" cy="60" r="8" stroke="#3B82F6" strokeWidth="1.5" />
-                            <circle cx="30" cy="60" r="8" stroke="#3B82F6" strokeWidth="1.5" />
-                         </g>
-                         <text x="45" y="180" textAnchor="middle" fill="#E5E7EB" fontSize="12" fontWeight="600">Power</text>
-                         <text x="45" y="195" textAnchor="middle" fill="#9CA3AF" fontSize="11">Pack</text>
-                      </g>
-                      <g transform="translate(135, 40)">
-                         <rect width="90" height="220" rx="8" fill="#111827" stroke="#374151" strokeWidth="1" />
-                         <g transform="translate(30, 30)">
-                            <path d="M15 0 V 60" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" />
-                            <circle cx="15" cy="70" r="6" fill="#EF4444" />
-                            <path d="M5 20 H 25 M 5 35 H 25 M 5 50 H 25" stroke="#EF4444" strokeWidth="1" />
-                         </g>
-                         <text x="45" y="180" textAnchor="middle" fill="#E5E7EB" fontSize="12" fontWeight="600">Thermal</text>
-                         <text x="45" y="195" textAnchor="middle" fill="#9CA3AF" fontSize="11">Control</text>
-                      </g>
-                      <g transform="translate(240, 40)">
-                         <rect width="90" height="220" rx="8" fill="#111827" stroke="#374151" strokeWidth="1" />
-                         <g transform="translate(25, 30)">
-                            <rect x="5" y="10" width="30" height="40" rx="2" stroke="#10B981" strokeWidth="2" />
-                            <path d="M0 20 H 5 M 0 30 H 5 M 0 40 H 5" stroke="#10B981" />
-                            <path d="M35 20 H 40 M 35 30 H 40 M 35 40 H 40" stroke="#10B981" />
-                         </g>
-                         <text x="45" y="180" textAnchor="middle" fill="#E5E7EB" fontSize="12" fontWeight="600">Motor</text>
-                         <text x="45" y="195" textAnchor="middle" fill="#9CA3AF" fontSize="11">Control</text>
-                      </g>
-                   </g>
-                   <path d="M 630 200 H 680" stroke="#3B82F6" strokeWidth="2" markerEnd="url(#arrowhead)" />
-                   <g transform="translate(690, 140)">
-                      <rect x="0" y="0" width="160" height="120" rx="16" fill="#111827" stroke="#374151" strokeWidth="2" />
-                      <g transform="translate(30, 40)">
-                         <path d="M10 20 H 90" stroke="#E5E7EB" strokeWidth="2" />
-                         <circle cx="20" cy="25" r="10" stroke="#E5E7EB" strokeWidth="2" />
-                         <circle cx="80" cy="25" r="10" stroke="#E5E7EB" strokeWidth="2" />
-                         <path d="M20 10 L 30 0 H 70 L 80 10" stroke="#E5E7EB" strokeWidth="2" fill="none"/>
-                      </g>
-                      <text x="80" y="95" textAnchor="middle" fill="#E5E7EB" fontSize="14" fontWeight="600" fontFamily="var(--font-nacelle)">Motorcycle</text>
-                      <text x="80" y="112" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontFamily="monospace">Chassis & Ergonomics</text>
-                   </g>
-                   <path d="M 130 140 V 120 H 770 V 140" stroke="#3B82F6" strokeWidth="1" strokeOpacity="0.3" fill="none" />
-                   <text x="450" y="110" textAnchor="middle" fill="#3B82F6" fontSize="10" letterSpacing="2" opacity="0.8">END-TO-END OEM SYSTEM</text>
-                </svg>
-             </div>
+          <div className="hero-image-wrapper" data-aos="fade-up" data-aos-delay="300">
+            <div className="hero-image-container">
+              <div className="profile-image-glow"></div>
+              <div className="profile-image-frame">
+                <div className="profile-image" id="profileImage">
+                  <div className="profile-placeholder">
+                    <i className="fas fa-code"></i>
+                  </div>
+                </div>
+              </div>
+              <div className="floating-badge badge-1">
+                <i className="fab fa-react"></i>
+                <div className="badge-content">
+                  <span className="badge-title">React</span>
+                  <span className="badge-libs">Redux, Router, Hooks</span>
+                </div>
+              </div>
+              <div className="floating-badge badge-2">
+                <i className="fab fa-node-js"></i>
+                <div className="badge-content">
+                  <span className="badge-title">Node.js</span>
+                  <span className="badge-libs">Express, Socket.io, MongoDB</span>
+                </div>
+              </div>
+              <div className="floating-badge badge-3">
+                <i className="fab fa-js"></i>
+                <div className="badge-content">
+                  <span className="badge-title">JavaScript</span>
+                  <span className="badge-libs">ES6+, TypeScript, jQuery</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -141,16 +102,8 @@ function SystemLayers() {
            <p className="text-gray-400 max-w-2xl mx-auto">A platform is a system of systems. We optimize every layer for compliance, durability, and serviceability.</p>
         </div>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-           <div className="relative order-2 lg:order-1" data-aos="fade-right">
-              <div className="relative flex flex-col gap-4">
-                 <div className="h-24 w-full rounded-xl border border-gray-700 bg-gray-900/80 p-4 flex items-center justify-between shadow-lg transform translate-x-4"><span className="font-mono text-xs text-gray-500">LAYER_04 [SAFETY]</span><div className="h-2 w-24 bg-gray-700 rounded-full"></div></div>
-                 <div className="h-20 w-full rounded-xl border border-blue-900/50 bg-blue-900/10 p-4 flex items-center justify-between shadow-lg backdrop-blur-sm z-10 border-l-4 border-l-blue-500">
-                    <span className="font-mono text-xs text-blue-400">LAYER_03 [CHASSIS]</span>
-                    <div className="flex gap-2"><div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div><div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse delay-75"></div><div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse delay-150"></div></div>
-                 </div>
-                 <div className="h-16 w-full rounded-xl border border-gray-800 bg-gray-900/60 p-4 flex items-center justify-between shadow-lg transform translate-x-4"><span className="font-mono text-xs text-gray-500">LAYER_02 [POWERTRAIN]</span><div className="h-2 w-32 bg-linear-to-r from-red-900/50 to-blue-900/50 rounded-full"></div></div>
-                 <div className="h-32 w-full rounded-xl border border-gray-800 bg-gray-900 p-4 flex items-center justify-between shadow-lg transform translate-x-8"><span className="font-mono text-xs text-gray-500">LAYER_01 [ENERGY]</span><div className="grid grid-cols-6 gap-2">{[...Array(12)].map((_,i) => (<div key={i} className="h-4 w-4 rounded-full bg-gray-700 border border-gray-600"></div>))}</div></div>
-              </div>
+           <div className="relative order-2 lg:order-1 product-core-advantage" data-aos="fade-right">
+              <ProductCoreAdvantageSwiper />
            </div>
            <div className="order-1 lg:order-2 space-y-8">
               {layers.map((layer, index) => (
