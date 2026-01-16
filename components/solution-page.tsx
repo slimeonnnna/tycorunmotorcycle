@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import SolutionEcosystemSwiper from "./solution-ecosystem-swiper";
 
@@ -28,6 +28,7 @@ const verticals = [
     keyword: "Logistics EV Solution",
     icon: "fa-boxes-stacked",
     background: "linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(30, 64, 175, 0.45))",
+    image: "/webp/1.webp",
   },
   {
     title: "Food Delivery",
@@ -37,6 +38,7 @@ const verticals = [
     keyword: "Food Delivery Electric Bike",
     icon: "fa-utensils",
     background: "linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(34, 197, 94, 0.35))",
+    image: "/webp/2.webp",
   },
   {
     title: "Ride-Hailing",
@@ -46,6 +48,7 @@ const verticals = [
     keyword: "Shared Mobility Solution",
     icon: "fa-users",
     background: "linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(168, 85, 247, 0.35))",
+    image: "/webp/3.webp",
   },
   {
     title: "Public Service & Security",
@@ -55,6 +58,7 @@ const verticals = [
     keyword: "Government Fleet Solution",
     icon: "fa-shield-halved",
     background: "linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(59, 130, 246, 0.35))",
+    image: "/webp/4.webp",
   },
   {
     title: "Lease-to-Own",
@@ -64,6 +68,7 @@ const verticals = [
     keyword: "Lease-to-Own EV Program",
     icon: "fa-file-invoice-dollar",
     background: "linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(251, 146, 60, 0.35))",
+    image: "/webp/5.webp",
   },
 ];
 
@@ -182,9 +187,79 @@ function Ecosystem() {
 
 function Verticals() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const items = verticals;
+  const dragStartXRef = useRef<number | null>(null);
+  const dragStartYRef = useRef<number | null>(null);
+  const dragMovedRef = useRef(false);
+
+  const showNext = () => {
+    setActiveIndex((prev) => (prev + 1) % items.length);
+  };
+
+  const showPrevious = () => {
+    setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
+  };
+
+  useEffect(() => {
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        showPrevious();
+      } else if (event.key === "ArrowRight") {
+        showNext();
+      }
+    };
+
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [items.length]);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    dragStartXRef.current = event.clientX;
+    dragStartYRef.current = event.clientY;
+    dragMovedRef.current = false;
+    setIsDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartXRef.current === null) return;
+    const deltaX = event.clientX - dragStartXRef.current;
+    const deltaY = dragStartYRef.current !== null ? event.clientY - dragStartYRef.current : 0;
+    if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 8) {
+      dragStartXRef.current = null;
+      dragStartYRef.current = null;
+      dragMovedRef.current = false;
+      setIsDragging(false);
+      event.currentTarget.releasePointerCapture(event.pointerId);
+      return;
+    }
+    if (Math.abs(deltaX) > 6) {
+      dragMovedRef.current = true;
+    }
+  };
+
+  const handlePointerEnd = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartXRef.current === null) return;
+    const deltaX = event.clientX - dragStartXRef.current;
+    const threshold = 60;
+    if (Math.abs(deltaX) >= threshold) {
+      if (deltaX < 0) {
+        showNext();
+      } else {
+        showPrevious();
+      }
+    }
+    dragStartXRef.current = null;
+    dragStartYRef.current = null;
+    dragMovedRef.current = false;
+    setIsDragging(false);
+    event.currentTarget.releasePointerCapture(event.pointerId);
+  };
+
   return (
-    <section className="relative bg-gray-950">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
+    <section className="solution-travel">
+      <div className="solution-travel__heading">
         <div className="mb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-2xl font-semibold text-transparent md:text-4xl">
             Scenario-Based Electric Motorcycle Solutions
@@ -194,26 +269,94 @@ function Verticals() {
             fleets with SEO-focused vertical keywords.
           </p>
         </div>
-        <div className="solution-options">
-          {verticals.map((item, index) => (
-            <div
-              key={item.title}
-              className={`option${activeIndex === index ? " active" : ""}`}
-              style={{ ["--optionBackground" as string]: item.background }}
-              onClick={() => setActiveIndex(index)}
-            >
-              <div className="shadow"></div>
-              <div className="label">
-                <div className="icon">
-                  <i className={`fas ${item.icon}`} aria-hidden="true"></i>
-                </div>
-                <div className="info">
-                  <div className="main">{item.title}</div>
-                  <div className="sub">{item.keyword}</div>
-                </div>
-              </div>
+      </div>
+      <div className="intro-section">
+        <div className="container">
+          <div className="grid">
+            <div className="column-xs-12">
+              <ul className="slider">
+                {items.map((item, index) => (
+                  <li
+                    key={item.title}
+                    className={`slider-item${index === activeIndex ? " active" : ""}`}
+                  >
+                    <div className="grid vertical">
+                      <div className="column-xs-12 column-md-10">
+                        <div className="image-holder">
+                          <div
+                            className={`image-card${isDragging ? " is-dragging" : ""}`}
+                            style={{ backgroundImage: `url(${item.image})` }}
+                            onPointerDown={handlePointerDown}
+                            onPointerMove={handlePointerMove}
+                            onPointerUp={handlePointerEnd}
+                            onPointerCancel={handlePointerEnd}
+                            onPointerLeave={handlePointerEnd}
+                          >
+                            <div className="image-card__overlay">
+                              <h3 className="image-card__title">
+                                <span className="underline">{item.title}</span>
+                              </h3>
+                              <p className="image-card__description">{item.solution}</p>
+                            </div>
+                            <div
+                              className="image-card__controls"
+                              onPointerDown={(event) => event.stopPropagation()}
+                              onPointerUp={(event) => event.stopPropagation()}
+                              onPointerMove={(event) => event.stopPropagation()}
+                            >
+                              <button
+                                type="button"
+                                className="carousel-arrow-button"
+                                aria-label="Previous slide"
+                                onClick={showPrevious}
+                              >
+                                <div className="button-box">
+                                  <span className="button-elem" aria-hidden="true">
+                                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                                    </svg>
+                                  </span>
+                                  <span className="button-elem" aria-hidden="true">
+                                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                                    </svg>
+                                  </span>
+                                </div>
+                              </button>
+                              <button
+                                type="button"
+                                className="carousel-arrow-button carousel-arrow-button--next"
+                                aria-label="Next slide"
+                                onClick={showNext}
+                              >
+                                <div className="button-box">
+                                  <span className="button-elem" aria-hidden="true">
+                                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                                    </svg>
+                                  </span>
+                                  <span className="button-elem" aria-hidden="true">
+                                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                                    </svg>
+                                  </span>
+                                </div>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="grid">
+                          <div className="column-xs-12 column-md-9">
+                            <div className="intro show-mobile"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
