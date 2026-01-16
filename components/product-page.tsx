@@ -3,6 +3,7 @@ import ProductCoreAdvantageSwiper from "./product-core-advantage-swiper";
 import ProductTcoCalculator from "./product-tco-calculator";
 import ProductSpotlight from "./product-spotlight";
 import { Product } from "./product-section";
+import { Testimonials } from "./home-page-client";
 
 function ProductHero() {
   return (
@@ -29,18 +30,6 @@ function ProductHero() {
             Engineered for last-mile delivery and logistics: high payload, long-range swappable
             batteries, and minimal maintenance costs.
           </p>
-          <div
-            className="mt-8 flex flex-wrap justify-center gap-4"
-            data-aos="fade-up"
-            data-aos-delay="250"
-          >
-            <button className="btn-sm bg-blue-600 text-white hover:bg-blue-500">
-              Download Fleet Catalog
-            </button>
-            <button className="btn-sm border border-gray-700 text-gray-200 hover:border-blue-500">
-              Request Bulk Pricing
-            </button>
-          </div>
           <div className="hero-image-wrapper" data-aos="fade-up" data-aos-delay="300">
             <div className="hero-image-container">
               <div className="profile-image-glow"></div>
@@ -199,14 +188,14 @@ function CommercialDifference() {
 
 function Lineup() {
   return (
-    <section className="relative mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24 bg-gray-950 grid gap-12 items-center lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <section className="relative mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24 bg-gray-950 grid gap-12 items-center lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] overflow-x-hidden product-lineup">
       <div className="w-full max-w-full space-y-6 min-w-0 overflow-hidden [overflow-wrap:anywhere]">
         <div className="text-base uppercase tracking-widest text-blue-300">
           Lineup Focus
         </div>
-        <h3 className="mt-2 w-full text-2xl font-semibold text-gray-100 break-words min-w-0 [overflow-wrap:anywhere]">
+        <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text mt-2 w-full text-xl font-semibold text-transparent sm:text-2xl md:text-4xl break-words min-w-0 [overflow-wrap:anywhere]">
           Configure the Right Platform for Every Route
-        </h3>
+        </h2>
         <p className="mt-3 w-full text-base text-gray-400 break-words min-w-0 [overflow-wrap:anywhere]">
           Select a commercial electric motorcycle platform based on payload, route density, and
           service needs. Each option is optimized for uptime, operator comfort, and ROI.
@@ -273,20 +262,16 @@ function TechSpecs() {
             costs.
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="core-spec-grid">
           {specs.map((spec, index) => (
-            <div
-              key={spec.title}
-              className="group rounded-2xl border border-gray-800 bg-gray-900/60 p-6 shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)]"
-            >
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-blue-500/40 bg-blue-500/10 text-blue-200">
-                  <span className="text-base font-semibold">0{index + 1}</span>
-                </div>
-                <div className="text-base uppercase tracking-widest text-blue-300">Core Spec</div>
+            <div key={spec.title} className="core-spec-card">
+              <div className="core-spec-border"></div>
+              <div className="core-spec-header">
+                <span className="core-spec-index">0{index + 1}</span>
+                <span className="core-spec-kicker">Core Spec</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-100">{spec.title}</h3>
-              <p className="mt-3 text-base text-gray-400">{spec.copy}</p>
+              <h3 className="core-spec-title">{spec.title}</h3>
+              <p className="core-spec-copy">{spec.copy}</p>
             </div>
           ))}
         </div>
@@ -297,7 +282,7 @@ function TechSpecs() {
 
 function TcoCalculatorSection() {
   return (
-    <section className="relative bg-gray-950">
+    <section className="relative bg-gray-950 section-glow">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-xl font-semibold text-transparent sm:text-2xl md:text-4xl mb-4">
@@ -440,37 +425,80 @@ function Branding() {
 }
 
 function SocialProof() {
+  const testimonials = [
+    {
+      name: "European Distributor",
+      company: "EEC Market",
+      content:
+        "Documentation was complete and the EEC compliance package made homologation straightforward for multiple EU countries.",
+      categories: [1, 2],
+    },
+    {
+      name: "South American Assembler",
+      company: "CKD Program",
+      content:
+        "Switching from CBU to CKD reduced duties and shortened our landed cost cycle by 25%.",
+      categories: [1, 4],
+    },
+    {
+      name: "Middle East Importer",
+      company: "Regional Dealer Network",
+      content:
+        "Fast lead times and consistent QC allowed us to plan monthly arrivals with low warranty exposure.",
+      categories: [1, 3],
+    },
+    {
+      name: "African Fleet Operator",
+      company: "Delivery & Mobility",
+      content:
+        "Spare parts planning and service documentation helped our technicians scale after-sales support quickly.",
+      categories: [1, 5],
+    },
+    {
+      name: "LATAM Distributor",
+      company: "ODM Partner",
+      content:
+        "We launched a localized trim within 60 days using their ODM process and tooling support.",
+      categories: [1, 5],
+    },
+    {
+      name: "SEA Importer",
+      company: "Urban Mobility",
+      content:
+        "Container loading specs and steel rack packaging improved our shipping efficiency immediately.",
+      categories: [1, 2],
+    },
+    {
+      name: "GCC Dealer Group",
+      company: "Hot Climate Market",
+      content:
+        "Climate durability testing reduced heat-related failures and improved our dealer confidence.",
+      categories: [1, 3],
+    },
+    {
+      name: "OEM Partner",
+      company: "Private Label",
+      content:
+        "Branding, badge engineering, and compliance support were handled end-to-end.",
+      categories: [1, 4],
+    },
+    {
+      name: "Global Integrator",
+      company: "Multi-Region Supply",
+      content:
+        "They operate like a true factory partner, not a reseller. That trust enabled repeat orders.",
+      categories: [1, 2],
+    },
+  ];
+
   return (
-    <section className="relative bg-gray-950">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
-        <div className="mb-12 text-center">
-          <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-xl font-semibold text-transparent sm:text-2xl md:text-4xl mb-4">
-            Trusted by Logistics Leaders
-          </h2>
-        </div>
-        <div className="grid gap-6 md:grid-cols-5 text-center text-gray-400 text-base">
-          {["SwiftFleet", "MetroLogix", "QuickDrop", "UrbanFresh", "PrimeCourier"].map((logo) => (
-            <div
-              key={logo}
-              className="rounded-xl border border-gray-800 bg-gray-900/50 py-4"
-            >
-              {logo}
-            </div>
-          ))}
-        </div>
-        <div className="mt-10 rounded-2xl border border-gray-800 bg-gray-900/60 p-6 text-gray-300">
-          <p className="text-lg text-gray-100">
-            “TYCORUN helped us cut delivery costs by 32% while improving rider uptime.”
-          </p>
-          <p className="mt-3 text-base text-gray-400">
-            Operations Director, National Pizza Chain
-          </p>
-        </div>
-      </div>
-    </section>
+    <Testimonials
+      data={testimonials}
+      heading="Trusted by Global Distributors"
+      subheading="Factory-direct supply with OEM/ODM programs, documentation, and export-ready quality control."
+    />
   );
 }
-
 function BottomCta() {
   return (
     <section className="relative bg-gray-950">
@@ -500,7 +528,7 @@ export default function ProductPage() {
       <TcoCalculatorSection />
       <Branding />
       <SocialProof />
-      <BottomCta />
     </>
   );
 }
+

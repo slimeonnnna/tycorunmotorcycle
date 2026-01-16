@@ -128,13 +128,13 @@ export default function ProductTcoCalculatorClient({
 
   return (
     <div translate="no">
-      <div className="relative rounded-3xl border border-gray-700/60 bg-gray-900/70 p-4 shadow-[0_40px_80px_-40px_rgba(15,23,42,0.9)]">
-        <div className="absolute left-10 top-10 flex gap-2">
+      <div className="relative rounded-3xl border border-gray-700/60 bg-gray-900/70 p-2 sm:p-4 shadow-[0_40px_80px_-40px_rgba(15,23,42,0.9)]">
+        <div className="absolute left-10 top-10 hidden gap-2 sm:flex">
           <span className="h-2.5 w-2.5 rounded-full bg-rose-500/70" />
           <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
         </div>
-        <div className="rounded-[20px] border border-blue-500/20 bg-gradient-to-br from-gray-950 via-gray-900/80 to-gray-950 px-5 pb-6 pt-10">
+        <div className="rounded-[20px] border border-blue-500/20 bg-gradient-to-br from-gray-950 via-gray-900/80 to-gray-950 px-3 pb-3 pt-5 sm:px-5 sm:pb-6 sm:pt-10">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <div className="text-base uppercase tracking-[0.3em] text-blue-300/80">
@@ -147,7 +147,7 @@ export default function ProductTcoCalculatorClient({
             </div>
           </div>
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-start">
-            <div className="space-y-5">
+            <div className="order-2 space-y-5 lg:order-1">
         <label className="block space-y-2">
           <span className="text-base uppercase tracking-wide text-gray-400">{labels.fieldFleetSize}</span>
           <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
@@ -281,7 +281,7 @@ export default function ProductTcoCalculatorClient({
         <div className="text-base text-gray-400">{labels.formula}</div>
             </div>
             <div
-        className={`rounded-2xl border p-8 text-center ${
+        className={`order-1 rounded-2xl border p-4 text-center sm:p-6 lg:order-2 lg:p-8 ${
           isAnomaly ? "border-rose-500/50 bg-rose-500/10" : "border-blue-500/30 bg-blue-500/10"
         }`}
       >

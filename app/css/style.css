@@ -1438,16 +1438,6 @@
   pointer-events: none;
 }
 
-.product-bubbles::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: rgba(5, 7, 13, 0.25);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
-}
-
 .product-bubbles__list {
   position: absolute;
   inset: 0;
@@ -1915,8 +1905,17 @@
 @keyframes product-bubble-float {
   0% {
     transform: translateY(0) rotate(0deg);
-    opacity: 1;
+    opacity: 0;
     border-radius: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
   }
   100% {
     transform: translateY(-1000px) rotate(720deg);
@@ -1976,6 +1975,10 @@
 .testimonial-card {
   overflow: hidden;
   user-select: none;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  isolation: isolate;
+  contain: paint;
 }
 
 .testimonial-card::before {
@@ -1987,10 +1990,29 @@
   opacity: 0;
   transition: opacity 500ms ease;
   z-index: 0;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  pointer-events: none;
+  will-change: opacity;
 }
 
 .testimonial-card:hover::before {
   opacity: 1;
+}
+
+.is-dragging .testimonial-card::before,
+.is-dragging .testimonial-card:hover::before {
+  opacity: 0;
+}
+
+.testimonial-card {
+  will-change: transform;
+}
+
+.is-dragging .testimonial-card,
+.is-dragging .testimonial-card::before,
+.is-dragging .testimonial-card > * {
+  transition: none !important;
 }
 
 .testimonial-card > * {

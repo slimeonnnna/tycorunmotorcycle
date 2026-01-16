@@ -1350,7 +1350,14 @@ const EngineerAvatar = ({ name }: { name: string }) => {
   );
 };
 
-const testimonialsData = [
+type TestimonialItem = {
+  name: string;
+  company: string;
+  content: string;
+  categories: number[];
+};
+
+const defaultTestimonials: TestimonialItem[] = [
   { name: "European Distributor", company: "EEC Market", content: "Documentation was complete and the EEC compliance package made homologation straightforward for multiple EU countries.", categories: [1, 2] },
   { name: "South American Assembler", company: "CKD Program", content: "Switching from CBU to CKD reduced duties and shortened our landed cost cycle by 25%.", categories: [1, 4] },
   { name: "Middle East Importer", company: "Regional Dealer Network", content: "Fast lead times and consistent QC allowed us to plan monthly arrivals with low warranty exposure.", categories: [1, 3] },
@@ -1373,17 +1380,27 @@ const getCategoryLabel = (categories: number[]) => {
 const CARD_WIDTH = 300;
 const GAP = 24;
 
-function Testimonials() {
+type TestimonialsProps = {
+  data?: TestimonialItem[];
+  heading?: string;
+  subheading?: string;
+};
+
+function Testimonials({
+  data = defaultTestimonials,
+  heading = "Trusted by Global Distributors",
+  subheading = "Factory-direct supply with OEM/ODM programs, documentation, and export-ready quality control.",
+}: TestimonialsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const tripleTestimonials = [...testimonialsData, ...testimonialsData, ...testimonialsData];
+  const tripleTestimonials = [...data, ...data, ...data];
   const startX = useRef(0);
   const scrollLeftRef = useRef(0);
   const velocity = useRef(0);
   const lastX = useRef(0);
   const animationFrameId = useRef<number>(0);
   const isDown = useRef(false);
-  const singleSetWidth = testimonialsData.length * (CARD_WIDTH + GAP);
+  const singleSetWidth = data.length * (CARD_WIDTH + GAP);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -1462,11 +1479,10 @@ function Testimonials() {
       <div className="py-12 md:py-20">
         <div data-aos="fade-up" data-aos-delay={200} className="mx-auto max-w-3xl px-4 pb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            Trusted by Global Distributors
+            {heading}
           </h2>
           <p className="text-lg text-gray-400">
-            Factory-direct supply with OEM/ODM programs, documentation, and
-            export-ready quality control.
+            {subheading}
           </p>
         </div>
 
@@ -1480,7 +1496,7 @@ function Testimonials() {
           >
             {tripleTestimonials.map((testimonial, index) => {
               const staggerOffsets = ["mt-0", "mt-12", "mt-4", "mt-16", "mt-2"];
-              const relativeIndex = index % testimonialsData.length;
+              const relativeIndex = index % data.length;
               const marginTop = staggerOffsets[relativeIndex % staggerOffsets.length];
               const isKeyClient = testimonial.company.includes("Siemens") || testimonial.company.includes("Lockheed") || testimonial.company.includes("Boston");
               const widthClass = "w-[300px] flex-none";
