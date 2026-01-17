@@ -78,7 +78,7 @@ export default function SolutionEcosystemSwiper() {
               <div className="solution-cube-icon">
                 <i className={`fas ${slide.icon}`} aria-hidden="true"></i>
               </div>
-              <h3 className="solution-cube-title">{slide.title}</h3>
+              <p className="solution-cube-title font-semibold">{slide.title}</p>
               <p className="solution-cube-copy">{slide.copy}</p>
               <div className="solution-cube-corner">{slide.corner}</div>
             </div>

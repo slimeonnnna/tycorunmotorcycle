@@ -104,6 +104,39 @@ const engagementSteps = [
   },
 ];
 
+const energyCards = [
+  {
+    title: "6-Second Swap",
+    copy:
+      "Drivers swap and go instantly. No plug-in downtime means higher daily revenue per vehicle.",
+    items: [
+      { icon: "fa-motorcycle", label: "Vehicle" },
+      { icon: "fa-boxes-stacked", label: "Swap Cabinet" },
+      { icon: "fa-battery-full", label: "Full Battery" },
+    ],
+  },
+  {
+    title: "Safety & Protection",
+    copy:
+      "Fire-proof cabinets with aerosol suppression and constant BMS cloud monitoring.",
+    items: [
+      { icon: "fa-shield-halved", label: "Fire Protection" },
+      { icon: "fa-cloud", label: "BMS Cloud" },
+      { icon: "fa-bolt", label: "Instant Alerts" },
+    ],
+  },
+  {
+    title: "Modular Scalability",
+    copy:
+      "Start with a 6-port cabinet and scale to a city-wide network as your fleet grows.",
+    items: [
+      { icon: "fa-layer-group", label: "6-Port Start" },
+      { icon: "fa-arrows-rotate", label: "Swap Network" },
+      { icon: "fa-chart-line", label: "Fleet Growth" },
+    ],
+  },
+];
+
 function SolutionHero() {
   return (
     <section className="hero-grid-bg relative overflow-hidden">
@@ -192,6 +225,29 @@ function Verticals() {
   const dragStartXRef = useRef<number | null>(null);
   const dragStartYRef = useRef<number | null>(null);
   const dragMovedRef = useRef(false);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const tabListRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToTab = (index: number, behavior: ScrollBehavior) => {
+    const activeTab = tabRefs.current[index];
+    const tabList = tabListRef.current;
+    if (!activeTab || !tabList) return;
+    if (tabList.scrollWidth <= tabList.clientWidth) return;
+
+    const targetLeft =
+      activeTab.offsetLeft -
+      (tabList.clientWidth - activeTab.offsetWidth) / 2;
+    const maxScrollLeft = tabList.scrollWidth - tabList.clientWidth;
+    const nextScrollLeft = Math.max(0, Math.min(targetLeft, maxScrollLeft));
+
+    tabList.style.scrollSnapType = "none";
+    window.requestAnimationFrame(() => {
+      tabList.scrollTo({ left: nextScrollLeft, behavior });
+      window.setTimeout(() => {
+        tabList.style.scrollSnapType = "";
+      }, 300);
+    });
+  };
 
   const showNext = () => {
     setActiveIndex((prev) => (prev + 1) % items.length);
@@ -213,6 +269,10 @@ function Verticals() {
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
   }, [items.length]);
+
+  useEffect(() => {
+    scrollToTab(activeIndex, "smooth");
+  }, [activeIndex]);
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     dragStartXRef.current = event.clientX;
@@ -292,12 +352,6 @@ function Verticals() {
                             onPointerCancel={handlePointerEnd}
                             onPointerLeave={handlePointerEnd}
                           >
-                            <div className="image-card__overlay">
-                              <h3 className="image-card__title">
-                                <span className="underline">{item.title}</span>
-                              </h3>
-                              <p className="image-card__description">{item.solution}</p>
-                            </div>
                             <div
                               className="image-card__controls"
                               onPointerDown={(event) => event.stopPropagation()}
@@ -344,6 +398,12 @@ function Verticals() {
                               </button>
                             </div>
                           </div>
+                          <div className="image-card__text">
+                            <h3 className="image-card__title">
+                              <span className="underline">{item.title}</span>
+                            </h3>
+                            <p className="image-card__description">{item.solution}</p>
+                          </div>
                         </div>
                         <div className="grid">
                           <div className="column-xs-12 column-md-9">
@@ -355,6 +415,30 @@ function Verticals() {
                   </li>
                 ))}
               </ul>
+              <div
+                className="solution-travel-tabs"
+                role="tablist"
+                aria-label="Solution tabs"
+                ref={tabListRef}
+              >
+                {items.map((tab, tabIndex) => (
+                  <button
+                    key={tab.title}
+                    type="button"
+                    role="tab"
+                    aria-selected={tabIndex === activeIndex}
+                    className={`solution-travel-tab${
+                      tabIndex === activeIndex ? " is-active" : ""
+                    }`}
+                    onClick={() => setActiveIndex(tabIndex)}
+                    ref={(el) => {
+                      tabRefs.current[tabIndex] = el;
+                    }}
+                  >
+                    {tab.title}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -364,6 +448,17 @@ function Verticals() {
 }
 
 function EnergySolution() {
+  const [activeEnergyIndex, setActiveEnergyIndex] = useState(0);
+  const currentEnergy = energyCards[activeEnergyIndex];
+
+  const showEnergyNext = () => {
+    setActiveEnergyIndex((prev) => (prev + 1) % energyCards.length);
+  };
+
+  const showEnergyPrevious = () => {
+    setActiveEnergyIndex((prev) => (prev - 1 + energyCards.length) % energyCards.length);
+  };
+
   return (
     <section className="relative bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
@@ -391,27 +486,66 @@ function EnergySolution() {
               </li>
             </ul>
           </div>
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-6">
-            <div className="text-xs uppercase tracking-[0.3em] text-blue-300">
-              Swap Flow
-            </div>
-            <div className="mt-6 flex items-center justify-between gap-4 text-sm text-gray-300">
-              <div className="flex flex-col items-center gap-3">
-                <div className="h-16 w-16 rounded-2xl border border-blue-500/30 bg-blue-500/10"></div>
-                Vehicle
+          <div className="energy-swap-card">
+            <div className="energy-swap-card__glow"></div>
+            <div className="energy-swap-card__header">
+              <div className="energy-swap-card__controls image-card__controls">
+                <button
+                  type="button"
+                  className="carousel-arrow-button"
+                  aria-label="Previous slide"
+                  onClick={showEnergyPrevious}
+                >
+                  <div className="button-box">
+                    <span className="button-elem" aria-hidden="true">
+                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                      </svg>
+                    </span>
+                    <span className="button-elem" aria-hidden="true">
+                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  className="carousel-arrow-button carousel-arrow-button--next"
+                  aria-label="Next slide"
+                  onClick={showEnergyNext}
+                >
+                  <div className="button-box">
+                    <span className="button-elem" aria-hidden="true">
+                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                      </svg>
+                    </span>
+                    <span className="button-elem" aria-hidden="true">
+                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </button>
               </div>
-              <div className="flex flex-col items-center gap-3">
-                <div className="h-16 w-16 rounded-2xl border border-blue-500/30 bg-blue-500/10"></div>
-                Swap Cabinet
-              </div>
-              <div className="flex flex-col items-center gap-3">
-                <div className="h-16 w-16 rounded-2xl border border-blue-500/30 bg-blue-500/10"></div>
-                Full Battery
-              </div>
             </div>
-            <div className="mt-6 rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 text-center text-blue-100">
-              6-Second Swap Efficiency Loop
+            <div className="energy-swap-card__content" key={currentEnergy.title}>
+              <h3 className="energy-swap-card__headline">{currentEnergy.title}</h3>
+              <p className="energy-swap-card__copy">{currentEnergy.copy}</p>
+              <div className="energy-swap-card__divider"></div>
+              <ul className="energy-swap-card__list">
+                {currentEnergy.items.map((item) => (
+                  <li key={item.label} className="energy-swap-card__list-item">
+                    <span className="energy-swap-card__list-icon">
+                      <i className={`fas ${item.icon}`} aria-hidden="true"></i>
+                    </span>
+                    <span>{item.label}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
+            <div className="energy-swap-card__watermark">SWAP</div>
           </div>
         </div>
       </div>
@@ -420,33 +554,7 @@ function EnergySolution() {
 }
 
 function CaseStudies() {
-  return (
-    <section className="relative bg-gray-950">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
-        <div className="mb-12 text-center">
-          <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-2xl font-semibold text-transparent md:text-4xl">
-            Solutions in Action
-          </h2>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {caseStudies.map((caseStudy) => (
-            <div
-              key={caseStudy.title}
-              className="rounded-2xl border border-gray-800 bg-gray-900/60 p-6"
-            >
-              <div className="text-xs uppercase tracking-[0.3em] text-blue-300">
-                {caseStudy.highlight}
-              </div>
-              <h3 className="mt-3 text-xl font-semibold text-gray-100">
-                {caseStudy.title}
-              </h3>
-              <p className="mt-4 text-gray-400">{caseStudy.result}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return null;
 }
 
 function EngagementProcess() {
@@ -455,24 +563,88 @@ function EngagementProcess() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
         <div className="mb-12 text-center">
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-2xl font-semibold text-transparent md:text-4xl">
-            From Concept to Fleet Deployment
+            Deployment Roadmap
           </h2>
+          <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
+            3-stage deployment roadmap across discovery, validation, and scale.
+          </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {engagementSteps.map((step, index) => (
-            <div
-              key={step.title}
-              className="rounded-2xl border border-gray-800 bg-gray-900/60 p-6"
-            >
-              <div className="text-xs uppercase tracking-[0.3em] text-blue-300">
-                {`Step 0${index + 1}`}
-              </div>
-              <h3 className="mt-3 text-lg font-semibold text-gray-100">
-                {step.title}
-              </h3>
-              <p className="mt-3 text-sm text-gray-400">{step.copy}</p>
+        <div className="deployment-roadmap">
+          <div className="deployment-roadmap__grid">
+            <div className="a deployment-roadmap__phase">
+              <p>PHASE 01</p>
+              <span>Discovery &amp; Config</span>
             </div>
-          ))}
+            <div className="b deployment-roadmap__card">
+              <h3>Requirement Audit</h3>
+              <span>
+                Analyze route topology, daily mileage, and payload needs to define the
+                TCO baseline.
+              </span>
+            </div>
+            <div className="c deployment-roadmap__card">
+              <h3>Solution Architecture</h3>
+              <span>
+                Select chassis platform, battery capacity, and IoT protocols tailored
+                to your fleet.
+              </span>
+            </div>
+            <div className="d deployment-roadmap__card">
+              <h3>ODM Engineering</h3>
+              <span>
+                Rapid prototyping of custom racks, branding livery, and software/UI
+                modifications.
+              </span>
+            </div>
+            <div className="e deployment-roadmap__phase">
+              <p>PHASE 02</p>
+              <span>Validation Pilot</span>
+            </div>
+            <div className="f deployment-roadmap__card">
+              <h3>Prototype Delivery</h3>
+              <span>
+                Shipping 10-50 pilot units for real-world stress testing in your target
+                city.
+              </span>
+            </div>
+            <div className="g deployment-roadmap__card">
+              <h3>Data Optimization</h3>
+              <span>
+                Fine-tuning motor logic and suspension based on pilot driver feedback.
+              </span>
+            </div>
+            <div className="h deployment-roadmap__card">
+              <h3>Global Certification</h3>
+              <span>
+                Finalizing EEC, DOT, or local homologation paperwork for mass import
+                legality.
+              </span>
+            </div>
+            <div className="i deployment-roadmap__phase">
+              <p>PHASE 03</p>
+              <span>Scale &amp; Support</span>
+            </div>
+            <div className="j deployment-roadmap__card">
+              <h3>Mass Production</h3>
+              <span>
+                Automated assembly with ISO-9001 QC standards. Capacity: 500+ units/day.
+              </span>
+            </div>
+            <div className="k deployment-roadmap__card">
+              <h3>Logistics (SKD/CKD)</h3>
+              <span>
+                Customized container nesting plans to minimize freight costs and import
+                duties.
+              </span>
+            </div>
+            <div className="l deployment-roadmap__card">
+              <h3>Local Training</h3>
+              <span>
+                Handover of repair manuals, spare parts lists (RSPL), and mechanic
+                training.
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -481,13 +653,12 @@ function EngagementProcess() {
 
 export default function SolutionPage() {
   return (
-    <>
+    <div className="solution-page">
       <SolutionHero />
       <Ecosystem />
       <Verticals />
       <EnergySolution />
-      <CaseStudies />
       <EngagementProcess />
-    </>
+    </div>
   );
 }
