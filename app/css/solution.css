@@ -2136,6 +2136,12 @@
   -webkit-backdrop-filter: blur(16px);
 }
 
+.energy-swap-card__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .energy-swap-card__glow {
   position: absolute;
   top: -60px;
@@ -2149,12 +2155,15 @@
 }
 
 .energy-swap-card__header {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 5;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
   gap: 16px;
+  pointer-events: none;
 }
 
 .energy-swap-card__divider {
@@ -2258,14 +2267,22 @@
 
 .energy-swap-card__controls {
   position: relative;
-  z-index: 2;
+  z-index: 6;
   display: flex;
+  align-items: center;
   gap: 0.5rem;
+  pointer-events: auto;
 }
 
 .energy-swap-card__controls .carousel-arrow-button {
+  display: inline-flex;
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
   width: 44px;
   height: 44px;
+  line-height: 0;
 }
 
 .energy-swap-card__controls .carousel-arrow-button:before,
@@ -2324,3 +2341,29 @@
   }
 }
 
+.energy-swap-card__panels {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+}
+
+.energy-swap-card__panel {
+  display: none;
+}
+
+#energy-slide-0:checked ~ .energy-swap-card__panels .energy-swap-card__panel[data-index="0"],
+#energy-slide-1:checked ~ .energy-swap-card__panels .energy-swap-card__panel[data-index="1"],
+#energy-slide-2:checked ~ .energy-swap-card__panels .energy-swap-card__panel[data-index="2"] {
+  display: block;
+}
+
+.energy-swap-card__control-set {
+  display: none;
+}
+
+#energy-slide-0:checked ~ .energy-swap-card__header .energy-swap-card__control-set[data-for="0"],
+#energy-slide-1:checked ~ .energy-swap-card__header .energy-swap-card__control-set[data-for="1"],
+#energy-slide-2:checked ~ .energy-swap-card__header .energy-swap-card__control-set[data-for="2"] {
+  display: flex;
+  gap: 0.5rem;
+}

@@ -448,17 +448,6 @@ function Verticals() {
 }
 
 function EnergySolution() {
-  const [activeEnergyIndex, setActiveEnergyIndex] = useState(0);
-  const currentEnergy = energyCards[activeEnergyIndex];
-
-  const showEnergyNext = () => {
-    setActiveEnergyIndex((prev) => (prev + 1) % energyCards.length);
-  };
-
-  const showEnergyPrevious = () => {
-    setActiveEnergyIndex((prev) => (prev - 1 + energyCards.length) % energyCards.length);
-  };
-
   return (
     <section className="relative bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 md:py-24">
@@ -487,63 +476,162 @@ function EnergySolution() {
             </ul>
           </div>
           <div className="energy-swap-card">
+            <input
+              className="energy-swap-card__input"
+              type="radio"
+              name="energy-swap"
+              id="energy-slide-0"
+              defaultChecked
+            />
+            <input
+              className="energy-swap-card__input"
+              type="radio"
+              name="energy-swap"
+              id="energy-slide-1"
+            />
+            <input
+              className="energy-swap-card__input"
+              type="radio"
+              name="energy-swap"
+              id="energy-slide-2"
+            />
             <div className="energy-swap-card__glow"></div>
             <div className="energy-swap-card__header">
               <div className="energy-swap-card__controls image-card__controls">
-                <button
-                  type="button"
-                  className="carousel-arrow-button"
-                  aria-label="Previous slide"
-                  onClick={showEnergyPrevious}
-                >
-                  <div className="button-box">
-                    <span className="button-elem" aria-hidden="true">
-                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
-                      </svg>
-                    </span>
-                    <span className="button-elem" aria-hidden="true">
-                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
-                      </svg>
-                    </span>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  className="carousel-arrow-button carousel-arrow-button--next"
-                  aria-label="Next slide"
-                  onClick={showEnergyNext}
-                >
-                  <div className="button-box">
-                    <span className="button-elem" aria-hidden="true">
-                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
-                      </svg>
-                    </span>
-                    <span className="button-elem" aria-hidden="true">
-                      <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
-                      </svg>
-                    </span>
-                  </div>
-                </button>
+                <div className="energy-swap-card__control-set" data-for="0">
+                  <label
+                    className="carousel-arrow-button"
+                    aria-label="Previous slide"
+                    htmlFor="energy-slide-2"
+                  >
+                    <div className="button-box">
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </label>
+                  <label
+                    className="carousel-arrow-button carousel-arrow-button--next"
+                    aria-label="Next slide"
+                    htmlFor="energy-slide-1"
+                  >
+                    <div className="button-box">
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </label>
+                </div>
+                <div className="energy-swap-card__control-set" data-for="1">
+                  <label
+                    className="carousel-arrow-button"
+                    aria-label="Previous slide"
+                    htmlFor="energy-slide-0"
+                  >
+                    <div className="button-box">
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </label>
+                  <label
+                    className="carousel-arrow-button carousel-arrow-button--next"
+                    aria-label="Next slide"
+                    htmlFor="energy-slide-2"
+                  >
+                    <div className="button-box">
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </label>
+                </div>
+                <div className="energy-swap-card__control-set" data-for="2">
+                  <label
+                    className="carousel-arrow-button"
+                    aria-label="Previous slide"
+                    htmlFor="energy-slide-1"
+                  >
+                    <div className="button-box">
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </label>
+                  <label
+                    className="carousel-arrow-button carousel-arrow-button--next"
+                    aria-label="Next slide"
+                    htmlFor="energy-slide-0"
+                  >
+                    <div className="button-box">
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                      <span className="button-elem" aria-hidden="true">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
-            <div className="energy-swap-card__content" key={currentEnergy.title}>
-              <h3 className="energy-swap-card__headline">{currentEnergy.title}</h3>
-              <p className="energy-swap-card__copy">{currentEnergy.copy}</p>
-              <div className="energy-swap-card__divider"></div>
-              <ul className="energy-swap-card__list">
-                {currentEnergy.items.map((item) => (
-                  <li key={item.label} className="energy-swap-card__list-item">
-                    <span className="energy-swap-card__list-icon">
-                      <i className={`fas ${item.icon}`} aria-hidden="true"></i>
-                    </span>
-                    <span>{item.label}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="energy-swap-card__panels">
+              {energyCards.map((card, index) => (
+                <div key={card.title} className="energy-swap-card__panel" data-index={index}>
+                  <h3 className="energy-swap-card__headline">{card.title}</h3>
+                  <p className="energy-swap-card__copy">{card.copy}</p>
+                  <div className="energy-swap-card__divider"></div>
+                  <ul className="energy-swap-card__list">
+                    {card.items.map((item) => (
+                      <li key={item.label} className="energy-swap-card__list-item">
+                        <span className="energy-swap-card__list-icon">
+                          <i className={`fas ${item.icon}`} aria-hidden="true"></i>
+                        </span>
+                        <span>{item.label}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
             <div className="energy-swap-card__watermark">SWAP</div>
           </div>

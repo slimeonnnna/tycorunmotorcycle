@@ -418,6 +418,78 @@
   animation: hc-trail 1s ease-in-out;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .hc-card {
+    border-radius: 0;
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+    border-color: var(--color-blue-500);
+  }
+
+  .hc-card ~ .hc-ripple {
+    animation: none;
+    opacity: 0;
+  }
+
+  .hc-card .hc-logo-container {
+    width: 140px;
+    animation: hc-opacity 1s ease-in-out;
+  }
+
+  .hc-card .hc-card-border {
+    inset: 15px;
+    opacity: 1;
+    transform: rotate(0);
+  }
+
+  .hc-card .hc-bottom-text {
+    letter-spacing: 3px;
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+
+  .hc-card .hc-logo-bottom-text {
+    opacity: 1;
+    letter-spacing: 5px;
+  }
+
+  .hc-card .hc-trail {
+    animation: hc-trail 1s ease-in-out;
+  }
+
+  .hc-card.group .group-hover\:scale-90 {
+    transform: scale(0.9);
+  }
+
+  .hc-card.group .group-hover\:opacity-0 {
+    opacity: 0;
+  }
+
+  .hc-card.group .group-hover\:blur-sm {
+    filter: blur(4px);
+  }
+
+  .hc-card.group .group-hover\:translate-y-0 {
+    transform: translateY(0);
+  }
+
+  .hc-card.group .group-hover\:opacity-100 {
+    opacity: 1;
+  }
+
+  .hc-card.group .md\:opacity-0 {
+    opacity: 1;
+  }
+
+  .hc-card.group .md\:translate-y-8 {
+    transform: translateY(0);
+  }
+
+  .hc-card.group .md\:group-hover\:delay-500 {
+    transition-delay: 0.5s;
+  }
+}
+
 /* Keyframes */
 @keyframes hc-opacity {
   0% { border-right: 1px solid transparent; }
