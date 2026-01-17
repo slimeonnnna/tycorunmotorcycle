@@ -53,31 +53,34 @@ export default function BlogIndex({ posts }: { posts: BlogListItem[] }) {
           </Link>
         </div>
       ) : (
-        <div className="grid gap-6">
+        <div className="ty-blog-grid">
           {filteredPosts.map((post) => (
             <Link
               key={post.slug.join("/")}
               href={`/blog/${post.slug.join("/")}`}
-              className="group block rounded-2xl border border-gray-800 bg-gray-900/40 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-700 hover:shadow-[0_18px_40px_-20px_rgba(15,23,42,0.65)]"
+              className="ty-blog-card"
             >
               {post.cover ? (
-                <div className="mb-5 overflow-hidden rounded-xl border border-gray-800 bg-gray-950">
+                <div className="ty-blog-cover">
                   <img
                     src={post.cover}
                     alt={post.title}
-                    className="h-48 w-full object-cover"
+                    className="ty-blog-cover-img"
                     loading="lazy"
                   />
                 </div>
               ) : null}
-              <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+              <div className="ty-blog-meta">
                 <time dateTime={post.date}>{post.dateLabel}</time>
+                <span className="ty-blog-author">
+                  {post.author ?? "TYCORUN"}
+                </span>
                 {post.tags.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="ty-blog-tags">
                     {post.tags.map((tag) => (
                       <span
                         key={`${post.slug.join("/")}-${tag}`}
-                        className="rounded-full border border-gray-800 bg-gray-900/60 px-2 py-0.5 text-[11px] text-gray-300"
+                        className="ty-blog-tag"
                       >
                         {tag}
                       </span>
@@ -85,13 +88,13 @@ export default function BlogIndex({ posts }: { posts: BlogListItem[] }) {
                   </div>
                 ) : null}
               </div>
-              <h3 className="mt-3 text-2xl font-nacelle font-semibold text-gray-100 transition-colors group-hover:text-blue-300">
+              <h3 className="ty-blog-title">
                 {post.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              <p className="ty-blog-excerpt">
                 {post.description}
               </p>
-              <span className="mt-4 inline-flex items-center text-sm text-gray-400 transition-colors group-hover:text-blue-300">
+              <span className="ty-blog-cta">
                 Read article
               </span>
             </Link>

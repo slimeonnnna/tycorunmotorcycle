@@ -1,3 +1,4 @@
+import "../../css/blog.css";
 import PageIllustration from "@/components/page-illustration";
 import Cta from "@/components/cta";
 import BlogIndex from "@/components/blog/blog-index";

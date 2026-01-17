@@ -1,5 +1,7 @@
+import "../../../css/blog.css";
 import { notFound } from "next/navigation";
 import { remark } from "remark";
+import remarkGfm from "remark-gfm";
 import html from "remark-html";
 
 import PageIllustration from "@/components/page-illustration";
@@ -153,6 +155,53 @@ function stripOuterArticle(contentHtml: string) {
   return match ? match[1] : contentHtml;
 }
 
+function extractHeadingAndLead(markdown: string) {
+  const lines = markdown.split(/\r?\n/);
+  let heading: string | null = null;
+  let lead: string | null = null;
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (line.length === 0) {
+      i += 1;
+      continue;
+    }
+    if (line.startsWith("# ")) {
+      heading = line.replace(/^#\s+/, "").trim();
+      i += 1;
+      break;
+    }
+    i += 1;
+  }
+
+  while (i < lines.length && lines[i].trim().length === 0) {
+    i += 1;
+  }
+
+  const leadLines: string[] = [];
+  for (; i < lines.length; i += 1) {
+    const line = lines[i].trim();
+    if (line.length === 0) break;
+    if (line.startsWith("<!--")) continue;
+    if (line.startsWith("#")) break;
+    leadLines.push(line);
+  }
+
+  if (leadLines.length > 0) {
+    lead = leadLines.join(" ");
+    lead = lead
+      .replace(/`[^`]*`/g, "")
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+      .replace(/[*_~]/g, "")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+  }
+
+  return { heading, lead };
+}
+
 export async function generateStaticParams() {
   const posts = getBlogList();
   return posts.map((post) => ({ slug: post.slug }));
@@ -249,6 +298,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     tocItems = extracted.items;
   } else {
     const processedContent = await remark()
+      .use(remarkGfm)
       .use(html, { sanitize: false })
       .process(post.content);
     contentHtml = addHeadingIds(processedContent.toString(), tocItems);
@@ -256,6 +306,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   contentHtml = contentHtml.replace(/\r\n/g, "\n");
   const articleHtml = stripOuterArticle(contentHtml);
+  let cleanedArticleHtml = !isTemplate
+    ? articleHtml.replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, "")
+    : articleHtml;
+  const extracted = !isTemplate ? extractHeadingAndLead(post.content) : null;
+  const heroTitle = extracted?.heading ?? post.title;
+  const heroDescription = extracted?.lead ?? post.description;
+  if (!isTemplate && extracted?.lead) {
+    cleanedArticleHtml = cleanedArticleHtml.replace(
+      /^\s*<p[^>]*>[\s\S]*?<\/p>\s*/i,
+      "",
+    );
+  }
 
   const tocRenderItems = tocItems.filter((item) => item.level === 2);
 
@@ -273,10 +335,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {!isTemplate ? (
             <div className="mt-6">
               <h1 className="mt-4 font-nacelle text-3xl font-semibold text-gray-100 sm:text-4xl md:text-5xl">
-                {post.title}
+                {heroTitle}
               </h1>
               <p className="mt-4 text-base text-gray-400 sm:text-lg">
-                {post.description}
+                {heroDescription}
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-500 sm:text-sm">
                 <time dateTime={post.date}>{formatDateLabel(post.date)}</time>
@@ -308,7 +370,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           ) : null}
 
-          <div className={isTemplate ? "mt-10 text-base text-gray-200 sm:text-lg" : "mt-10"}>
+          <div className={isTemplate ? "mt-10 text-base sm:text-lg" : "mt-10"}>
             <div className="grid gap-8 lg:grid-cols-[200px_minmax(0,1fr)_200px] lg:items-start">
               <aside className="order-3 lg:order-3 lg:sticky lg:top-28 self-start">
                 <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
@@ -331,10 +393,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <article
                 className={
                   isTemplate
-                    ? "order-2 lg:order-2 text-base text-gray-200 sm:text-lg"
-                    : "order-2 lg:order-2 prose prose-invert max-w-none text-gray-200"
+                    ? "order-2 lg:order-2 text-base sm:text-lg"
+                    : "order-2 lg:order-2 prose prose-invert max-w-none"
                 }
-                dangerouslySetInnerHTML={{ __html: articleHtml }}
+                dangerouslySetInnerHTML={{ __html: cleanedArticleHtml }}
               />
 
               {tocRenderItems.length > 0 ? (
