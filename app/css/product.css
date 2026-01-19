@@ -647,3 +647,34 @@
   position: relative;
   z-index: 2;
 }
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbnail-track {
+  cursor: grab;
+  touch-action: pan-x;
+}
+
+.thumbnail-track:active {
+  cursor: grabbing;
+}
+
+.image-card__controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  pointer-events: none;
+}
+
+.image-card__controls .carousel-arrow-button {
+  pointer-events: auto;
+}

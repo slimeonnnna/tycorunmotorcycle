@@ -1,0 +1,4 @@
+.sticky {
+  position: sticky;
+  top: 80px; /* 调整此值以匹配页面顶部导航的高度 */
+}
