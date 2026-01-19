@@ -16,6 +16,10 @@ const ProductDetailPage = () => {
   const [mainImage, setMainImage] = useState('/images/products/main-product.jpg');
   const thumbnailTrackRef = useRef<HTMLDivElement | null>(null);
   const thumbnailAutoScrollRef = useRef(false);
+  const thumbnailSnapRef = useRef({
+    origin: 0,
+    settleTimer: 0 as number,
+  });
   const thumbnailDragRef = useRef({
     isDown: false,
     startX: 0,
@@ -23,12 +27,11 @@ const ProductDetailPage = () => {
     scrollLeft: 0,
     moved: false,
     suppressClick: false,
+    startTarget: null as HTMLElement | null,
+    dragDistance: 0,
   });
 
-  const handleThumbnailClick = (imageSrc: string) => {
-    if (thumbnailDragRef.current.suppressClick) {
-      return;
-    }
+  const handleThumbnailSelect = (imageSrc: string) => {
     setMainImage(imageSrc);
   };
 
@@ -71,19 +74,41 @@ const ProductDetailPage = () => {
     }
 
     const getStep = () => {
-      const firstItem = track.querySelector<HTMLElement>('button');
+      const firstItem = track.querySelector<HTMLElement>('[data-thumb-item="true"]');
       const gapValue = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
-      return (firstItem?.offsetWidth || 0) + gapValue;
+      const itemWidth = firstItem?.getBoundingClientRect().width || 0;
+      return itemWidth + gapValue;
     };
 
     const moveToMiddle = () => {
-      const third = track.scrollWidth / 3;
       const step = getStep();
       if (step > 0) {
-        const snapStart = Math.round(third / step) * step;
-        track.scrollLeft = snapStart;
+        const cycle = step * productImages.length;
+        track.scrollLeft = cycle;
+        thumbnailSnapRef.current.origin = cycle;
       } else {
+        const third = track.scrollWidth / 3;
         track.scrollLeft = third;
+        thumbnailSnapRef.current.origin = third;
+      }
+    };
+
+    const handleSettleSnap = () => {
+      const step = getStep();
+      if (!step) {
+        return;
+      }
+      const origin = thumbnailSnapRef.current.origin;
+      const nextLeftEdge = origin + step;
+      if (track.scrollLeft > origin && track.scrollLeft < nextLeftEdge) {
+        const rightVisible = nextLeftEdge - track.scrollLeft;
+        if (rightVisible < step / 2) {
+          thumbnailAutoScrollRef.current = true;
+          track.scrollTo({ left: origin, behavior: 'smooth' });
+          window.setTimeout(() => {
+            thumbnailAutoScrollRef.current = false;
+          }, 120);
+        }
       }
     };
 
@@ -91,12 +116,27 @@ const ProductDetailPage = () => {
       if (thumbnailAutoScrollRef.current) {
         return;
       }
-      const third = track.scrollWidth / 3;
-      if (track.scrollLeft < third * 0.5) {
-        track.scrollLeft += third;
-      } else if (track.scrollLeft > third * 1.5) {
-        track.scrollLeft -= third;
+      if (thumbnailDragRef.current.isDown) {
+        return;
       }
+      const step = getStep();
+      if (!step) {
+        return;
+      }
+      const cycle = step * productImages.length;
+      if (track.scrollLeft < cycle * 0.5 || track.scrollLeft > cycle * 1.5) {
+        thumbnailAutoScrollRef.current = true;
+        const normalized = ((track.scrollLeft % cycle) + cycle) % cycle;
+        const target = normalized + cycle;
+        const delta = target - track.scrollLeft;
+        thumbnailSnapRef.current.origin += delta;
+        requestAnimationFrame(() => {
+          track.scrollLeft = target;
+          thumbnailAutoScrollRef.current = false;
+        });
+      }
+      window.clearTimeout(thumbnailSnapRef.current.settleTimer);
+      thumbnailSnapRef.current.settleTimer = window.setTimeout(handleSettleSnap, 160);
     };
 
     const rafId = requestAnimationFrame(moveToMiddle);
@@ -113,11 +153,15 @@ const ProductDetailPage = () => {
     if (!track) {
       return;
     }
+    event.preventDefault();
     thumbnailDragRef.current.isDown = true;
     thumbnailDragRef.current.startX = event.clientX;
     thumbnailDragRef.current.startTime = performance.now();
     thumbnailDragRef.current.scrollLeft = track.scrollLeft;
     thumbnailDragRef.current.moved = false;
+    thumbnailDragRef.current.suppressClick = false;
+    thumbnailDragRef.current.startTarget = event.target as HTMLElement;
+    thumbnailDragRef.current.dragDistance = 0;
     track.setPointerCapture(event.pointerId);
   };
 
@@ -126,11 +170,31 @@ const ProductDetailPage = () => {
     if (!track || !thumbnailDragRef.current.isDown) {
       return;
     }
+    event.preventDefault();
     const delta = event.clientX - thumbnailDragRef.current.startX;
-    if (Math.abs(delta) > 3) {
-      thumbnailDragRef.current.moved = true;
-      thumbnailDragRef.current.suppressClick = true;
-      track.scrollLeft = thumbnailDragRef.current.scrollLeft - delta;
+    const distance = Math.abs(delta);
+    if (distance > thumbnailDragRef.current.dragDistance) {
+      thumbnailDragRef.current.dragDistance = distance;
+    }
+    if (distance > 0) {
+      const firstItem = track.querySelector<HTMLElement>('[data-thumb-item="true"]');
+      const gapValue = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
+      const step = (firstItem?.getBoundingClientRect().width || 0) + gapValue;
+      if (!step) {
+        return;
+      }
+      const cycle = step * productImages.length;
+      let nextScrollLeft = thumbnailDragRef.current.scrollLeft - delta;
+      if (nextScrollLeft < cycle * 0.5) {
+        nextScrollLeft += cycle;
+        thumbnailDragRef.current.scrollLeft += cycle;
+        thumbnailSnapRef.current.origin += cycle;
+      } else if (nextScrollLeft > cycle * 1.5) {
+        nextScrollLeft -= cycle;
+        thumbnailDragRef.current.scrollLeft -= cycle;
+        thumbnailSnapRef.current.origin -= cycle;
+      }
+      track.scrollLeft = nextScrollLeft;
     }
   };
 
@@ -139,30 +203,55 @@ const ProductDetailPage = () => {
     if (track && thumbnailDragRef.current.isDown) {
       track.releasePointerCapture(event.pointerId);
     }
-    const moved = thumbnailDragRef.current.moved;
-    const duration = performance.now() - thumbnailDragRef.current.startTime;
-    if (track && moved && duration < 220) {
-      const firstItem = track.querySelector<HTMLElement>('button');
+    const dragThreshold = 4;
+    const dragged = thumbnailDragRef.current.dragDistance > 0;
+    const moved = thumbnailDragRef.current.dragDistance > dragThreshold;
+    if (track && dragged) {
+      const firstItem = track.querySelector<HTMLElement>('[data-thumb-item="true"]');
       const gapValue = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
-      const step = (firstItem?.offsetWidth || 0) + gapValue;
-      const delta = event.clientX - thumbnailDragRef.current.startX;
+      const step = (firstItem?.getBoundingClientRect().width || 0) + gapValue;
       if (step > 0) {
+        const base = thumbnailSnapRef.current.origin;
+        const offset = track.scrollLeft - base;
+        const snappedOffset = Math.round(offset / step) * step;
+        const target = base + snappedOffset;
         thumbnailAutoScrollRef.current = true;
-        track.scrollLeft = track.scrollLeft + (delta < 0 ? step : -step);
+        track.scrollTo({ left: target, behavior: 'smooth' });
         window.setTimeout(() => {
           thumbnailAutoScrollRef.current = false;
-        }, 120);
+        }, 160);
+      }
+    }
+    if (!moved) {
+      const startTarget = thumbnailDragRef.current.startTarget;
+      const img = startTarget?.closest?.('img[data-image-src]') as HTMLImageElement | null;
+      const imageSrc = img?.dataset.imageSrc;
+      if (imageSrc) {
+        handleThumbnailSelect(imageSrc);
       }
     }
     thumbnailDragRef.current.isDown = false;
-    thumbnailDragRef.current.moved = false;
+    thumbnailDragRef.current.moved = moved;
+    thumbnailDragRef.current.startTarget = null;
     if (moved) {
-      setTimeout(() => {
+      window.setTimeout(() => {
         thumbnailDragRef.current.suppressClick = false;
-      }, 0);
+      }, 220);
     } else {
       thumbnailDragRef.current.suppressClick = false;
     }
+  };
+
+  const handleThumbPointerCancel = (event: React.PointerEvent<HTMLDivElement>) => {
+    const track = thumbnailTrackRef.current;
+    if (track && thumbnailDragRef.current.isDown) {
+      track.releasePointerCapture(event.pointerId);
+    }
+    thumbnailDragRef.current.isDown = false;
+    thumbnailDragRef.current.moved = false;
+    thumbnailDragRef.current.suppressClick = false;
+    thumbnailDragRef.current.startTarget = null;
+    thumbnailDragRef.current.dragDistance = 0;
   };
 
   return (
@@ -240,25 +329,33 @@ const ProductDetailPage = () => {
           {/* 缩略图网格 */}
           <div
             ref={thumbnailTrackRef}
-            className="no-scrollbar thumbnail-track flex gap-4 overflow-x-auto scroll-px-0"
+            className="no-scrollbar thumbnail-track overflow-x-auto scroll-px-0"
             onPointerDown={handleThumbPointerDown}
             onPointerMove={handleThumbPointerMove}
             onPointerUp={handleThumbPointerUp}
-            onPointerLeave={handleThumbPointerUp}
+            onPointerLeave={handleThumbPointerCancel}
+            onPointerCancel={handleThumbPointerCancel}
           >
             {loopImages.map((image, index) => (
-              <button
+              <div
                 key={`${image.id}-${index}`}
-                onClick={() => handleThumbnailClick(image.src)}
-                className={`box-border flex-shrink-0 w-[calc((100%-1rem-2px)/2)] rounded-lg overflow-hidden border-2 ${mainImage === image.src ? 'border-blue-500' : 'border-gray-700'} transition-all`}
+                data-thumb-item="true"
+                style={
+                  {
+                    '--thumb-border-color': mainImage === image.src ? '#3b82f6' : '#374151',
+                  } as React.CSSProperties
+                }
+                className="thumbnail-item rounded-lg overflow-hidden transition-all"
               >
-                <img 
-                  src={image.src} 
-                  alt={image.alt} 
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  data-image-src={image.src}
+                  draggable={false}
                   className="w-full h-24 object-cover"
                 />
                 <div className="mt-1 text-xs text-center text-gray-400">{image.alt}</div>
-              </button>
+              </div>
             ))}
           </div>
         </div>
