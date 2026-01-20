@@ -9,8 +9,15 @@ import Footer from "@/components/ui/footer";
 import { getProductBySlug } from "@/data/products";
 import { notFound } from "next/navigation";
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = getProductBySlug(params.slug);
+type ProductDetailPageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export async function generateMetadata({ params }: ProductDetailPageProps) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
   if (!product) {
     return {
       title: "Product | TYCORUN",
@@ -23,8 +30,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function ProductDetail({ params }: { params: { slug: string } }) {
-  const product = getProductBySlug(params.slug);
+export default async function ProductDetail({ params }: ProductDetailPageProps) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
   if (!product) {
     notFound();
   }
