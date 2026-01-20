@@ -10,6 +10,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   // Handle scroll for header visibility
   useEffect(() => {
@@ -36,6 +37,24 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const updateHeaderOffset = () => {
+      if (!headerRef.current) {
+        return;
+      }
+      const styles = window.getComputedStyle(headerRef.current);
+      const topSpacing = Number.parseFloat(styles.top) || 0;
+      const gapVisible = 16;
+      const gapHidden = 0;
+      const visibleOffset = Math.round(headerRef.current.offsetHeight + topSpacing + gapVisible);
+      const offset = isVisible ? visibleOffset : topSpacing + gapHidden;
+      document.documentElement.style.setProperty("--header-offset", `${offset}px`);
+    };
+    updateHeaderOffset();
+    window.addEventListener("resize", updateHeaderOffset);
+    return () => window.removeEventListener("resize", updateHeaderOffset);
+  }, [isVisible]);
 
   // Handle click outside to close mobile menu
   useEffect(() => {
@@ -64,6 +83,7 @@ export default function Header() {
 
   return (
     <header
+      ref={headerRef}
       className={`fixed top-2 z-30 w-full md:top-5 transition-transform duration-300 ease-in-out ${
         isVisible ? "translate-y-0" : "-translate-y-24"
       }`}

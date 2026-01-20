@@ -4,20 +4,33 @@ import PageIllustration from "@/components/page-illustration";
 import ProductDetailPage from "@/components/product-detail-page";
 import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
+import { getProductBySlug } from "@/data/products";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const product = getProductBySlug(params.slug);
+  if (!product) {
+    return {
+      title: "Product | TYCORUN",
+      description: "Explore OEM/ODM-ready electric motorcycle platforms, compliance support, and export specs.",
+    };
+  }
   return {
-    title: `${params.slug.charAt(0).toUpperCase() + params.slug.slice(1)} | TYCORUN`,
-    description: "Explore OEM/ODM-ready electric motorcycle platforms, compliance support, and export specs.",
+    title: `${product.headline} | TYCORUN`,
+    description: product.description,
   };
 }
 
 export default function ProductDetail({ params }: { params: { slug: string } }) {
+  const product = getProductBySlug(params.slug);
+  if (!product) {
+    notFound();
+  }
   return (
     <>
       <main className="relative flex grow flex-col">
         <PageIllustration multiple />
-        <ProductDetailPage />
+        <ProductDetailPage product={product} />
         <Cta />
       </main>
       <Footer />

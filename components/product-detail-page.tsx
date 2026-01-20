@@ -3,17 +3,17 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import type { ProductContent } from '@/data/products';
 
-const ProductDetailPage = () => {
-  const productImages = [
-    { id: 1, src: '/images/products/main-product.jpg', alt: 'Front View' },
-    { id: 2, src: '/images/products/side-view.jpg', alt: 'Side View' },
-    { id: 3, src: '/images/products/back-view.jpg', alt: 'Back View' },
-    { id: 4, src: '/images/products/dashboard-detail.jpg', alt: 'Dashboard Detail' },
-  ];
+type ProductDetailPageProps = {
+  product: ProductContent;
+};
+
+const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
+  const productImages = product.images;
   const loopImages = [...productImages, ...productImages, ...productImages];
 
-  const [mainImage, setMainImage] = useState('/images/products/main-product.jpg');
+  const [mainImage, setMainImage] = useState(product.mainImage);
   const thumbnailTrackRef = useRef<HTMLDivElement | null>(null);
   const thumbnailAutoScrollRef = useRef(false);
   const thumbnailSnapRef = useRef({
@@ -47,25 +47,18 @@ const ProductDetailPage = () => {
     setMainImage(productImages[nextIndex].src);
   };
 
-  const [motorPower, setMotorPower] = useState('2000W');
-  const [batteryType, setBatteryType] = useState('Lithium-Ion');
+  const [motorPower, setMotorPower] = useState(product.defaultPower);
+  const [batteryType, setBatteryType] = useState(product.defaultBattery);
   const [quantity, setQuantity] = useState(10);
-
-  const pricingData = [
-    { moq: 'MOQ 10+', price: '$850' },
-    { moq: 'MOQ 50+', price: '$780' },
-    { moq: 'MOQ 100+', price: '$720' },
-    { moq: 'MOQ 200+', price: '$680' },
-  ];
-
-  const specData = [
-    { iconClass: 'fas fa-motorcycle', label: '2000W Motor' },
-    { iconClass: 'fas fa-bolt', label: '72V 40Ah Battery' },
-    { iconClass: 'fas fa-gas-pump', label: '120km Range' },
-    { iconClass: 'fas fa-certificate', label: 'CE Certified' },
-  ];
-
+  const pricingData = product.pricing;
+  const specData = product.highlights;
   const [activeTab, setActiveTab] = useState('specifications');
+
+  useEffect(() => {
+    setMainImage(product.mainImage);
+    setMotorPower(product.defaultPower);
+    setBatteryType(product.defaultBattery);
+  }, [product.mainImage, product.defaultPower, product.defaultBattery]);
 
   useEffect(() => {
     const track = thumbnailTrackRef.current;
@@ -146,7 +139,7 @@ const ProductDetailPage = () => {
       cancelAnimationFrame(rafId);
       track.removeEventListener('scroll', onScroll);
     };
-  }, []);
+  }, [productImages.length]);
 
   const handleThumbPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     const track = thumbnailTrackRef.current;
@@ -255,7 +248,7 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="w-full max-w-none mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 md:pt-40 md:pb-24 overflow-x-hidden">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-12 md:pt-40 md:pb-24">
       {/* 页面标题 */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center space-x-2 text-sm text-gray-400 mb-4">
@@ -263,19 +256,22 @@ const ProductDetailPage = () => {
           <span>/</span>
           <Link href="/product" className="hover:text-blue-400 transition-colors">Product</Link>
           <span>/</span>
-          <span className="text-gray-300">Model X-2000 Pro</span>
+          <span className="text-gray-300">{product.name}</span>
         </div>
         
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-2">Model X-2000 Pro - Long Range Electric Logistics Moped</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-2">{product.headline}</h1>
         <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-          High-performance electric moped designed for commercial logistics with superior range, durability, and swappable battery technology.
+          {product.description}
         </p>
       </div>
 
       {/* 主要内容区 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* 左侧图片区 - 添加吸顶效果 */}
-        <div className="lg:sticky lg:top-24 lg:self-start space-y-6">
+        <div
+          className="lg:sticky lg:self-start space-y-6 transition-[top] duration-300 ease-in-out"
+          style={{ top: "var(--header-offset, 6rem)" }}
+        >
 
           {/* 主图 */}
           <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 aspect-square flex items-center justify-center border border-gray-700 shadow-lg">
@@ -354,7 +350,6 @@ const ProductDetailPage = () => {
                   draggable={false}
                   className="w-full h-24 object-cover"
                 />
-                <div className="mt-1 text-xs text-center text-gray-400">{image.alt}</div>
               </div>
             ))}
           </div>
@@ -368,7 +363,12 @@ const ProductDetailPage = () => {
             <div className="space-y-3">
               {pricingData.map((tier, index) => (
                 <div key={index} className="flex justify-between items-center py-2 border-b border-gray-700">
-                  <span className="font-medium text-gray-300">{tier.moq}</span>
+                  <span className="flex flex-col items-start gap-2 font-medium text-gray-300 sm:flex-row sm:items-center sm:gap-2">
+                    {tier.moq}
+                    <span className="rounded-full border border-blue-500/60 bg-blue-600/20 px-2 py-0.5 text-[10px] uppercase tracking-wide text-blue-100">
+                      {tier.tag}
+                    </span>
+                  </span>
                   <span className="font-bold text-blue-400 text-lg">{tier.price}</span>
                 </div>
               ))}
@@ -378,7 +378,7 @@ const ProductDetailPage = () => {
           {/* 规格亮点 */}
           <div className="grid grid-cols-2 gap-4">
             {specData.map((spec, index) => (
-              <div key={index} className="flex items-center space-x-3 bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-700">
+              <div key={index} className="flex flex-col items-center gap-2 text-center bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-700 sm:flex-row sm:items-center sm:gap-3 sm:text-left">
                 <i className={`${spec.iconClass} text-blue-500 text-xl`}></i>
                 <span className="font-medium text-gray-300">{spec.label}</span>
               </div>
@@ -390,7 +390,7 @@ const ProductDetailPage = () => {
             <div>
               <h3 className="text-lg font-medium text-gray-100 mb-3">Motor Power</h3>
               <div className="flex space-x-3">
-                {['1000W', '1500W', '2000W'].map((power) => (
+                {product.powerOptions.map((power) => (
                   <button
                     key={power}
                     onClick={() => setMotorPower(power)}
@@ -409,7 +409,7 @@ const ProductDetailPage = () => {
             <div>
               <h3 className="text-lg font-medium text-gray-100 mb-3">Battery Type</h3>
               <div className="flex space-x-3">
-                {['Lead-Acid', 'Lithium-Ion'].map((battery) => (
+                {product.batteryOptions.map((battery) => (
                   <button
                     key={battery}
                     onClick={() => setBatteryType(battery)}
@@ -454,7 +454,7 @@ const ProductDetailPage = () => {
       {/* 底部标签区 */}
       <div className="mt-16">
         <div className="border-b border-gray-700">
-          <nav className="-mb-px flex space-x-8">
+          <nav className="-mb-px flex space-x-8 overflow-x-auto pr-4 no-scrollbar">
             <button
               onClick={() => setActiveTab('specifications')}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
@@ -490,98 +490,161 @@ const ProductDetailPage = () => {
 
         <div className="py-8">
           {activeTab === 'specifications' && (
-            <div className="prose max-w-none">
-              <h3 className="text-xl font-bold text-gray-100 mb-4">Technical Specifications</h3>
-              <ul className="space-y-2">
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Motor Power:</span>
-                  <span className="text-gray-200">{motorPower}</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Battery Type:</span>
-                  <span className="text-gray-200">{batteryType}</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Battery Capacity:</span>
-                  <span className="text-gray-200">72V 40Ah</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Max Range:</span>
-                  <span className="text-gray-200">120 km (with full charge)</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Max Speed:</span>
-                  <span className="text-gray-200">45 km/h</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Charging Time:</span>
-                  <span className="text-gray-200">6-8 hours (standard), 3-4 hours (fast charger)</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Payload Capacity:</span>
-                  <span className="text-gray-200">200 kg</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Gross Weight:</span>
-                  <span className="text-gray-200">120 kg</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Braking System:</span>
-                  <span className="text-gray-200">Disc brakes front/rear with CBS</span>
-                </li>
-                <li className="flex justify-between border-b border-gray-700 pb-2">
-                  <span className="font-medium text-gray-300">Certifications:</span>
-                  <span className="text-gray-200">CE, TÜV, ISO 9001</span>
-                </li>
-              </ul>
+            <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-2 sm:p-6">
+              <div className="grid gap-8 lg:grid-cols-2">
+              <div className="flex h-full flex-col justify-center">
+                <h3 className="text-xl font-bold text-gray-100 mb-3">Performance & Fleet Specs</h3>
+                <p className="text-gray-400">
+                  {product.specIntro}
+                </p>
+                <ul className="mt-4 space-y-2 text-sm text-gray-400">
+                  {product.specBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  {product.scenarios.map((scenario) => (
+                    <div
+                      key={scenario.title}
+                      className="relative overflow-hidden rounded-xl border border-gray-800 bg-gray-900/50 p-4"
+                    >
+                      <i
+                        className={`${scenario.iconClass} pointer-events-none absolute -right-3 top-[2px] text-blue-500/20 text-6xl`}
+                        aria-hidden="true"
+                      ></i>
+                      <h4 className="text-base font-semibold text-gray-100">{scenario.title}</h4>
+                      <p className="mt-2 text-base text-gray-400">{scenario.subtitle}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+                <div className="overflow-hidden rounded-2xl border border-blue-500/25 bg-gradient-to-br from-gray-950/90 via-gray-900/60 to-gray-950/90 shadow-[0_0_30px_rgba(59,130,246,0.12)]">
+                  <div className="flex items-center justify-between border-b border-blue-500/20 bg-gray-950/80 px-4 py-3">
+                    <div className="flex items-center gap-2 text-base uppercase tracking-[0.2em] text-blue-200/80">
+                      <span className="h-2 w-2 rounded-full bg-blue-400"></span>
+                      Spec Sheet
+                    </div>
+                    <span className="text-base text-blue-300/70">Precision Output</span>
+                  </div>
+                  <div className="px-4 py-4 font-mono text-base text-blue-100/90">
+                    <div className="text-blue-300/70">Calibration-grade metrics, verified on every batch.</div>
+                    <table className="mt-3 w-full border-collapse">
+                      <tbody>
+                        {product.specs.map((spec) => (
+                          <tr key={spec.label} className="border-b border-blue-500/10">
+                            <th
+                              scope="row"
+                              className="py-2 pr-4 text-left font-medium text-blue-200/80 align-top"
+                            >
+                              {spec.label.toUpperCase()}
+                            </th>
+                            <td className="py-2 text-right text-blue-100/90">{spec.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
           {activeTab === 'shipping' && (
-            <div>
-              <h3 className="text-xl font-bold text-gray-100 mb-4">Packaging & Shipping Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+            <div className="space-y-6 rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
+              <h3 className="text-xl font-bold text-gray-100">Packaging & Shipping Information</h3>
+              <div className="space-y-6">
+                <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
                   <h4 className="font-bold text-gray-200 mb-2">Packaging Details</h4>
-                  <ul className="space-y-2">
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Package Size:</span>
-                      <span className="text-gray-200">L180cm x W70cm x H110cm</span>
-                    </li>
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Gross Weight:</span>
-                      <span className="text-gray-200">125 kg per unit</span>
-                    </li>
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Packaging Type:</span>
-                      <span className="text-gray-200">Standard export carton with foam protection</span>
-                    </li>
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Container Loading:</span>
-                      <span className="text-gray-200">20ft: 20 units | 40ft: 45 units</span>
-                    </li>
-                  </ul>
+                  <table className="w-full border-collapse text-sm">
+                    <tbody>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Dimensions
+                        </th>
+                        <td className="py-2 text-right text-gray-200">180 × 70 × 110 cm (CBU Standard)</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Gross Weight
+                        </th>
+                        <td className="py-2 text-right text-gray-200">125 kg per unit</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Protection Level
+                        </th>
+                        <td className="py-2 text-right text-gray-200">Steel Frame + 7-layer Carton (Inside)</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Safety Features
+                        </th>
+                        <td className="py-2 text-right text-gray-200">Moisture-proof wrap & shock-absorbing foam</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div>
-                  <h4 className="font-bold text-gray-200 mb-2">Shipping Information</h4>
-                  <ul className="space-y-2">
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Delivery Time:</span>
-                      <span className="text-gray-200">15-25 days after payment confirmation</span>
-                    </li>
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Incoterms:</span>
-                      <span className="text-gray-200">FOB, CIF, DDP available</span>
-                    </li>
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Shipping Ports:</span>
-                      <span className="text-gray-200">Ningbo, Shanghai, Shenzhen</span>
-                    </li>
-                    <li className="flex justify-between border-b border-gray-700 pb-2">
-                      <span className="font-medium text-gray-300">Payment Terms:</span>
-                      <span className="text-gray-200">T/T, L/C, Western Union</span>
-                    </li>
-                  </ul>
+                <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
+                  <h4 className="font-bold text-gray-200 mb-2">Container Loading Efficiency</h4>
+                  <table className="w-full border-collapse text-sm">
+                    <tbody>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          CBU Mode (Fully Assembled)
+                        </th>
+                        <td className="py-2 text-right text-gray-200">20GP: 20 Units</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          CBU Mode (Fully Assembled)
+                        </th>
+                        <td className="py-2 text-right text-blue-300">40HQ: 45 Units (Optimized)</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          SKD/CKD Mode (Cost Saving)
+                        </th>
+                        <td className="py-2 text-right text-gray-200">40HQ: 75+ Units (Contact for layout plan)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
+                  <h4 className="font-bold text-gray-200 mb-2">Logistics & Compliance</h4>
+                  <table className="w-full border-collapse text-sm">
+                    <tbody>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Lead Time
+                        </th>
+                        <td className="py-2 text-right text-gray-200">15-25 days (Production)</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Battery Compliance
+                        </th>
+                        <td className="py-2 text-right text-gray-200">MSDS / UN38.3 Certified</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Incoterms
+                        </th>
+                        <td className="py-2 text-right text-gray-200">EXW, FOB, CIF, DDP</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Loading Ports
+                        </th>
+                        <td className="py-2 text-right text-gray-200">Ningbo / Shanghai (Priority)</td>
+                      </tr>
+                      <tr className="border-b border-gray-700">
+                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                          Payment Terms
+                        </th>
+                        <td className="py-2 text-right text-gray-200">30% deposit, balance before shipment</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
