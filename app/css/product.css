@@ -708,3 +708,27 @@
   height: 20px;
   fill: #e2e8f0;
 }
+
+.main-carousel-track {
+  display: flex;
+  cursor: grab;
+  touch-action: pan-x;
+  user-select: none;
+  -webkit-user-select: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.main-carousel-track:active {
+  cursor: grabbing;
+}
+
+.main-carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.main-carousel-image {
+  will-change: transform;
+}

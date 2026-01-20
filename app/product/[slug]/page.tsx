@@ -2,6 +2,8 @@ import "../../css/product.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import PageIllustration from "@/components/page-illustration";
 import ProductDetailPage from "@/components/product-detail-page";
+import PackagingShipping from "@/components/packaging-shipping";
+import CompanyProfile from "@/components/company-profile";
 import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 import { getProductBySlug } from "@/data/products";
@@ -30,7 +32,11 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
     <>
       <main className="relative flex grow flex-col">
         <PageIllustration multiple />
-        <ProductDetailPage product={product} />
+        <ProductDetailPage
+          product={product}
+          shippingContent={<PackagingShipping />}
+          companyContent={<CompanyProfile />}
+        />
         <Cta />
       </main>
       <Footer />

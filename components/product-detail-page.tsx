@@ -7,19 +7,25 @@ import type { ProductContent } from '@/data/products';
 
 type ProductDetailPageProps = {
   product: ProductContent;
+  shippingContent?: React.ReactNode;
+  companyContent?: React.ReactNode;
 };
 
-const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
+const ProductDetailPage = ({ product, shippingContent, companyContent }: ProductDetailPageProps) => {
   const productImages = product.images;
   const loopImages = [...productImages, ...productImages, ...productImages];
 
-  const [mainImage, setMainImage] = useState(product.mainImage);
+  const initialIndex = Math.max(
+    0,
+    productImages.findIndex((image) => image.src === product.mainImage),
+  );
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const mainImage = productImages[currentIndex]?.src ?? product.mainImage;
   const thumbnailTrackRef = useRef<HTMLDivElement | null>(null);
+  const mainTrackRef = useRef<HTMLDivElement | null>(null);
+  const mainViewportRef = useRef<HTMLDivElement | null>(null);
+  const tabNavRef = useRef<HTMLDivElement | null>(null);
   const thumbnailAutoScrollRef = useRef(false);
-  const thumbnailSnapRef = useRef({
-    origin: 0,
-    settleTimer: 0 as number,
-  });
   const thumbnailDragRef = useRef({
     isDown: false,
     startX: 0,
@@ -29,22 +35,106 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
     suppressClick: false,
     startTarget: null as HTMLElement | null,
     dragDistance: 0,
+    overscroll: 0,
+    resetTimer: 0 as number,
   });
+  const mainAutoScrollRef = useRef(false);
+  const mainScrollTimerRef = useRef(0 as number);
+  const mainScrollRafRef = useRef(0 as number);
+  const mainSnapRef = useRef({
+    origin: 0,
+    settleTimer: 0 as number,
+  });
+  const mainDragRef = useRef({
+    isDown: false,
+    startX: 0,
+    startY: 0,
+    scrollLeft: 0,
+    dragDistance: 0,
+    lockAxis: null as 'x' | 'y' | null,
+    pointerId: null as number | null,
+  });
+  const mainHoverRef = useRef(false);
+
+  const cancelMainScrollAnimation = () => {
+    window.clearTimeout(mainScrollTimerRef.current);
+    if (mainScrollRafRef.current) {
+      cancelAnimationFrame(mainScrollRafRef.current);
+      mainScrollRafRef.current = 0;
+    }
+    mainAutoScrollRef.current = false;
+  };
+
+  const animateMainScrollTo = (target: number, duration = 500) => {
+    const track = mainTrackRef.current;
+    if (!track) {
+      return;
+    }
+    cancelMainScrollAnimation();
+    const start = track.scrollLeft;
+    const delta = target - start;
+    if (!delta) {
+      return;
+    }
+    mainAutoScrollRef.current = true;
+    const startTime = performance.now();
+    const easeInOut = (t: number) =>
+      t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = easeInOut(progress);
+      track.scrollLeft = start + delta * eased;
+      if (progress < 1) {
+        mainScrollRafRef.current = requestAnimationFrame(step);
+      } else {
+        track.scrollLeft = target;
+        mainAutoScrollRef.current = false;
+        mainScrollRafRef.current = 0;
+      }
+    };
+    mainScrollRafRef.current = requestAnimationFrame(step);
+  };
+
+  const scrollMainToIndex = (nextIndex: number) => {
+    const track = mainTrackRef.current;
+    if (!track) {
+      return;
+    }
+    const step = track.clientWidth;
+    if (!step) {
+      return;
+    }
+    const cycle = step * productImages.length;
+    if (!mainSnapRef.current.origin) {
+      mainSnapRef.current.origin = cycle;
+    }
+    const target = mainSnapRef.current.origin + step * nextIndex;
+    animateMainScrollTo(target, 500);
+  };
+
+  const goToIndex = (nextIndex: number) => {
+    if (!productImages.length) {
+      return;
+    }
+    const normalized = ((nextIndex % productImages.length) + productImages.length) % productImages.length;
+    setCurrentIndex(normalized);
+    scrollMainToIndex(normalized);
+  };
 
   const handleThumbnailSelect = (imageSrc: string) => {
-    setMainImage(imageSrc);
+    const nextIndex = productImages.findIndex((image) => image.src === imageSrc);
+    if (nextIndex !== -1) {
+      goToIndex(nextIndex);
+    }
   };
 
   const handlePrevMain = () => {
-    const currentIndex = productImages.findIndex((image) => image.src === mainImage);
-    const nextIndex = currentIndex === -1 ? 0 : (currentIndex - 1 + productImages.length) % productImages.length;
-    setMainImage(productImages[nextIndex].src);
+    goToIndex(currentIndex - 1);
   };
 
   const handleNextMain = () => {
-    const currentIndex = productImages.findIndex((image) => image.src === mainImage);
-    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % productImages.length;
-    setMainImage(productImages[nextIndex].src);
+    goToIndex(currentIndex + 1);
   };
 
   const [motorPower, setMotorPower] = useState(product.defaultPower);
@@ -53,63 +143,76 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
   const pricingData = product.pricing;
   const specData = product.highlights;
   const [activeTab, setActiveTab] = useState('specifications');
+  type ProductTab = 'specifications' | 'shipping' | 'company';
+  const tabOrder: ProductTab[] = ['specifications', 'shipping', 'company'];
+  const activeTabIndex = Math.max(0, tabOrder.indexOf(activeTab as ProductTab));
+  const tabSwipeRef = useRef({
+    isDown: false,
+    startX: 0,
+    startY: 0,
+    lockAxis: null as 'x' | 'y' | null,
+  });
+
+  const setActiveTabOnly = (nextTab: ProductTab) => {
+    setActiveTab(nextTab);
+  };
+
+  const scrollTabIntoViewOnMobile = (target: HTMLElement | null) => {
+    if (!target) {
+      return;
+    }
+    if (typeof window === 'undefined') {
+      return;
+    }
+    if (!window.matchMedia('(max-width: 767px)').matches) {
+      return;
+    }
+    target.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
+  };
+
+  const handleTabClick = (tab: ProductTab, target: HTMLButtonElement) => {
+    setActiveTabOnly(tab);
+    scrollTabIntoViewOnMobile(target);
+  };
 
   useEffect(() => {
-    setMainImage(product.mainImage);
     setMotorPower(product.defaultPower);
     setBatteryType(product.defaultBattery);
-  }, [product.mainImage, product.defaultPower, product.defaultBattery]);
+  }, [product.defaultPower, product.defaultBattery]);
 
   useEffect(() => {
-    const track = thumbnailTrackRef.current;
+    const track = mainTrackRef.current;
+    if (!track || !productImages.length) {
+      return;
+    }
+    const step = track.clientWidth;
+    if (!step) {
+      return;
+    }
+    const cycle = step * productImages.length;
+    const nextIndex = Math.max(
+      0,
+      productImages.findIndex((image) => image.src === product.mainImage),
+    );
+    mainSnapRef.current.origin = cycle;
+    track.scrollLeft = cycle + step * nextIndex;
+    setCurrentIndex(nextIndex);
+  }, [product.mainImage, productImages.length]);
+
+  useEffect(() => {
+    const track = mainTrackRef.current;
     if (!track) {
       return;
     }
 
-    const getStep = () => {
-      const firstItem = track.querySelector<HTMLElement>('[data-thumb-item="true"]');
-      const gapValue = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
-      const itemWidth = firstItem?.getBoundingClientRect().width || 0;
-      return itemWidth + gapValue;
-    };
-
-    const moveToMiddle = () => {
-      const step = getStep();
-      if (step > 0) {
-        const cycle = step * productImages.length;
-        track.scrollLeft = cycle;
-        thumbnailSnapRef.current.origin = cycle;
-      } else {
-        const third = track.scrollWidth / 3;
-        track.scrollLeft = third;
-        thumbnailSnapRef.current.origin = third;
-      }
-    };
-
-    const handleSettleSnap = () => {
-      const step = getStep();
-      if (!step) {
-        return;
-      }
-      const origin = thumbnailSnapRef.current.origin;
-      const nextLeftEdge = origin + step;
-      if (track.scrollLeft > origin && track.scrollLeft < nextLeftEdge) {
-        const rightVisible = nextLeftEdge - track.scrollLeft;
-        if (rightVisible < step / 2) {
-          thumbnailAutoScrollRef.current = true;
-          track.scrollTo({ left: origin, behavior: 'smooth' });
-          window.setTimeout(() => {
-            thumbnailAutoScrollRef.current = false;
-          }, 120);
-        }
-      }
-    };
+    const getStep = () => track.clientWidth;
 
     const onScroll = () => {
-      if (thumbnailAutoScrollRef.current) {
-        return;
-      }
-      if (thumbnailDragRef.current.isDown) {
+      if (mainAutoScrollRef.current || mainDragRef.current.isDown) {
         return;
       }
       const step = getStep();
@@ -117,29 +220,63 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
         return;
       }
       const cycle = step * productImages.length;
+      if (!cycle) {
+        return;
+      }
       if (track.scrollLeft < cycle * 0.5 || track.scrollLeft > cycle * 1.5) {
-        thumbnailAutoScrollRef.current = true;
+        mainAutoScrollRef.current = true;
         const normalized = ((track.scrollLeft % cycle) + cycle) % cycle;
         const target = normalized + cycle;
         const delta = target - track.scrollLeft;
-        thumbnailSnapRef.current.origin += delta;
+        mainSnapRef.current.origin += delta;
         requestAnimationFrame(() => {
           track.scrollLeft = target;
-          thumbnailAutoScrollRef.current = false;
+          mainAutoScrollRef.current = false;
         });
       }
-      window.clearTimeout(thumbnailSnapRef.current.settleTimer);
-      thumbnailSnapRef.current.settleTimer = window.setTimeout(handleSettleSnap, 160);
     };
 
-    const rafId = requestAnimationFrame(moveToMiddle);
     track.addEventListener('scroll', onScroll, { passive: true });
-
     return () => {
-      cancelAnimationFrame(rafId);
       track.removeEventListener('scroll', onScroll);
     };
   }, [productImages.length]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (mainHoverRef.current || mainDragRef.current.isDown) {
+        return;
+      }
+      goToIndex(currentIndex + 1);
+    }, 4200);
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, [currentIndex, productImages.length]);
+
+  useEffect(() => {
+    const track = thumbnailTrackRef.current;
+    if (!track || thumbnailDragRef.current.isDown) {
+      return;
+    }
+    const firstItem = track.querySelector<HTMLElement>('[data-thumb-item="true"]');
+    const gapValue = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
+    const step = (firstItem?.getBoundingClientRect().width || 0) + gapValue;
+    if (!step) {
+      return;
+    }
+    const imageIndex = productImages.findIndex((image) => image.src === mainImage);
+    if (imageIndex < 0) {
+      return;
+    }
+    const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+    const target = Math.min(maxScrollLeft, Math.max(0, step * imageIndex));
+    thumbnailAutoScrollRef.current = true;
+    track.scrollTo({ left: target, behavior: 'smooth' });
+    window.setTimeout(() => {
+      thumbnailAutoScrollRef.current = false;
+    }, 160);
+  }, [mainImage, productImages]);
 
   const handleThumbPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     const track = thumbnailTrackRef.current;
@@ -147,6 +284,7 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
       return;
     }
     event.preventDefault();
+    track.style.transition = 'none';
     thumbnailDragRef.current.isDown = true;
     thumbnailDragRef.current.startX = event.clientX;
     thumbnailDragRef.current.startTime = performance.now();
@@ -155,7 +293,9 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
     thumbnailDragRef.current.suppressClick = false;
     thumbnailDragRef.current.startTarget = event.target as HTMLElement;
     thumbnailDragRef.current.dragDistance = 0;
-    track.setPointerCapture(event.pointerId);
+    thumbnailDragRef.current.overscroll = 0;
+    window.clearTimeout(thumbnailDragRef.current.resetTimer);
+    mainDragRef.current.pointerId = event.pointerId;
   };
 
   const handleThumbPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -170,24 +310,23 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
       thumbnailDragRef.current.dragDistance = distance;
     }
     if (distance > 0) {
-      const firstItem = track.querySelector<HTMLElement>('[data-thumb-item="true"]');
-      const gapValue = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
-      const step = (firstItem?.getBoundingClientRect().width || 0) + gapValue;
-      if (!step) {
-        return;
-      }
-      const cycle = step * productImages.length;
+      const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
       let nextScrollLeft = thumbnailDragRef.current.scrollLeft - delta;
-      if (nextScrollLeft < cycle * 0.5) {
-        nextScrollLeft += cycle;
-        thumbnailDragRef.current.scrollLeft += cycle;
-        thumbnailSnapRef.current.origin += cycle;
-      } else if (nextScrollLeft > cycle * 1.5) {
-        nextScrollLeft -= cycle;
-        thumbnailDragRef.current.scrollLeft -= cycle;
-        thumbnailSnapRef.current.origin -= cycle;
+      let overscroll = 0;
+      if (nextScrollLeft < 0) {
+        overscroll = nextScrollLeft;
+        nextScrollLeft = 0;
+      } else if (nextScrollLeft > maxScrollLeft) {
+        overscroll = nextScrollLeft - maxScrollLeft;
+        nextScrollLeft = maxScrollLeft;
       }
+      thumbnailDragRef.current.overscroll = overscroll;
       track.scrollLeft = nextScrollLeft;
+      if (overscroll !== 0) {
+        track.style.transform = `translateX(${-overscroll * 0.35}px)`;
+      } else {
+        track.style.transform = 'translateX(0px)';
+      }
     }
   };
 
@@ -204,16 +343,23 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
       const gapValue = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
       const step = (firstItem?.getBoundingClientRect().width || 0) + gapValue;
       if (step > 0) {
-        const base = thumbnailSnapRef.current.origin;
-        const offset = track.scrollLeft - base;
-        const snappedOffset = Math.round(offset / step) * step;
-        const target = base + snappedOffset;
+        const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+        const snapped = Math.round(track.scrollLeft / step) * step;
+        const target = Math.min(maxScrollLeft, Math.max(0, snapped));
         thumbnailAutoScrollRef.current = true;
         track.scrollTo({ left: target, behavior: 'smooth' });
         window.setTimeout(() => {
           thumbnailAutoScrollRef.current = false;
         }, 160);
       }
+    }
+    if (track) {
+      track.style.transition = 'transform 200ms ease-out';
+      track.style.transform = 'translateX(0px)';
+      window.clearTimeout(thumbnailDragRef.current.resetTimer);
+      thumbnailDragRef.current.resetTimer = window.setTimeout(() => {
+        track.style.transition = 'none';
+      }, 220);
     }
     if (!moved) {
       const startTarget = thumbnailDragRef.current.startTarget;
@@ -226,6 +372,7 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
     thumbnailDragRef.current.isDown = false;
     thumbnailDragRef.current.moved = moved;
     thumbnailDragRef.current.startTarget = null;
+    thumbnailDragRef.current.overscroll = 0;
     if (moved) {
       window.setTimeout(() => {
         thumbnailDragRef.current.suppressClick = false;
@@ -240,11 +387,191 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
     if (track && thumbnailDragRef.current.isDown) {
       track.releasePointerCapture(event.pointerId);
     }
+    if (track) {
+      track.style.transition = 'transform 200ms ease-out';
+      track.style.transform = 'translateX(0px)';
+      window.clearTimeout(thumbnailDragRef.current.resetTimer);
+      thumbnailDragRef.current.resetTimer = window.setTimeout(() => {
+        track.style.transition = 'none';
+      }, 220);
+    }
     thumbnailDragRef.current.isDown = false;
     thumbnailDragRef.current.moved = false;
     thumbnailDragRef.current.suppressClick = false;
     thumbnailDragRef.current.startTarget = null;
     thumbnailDragRef.current.dragDistance = 0;
+    thumbnailDragRef.current.overscroll = 0;
+  };
+
+  const handleMainPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    const track = mainTrackRef.current;
+    if (!track) {
+      return;
+    }
+    cancelMainScrollAnimation();
+    mainDragRef.current.isDown = true;
+    mainDragRef.current.startX = event.clientX;
+    mainDragRef.current.startY = event.clientY;
+    mainDragRef.current.scrollLeft = track.scrollLeft;
+    mainDragRef.current.dragDistance = 0;
+    mainDragRef.current.lockAxis = null;
+    mainDragRef.current.pointerId = event.pointerType === 'touch' ? null : event.pointerId;
+    if (event.pointerType !== 'touch') {
+      track.setPointerCapture(event.pointerId);
+    }
+  };
+
+  const handleMainPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const track = mainTrackRef.current;
+    if (!track || !mainDragRef.current.isDown) {
+      return;
+    }
+    const deltaX = event.clientX - mainDragRef.current.startX;
+    const deltaY = event.clientY - mainDragRef.current.startY;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    if (!mainDragRef.current.lockAxis) {
+      if (absX < 4 && absY < 4) {
+        return;
+      }
+      mainDragRef.current.lockAxis = absX >= absY ? 'x' : 'y';
+    }
+    if (mainDragRef.current.lockAxis === 'y') {
+      if (
+        mainDragRef.current.pointerId !== null &&
+        track.hasPointerCapture(mainDragRef.current.pointerId)
+      ) {
+        track.releasePointerCapture(mainDragRef.current.pointerId);
+      }
+      mainDragRef.current.pointerId = null;
+      mainDragRef.current.isDown = false;
+      mainDragRef.current.dragDistance = 0;
+      mainDragRef.current.lockAxis = null;
+      return;
+    }
+    if (
+      event.pointerType !== 'touch' &&
+      mainDragRef.current.pointerId !== null &&
+      !track.hasPointerCapture(mainDragRef.current.pointerId)
+    ) {
+      track.setPointerCapture(mainDragRef.current.pointerId);
+    }
+    event.preventDefault();
+    mainDragRef.current.dragDistance = Math.max(mainDragRef.current.dragDistance, absX);
+    track.scrollLeft = mainDragRef.current.scrollLeft - deltaX;
+  };
+
+  const handleMainPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    const track = mainTrackRef.current;
+    if (
+      track &&
+      mainDragRef.current.isDown &&
+      mainDragRef.current.pointerId !== null &&
+      track.hasPointerCapture(mainDragRef.current.pointerId)
+    ) {
+      track.releasePointerCapture(mainDragRef.current.pointerId);
+    }
+    if (track) {
+      const step = track.clientWidth;
+      if (step > 0 && productImages.length) {
+        const base = mainSnapRef.current.origin;
+        const offset = track.scrollLeft - base;
+        const scrollDelta = track.scrollLeft - mainDragRef.current.scrollLeft;
+        const threshold = step * 0.12;
+        const currentFloat = offset / step;
+        let targetIndex = Math.round(currentFloat);
+        if (Math.abs(scrollDelta) > threshold) {
+          targetIndex = scrollDelta > 0 ? Math.ceil(currentFloat) : Math.floor(currentFloat);
+        }
+        const target = base + targetIndex * step;
+        const normalized =
+          ((targetIndex % productImages.length) + productImages.length) % productImages.length;
+        animateMainScrollTo(target, 500);
+        setCurrentIndex(normalized);
+      }
+    }
+    mainDragRef.current.isDown = false;
+    mainDragRef.current.dragDistance = 0;
+    mainDragRef.current.lockAxis = null;
+    mainDragRef.current.pointerId = null;
+  };
+
+  const handleMainPointerCancel = (event: React.PointerEvent<HTMLDivElement>) => {
+    const track = mainTrackRef.current;
+    if (
+      track &&
+      mainDragRef.current.isDown &&
+      mainDragRef.current.pointerId !== null &&
+      track.hasPointerCapture(mainDragRef.current.pointerId)
+    ) {
+      track.releasePointerCapture(mainDragRef.current.pointerId);
+    }
+    mainDragRef.current.isDown = false;
+    mainDragRef.current.dragDistance = 0;
+    mainDragRef.current.lockAxis = null;
+    mainDragRef.current.pointerId = null;
+  };
+
+  const handleMainMouseEnter = () => {
+    mainHoverRef.current = true;
+  };
+
+  const handleMainMouseLeave = () => {
+    mainHoverRef.current = false;
+  };
+
+  const handleTabSwipePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    tabSwipeRef.current.isDown = true;
+    tabSwipeRef.current.startX = event.clientX;
+    tabSwipeRef.current.startY = event.clientY;
+    tabSwipeRef.current.lockAxis = null;
+  };
+
+  const handleTabSwipePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!tabSwipeRef.current.isDown) {
+      return;
+    }
+    const deltaX = event.clientX - tabSwipeRef.current.startX;
+    const deltaY = event.clientY - tabSwipeRef.current.startY;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    if (!tabSwipeRef.current.lockAxis) {
+      if (absX < 6 && absY < 6) {
+        return;
+      }
+      tabSwipeRef.current.lockAxis = absX >= absY ? 'x' : 'y';
+    }
+    if (tabSwipeRef.current.lockAxis === 'x') {
+      event.preventDefault();
+    }
+  };
+
+  const handleTabSwipePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!tabSwipeRef.current.isDown) {
+      return;
+    }
+    const deltaX = event.clientX - tabSwipeRef.current.startX;
+    const deltaY = event.clientY - tabSwipeRef.current.startY;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    const isHorizontal = absX > 40 && absX > absY;
+    if (isHorizontal) {
+      const currentIndex = tabOrder.indexOf(activeTab as ProductTab);
+      if (currentIndex !== -1) {
+        const direction = deltaX < 0 ? 1 : -1;
+        const nextIndex = Math.min(tabOrder.length - 1, Math.max(0, currentIndex + direction));
+        if (nextIndex !== currentIndex) {
+          setActiveTabOnly(tabOrder[nextIndex]);
+        }
+      }
+    }
+    tabSwipeRef.current.isDown = false;
+    tabSwipeRef.current.lockAxis = null;
+  };
+
+  const handleTabSwipePointerCancel = () => {
+    tabSwipeRef.current.isDown = false;
+    tabSwipeRef.current.lockAxis = null;
   };
 
   return (
@@ -275,11 +602,35 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
 
           {/* 主图 */}
           <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 aspect-square flex items-center justify-center border border-gray-700 shadow-lg">
-            <img 
-              src={mainImage} 
-              alt="Main product view" 
-              className="w-full h-full object-contain"
-            />
+            <div
+              ref={mainViewportRef}
+              className="relative h-full w-full overflow-hidden"
+              style={{ touchAction: 'pan-y' }}
+              onMouseEnter={handleMainMouseEnter}
+              onMouseLeave={handleMainMouseLeave}
+            >
+              <div
+                ref={mainTrackRef}
+                className="no-scrollbar main-carousel-track h-full w-full overflow-x-auto"
+                style={{ touchAction: 'pan-y' }}
+                onPointerDown={handleMainPointerDown}
+                onPointerMove={handleMainPointerMove}
+                onPointerUp={handleMainPointerUp}
+                onPointerLeave={handleMainPointerCancel}
+                onPointerCancel={handleMainPointerCancel}
+              >
+                {loopImages.map((image, index) => (
+                  <div key={`${image.id}-${index}`} className="main-carousel-slide h-full w-full">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="main-carousel-image h-full w-full object-contain"
+                      draggable={false}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className="image-card__controls">
               <button
                 type="button"
@@ -323,35 +674,43 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
           </div>
 
           {/* 缩略图网格 */}
-          <div
-            ref={thumbnailTrackRef}
-            className="no-scrollbar thumbnail-track overflow-x-auto scroll-px-0"
-            onPointerDown={handleThumbPointerDown}
-            onPointerMove={handleThumbPointerMove}
-            onPointerUp={handleThumbPointerUp}
-            onPointerLeave={handleThumbPointerCancel}
-            onPointerCancel={handleThumbPointerCancel}
-          >
-            {loopImages.map((image, index) => (
-              <div
-                key={`${image.id}-${index}`}
-                data-thumb-item="true"
-                style={
-                  {
-                    '--thumb-border-color': mainImage === image.src ? '#3b82f6' : '#374151',
-                  } as React.CSSProperties
-                }
-                className="thumbnail-item rounded-lg overflow-hidden transition-all"
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  data-image-src={image.src}
-                  draggable={false}
-                  className="w-full h-24 object-cover"
-                />
-              </div>
-            ))}
+          <div className="overflow-hidden">
+            <div
+              ref={thumbnailTrackRef}
+              className="no-scrollbar thumbnail-track overflow-x-auto scroll-px-0"
+              onPointerDown={handleThumbPointerDown}
+              onPointerMove={handleThumbPointerMove}
+              onPointerUp={handleThumbPointerUp}
+              onPointerLeave={handleThumbPointerCancel}
+              onPointerCancel={handleThumbPointerCancel}
+            >
+              {productImages.map((image) => (
+                <div
+                  key={image.id}
+                  data-thumb-item="true"
+                  style={
+                    {
+                      '--thumb-border-color': mainImage === image.src ? '#3b82f6' : '#374151',
+                    } as React.CSSProperties
+                  }
+                  className="thumbnail-item group relative rounded-lg overflow-hidden transition-all"
+                >
+                  <span
+                    className={`pointer-events-none absolute inset-0 bg-black/40 transition-opacity ${
+                      mainImage === image.src ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'
+                    }`}
+                    aria-hidden="true"
+                  ></span>
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    data-image-src={image.src}
+                    draggable={false}
+                    className="w-full h-24 object-cover"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -388,7 +747,7 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
           {/* 配置选择器 */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium text-gray-100 mb-3">Motor Power</h3>
+            <h2 className="text-lg font-medium text-gray-100 mb-3">Motor Power</h2>
               <div className="flex space-x-3">
                 {product.powerOptions.map((power) => (
                   <button
@@ -407,7 +766,7 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
             </div>
 
             <div>
-              <h3 className="text-lg font-medium text-gray-100 mb-3">Battery Type</h3>
+            <h2 className="text-lg font-medium text-gray-100 mb-3">Battery Type</h2>
               <div className="flex space-x-3">
                 {product.batteryOptions.map((battery) => (
                   <button
@@ -454,9 +813,12 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
       {/* 底部标签区 */}
       <div className="mt-16">
         <div className="border-b border-gray-700">
-          <nav className="-mb-px flex space-x-8 overflow-x-auto pr-4 no-scrollbar">
+          <nav
+            ref={tabNavRef}
+            className="-mb-px flex space-x-8 overflow-x-auto pr-4 no-scrollbar"
+          >
             <button
-              onClick={() => setActiveTab('specifications')}
+              onClick={(event) => handleTabClick('specifications', event.currentTarget)}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'specifications'
                   ? 'border-blue-500 text-blue-400'
@@ -466,7 +828,7 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
               Full Specifications
             </button>
             <button
-              onClick={() => setActiveTab('shipping')}
+              onClick={(event) => handleTabClick('shipping', event.currentTarget)}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'shipping'
                   ? 'border-blue-500 text-blue-400'
@@ -476,7 +838,7 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
               Packaging & Shipping
             </button>
             <button
-              onClick={() => setActiveTab('company')}
+              onClick={(event) => handleTabClick('company', event.currentTarget)}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'company'
                   ? 'border-blue-500 text-blue-400'
@@ -488,12 +850,20 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
           </nav>
         </div>
 
-        <div className="py-8">
-          {activeTab === 'specifications' && (
+        <div
+          className="tab-content-viewport py-8 scroll-mt-24"
+          style={{ touchAction: 'pan-y' }}
+          onPointerDown={handleTabSwipePointerDown}
+          onPointerMove={handleTabSwipePointerMove}
+          onPointerUp={handleTabSwipePointerUp}
+          onPointerLeave={handleTabSwipePointerCancel}
+          onPointerCancel={handleTabSwipePointerCancel}
+        >
+          <div className={activeTab === 'specifications' ? 'block' : 'hidden'}>
             <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-2 sm:p-6">
               <div className="grid gap-8 lg:grid-cols-2">
               <div className="flex h-full flex-col justify-center">
-                <h3 className="text-xl font-bold text-gray-100 mb-3">Performance & Fleet Specs</h3>
+                <h2 className="text-xl font-bold text-gray-100 mb-3">Performance & Fleet Specs</h2>
                 <p className="text-gray-400">
                   {product.specIntro}
                 </p>
@@ -512,7 +882,7 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
                         className={`${scenario.iconClass} pointer-events-none absolute -right-3 top-[2px] text-blue-500/20 text-6xl`}
                         aria-hidden="true"
                       ></i>
-                      <h4 className="text-base font-semibold text-gray-100">{scenario.title}</h4>
+                      <h3 className="text-base font-semibold text-gray-100">{scenario.title}</h3>
                       <p className="mt-2 text-base text-gray-400">{scenario.subtitle}</p>
                     </div>
                   ))}
@@ -547,112 +917,126 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
-          {activeTab === 'shipping' && (
-            <div className="space-y-6 rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
-              <h3 className="text-xl font-bold text-gray-100">Packaging & Shipping Information</h3>
-              <div className="space-y-6">
-                <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
-                  <h4 className="font-bold text-gray-200 mb-2">Packaging Details</h4>
-                  <table className="w-full border-collapse text-sm">
-                    <tbody>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Dimensions
-                        </th>
-                        <td className="py-2 text-right text-gray-200">180 × 70 × 110 cm (CBU Standard)</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Gross Weight
-                        </th>
-                        <td className="py-2 text-right text-gray-200">125 kg per unit</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Protection Level
-                        </th>
-                        <td className="py-2 text-right text-gray-200">Steel Frame + 7-layer Carton (Inside)</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Safety Features
-                        </th>
-                        <td className="py-2 text-right text-gray-200">Moisture-proof wrap & shock-absorbing foam</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
-                  <h4 className="font-bold text-gray-200 mb-2">Container Loading Efficiency</h4>
-                  <table className="w-full border-collapse text-sm">
-                    <tbody>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          CBU Mode (Fully Assembled)
-                        </th>
-                        <td className="py-2 text-right text-gray-200">20GP: 20 Units</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          CBU Mode (Fully Assembled)
-                        </th>
-                        <td className="py-2 text-right text-blue-300">40HQ: 45 Units (Optimized)</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          SKD/CKD Mode (Cost Saving)
-                        </th>
-                        <td className="py-2 text-right text-gray-200">40HQ: 75+ Units (Contact for layout plan)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
-                  <h4 className="font-bold text-gray-200 mb-2">Logistics & Compliance</h4>
-                  <table className="w-full border-collapse text-sm">
-                    <tbody>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Lead Time
-                        </th>
-                        <td className="py-2 text-right text-gray-200">15-25 days (Production)</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Battery Compliance
-                        </th>
-                        <td className="py-2 text-right text-gray-200">MSDS / UN38.3 Certified</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Incoterms
-                        </th>
-                        <td className="py-2 text-right text-gray-200">EXW, FOB, CIF, DDP</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Loading Ports
-                        </th>
-                        <td className="py-2 text-right text-gray-200">Ningbo / Shanghai (Priority)</td>
-                      </tr>
-                      <tr className="border-b border-gray-700">
-                        <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                          Payment Terms
-                        </th>
-                        <td className="py-2 text-right text-gray-200">30% deposit, balance before shipment</td>
-                      </tr>
-                    </tbody>
-                  </table>
+          <div className={activeTab === 'shipping' ? 'block' : 'hidden'}>
+            {shippingContent ?? (
+              <div className="space-y-6 rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
+                <h2 className="text-xl font-bold text-gray-100">Packaging & Shipping Information</h2>
+                <div className="space-y-6">
+                  <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="h-4 w-1 rounded-full bg-blue-500/80"></span>
+                      <i className="fas fa-box text-blue-400 text-sm" aria-hidden="true"></i>
+                      <h3 className="font-bold text-gray-200">Packaging Details</h3>
+                    </div>
+                    <table className="w-full border-collapse text-sm">
+                      <tbody>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Dimensions
+                          </th>
+                          <td className="py-2 text-right text-gray-200">180 × 70 × 110 cm (CBU Standard)</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Gross Weight
+                          </th>
+                          <td className="py-2 text-right text-gray-200">125 kg per unit</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Protection Level
+                          </th>
+                          <td className="py-2 text-right text-gray-200">Steel Frame + 7-layer Carton (Inside)</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Safety Features
+                          </th>
+                          <td className="py-2 text-right text-gray-200">Moisture-proof wrap & shock-absorbing foam</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="h-4 w-1 rounded-full bg-emerald-400/80"></span>
+                      <i className="fas fa-truck-loading text-emerald-300 text-sm" aria-hidden="true"></i>
+                      <h3 className="font-bold text-gray-200">Container Loading Efficiency</h3>
+                    </div>
+                    <table className="w-full border-collapse text-sm">
+                      <tbody>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            CBU Mode (Fully Assembled)
+                          </th>
+                          <td className="py-2 text-right text-gray-200">20GP: 20 Units</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            CBU Mode (Fully Assembled)
+                          </th>
+                          <td className="py-2 text-right text-blue-300">40HQ: 45 Units (Optimized)</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            SKD/CKD Mode (Cost Saving)
+                          </th>
+                          <td className="py-2 text-right text-gray-200">40HQ: 75+ Units (Contact for layout plan)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="h-4 w-1 rounded-full bg-blue-500/90"></span>
+                      <i className="fas fa-shield-alt text-blue-500/90 text-sm" aria-hidden="true"></i>
+                      <h3 className="font-bold text-gray-200">Logistics & Compliance</h3>
+                    </div>
+                    <table className="w-full border-collapse text-sm">
+                      <tbody>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Lead Time
+                          </th>
+                          <td className="py-2 text-right text-gray-200">15-25 days (Production)</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Battery Compliance
+                          </th>
+                          <td className="py-2 text-right text-gray-200">MSDS / UN38.3 Certified</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Incoterms
+                          </th>
+                          <td className="py-2 text-right text-gray-200">EXW, FOB, CIF, DDP</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Loading Ports
+                          </th>
+                          <td className="py-2 text-right text-gray-200">Ningbo / Shanghai (Priority)</td>
+                        </tr>
+                        <tr className="border-b border-gray-700">
+                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                            Payment Terms
+                          </th>
+                          <td className="py-2 text-right text-gray-200">30% deposit, balance before shipment</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
-          {activeTab === 'company' && (
-            <div>
-              <h3 className="text-xl font-bold text-gray-100 mb-4">Company Profile</h3>
+          <div className={activeTab === 'company' ? 'block' : 'hidden'}>
+            <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
+              <h2 className="text-xl font-bold text-gray-100 mb-4">Company Profile</h2>
               <div className="space-y-4">
                 <p className="text-gray-300">
                   TYCORUN is a leading manufacturer of electric vehicles specializing in commercial-grade electric motorcycles and scooters. With over 10 years of experience in the industry, we serve customers worldwide with reliable, cost-effective solutions for last-mile delivery and urban transportation.
@@ -660,26 +1044,26 @@ const ProductDetailPage = ({ product }: ProductDetailPageProps) => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                   <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-                    <h4 className="font-bold text-blue-400 mb-2">Production Capacity</h4>
+                    <h3 className="font-bold text-blue-400 mb-2">Production Capacity</h3>
                     <p className="text-gray-200">50,000+ units per month</p>
                   </div>
                   <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-                    <h4 className="font-bold text-green-400 mb-2">R&D Team</h4>
+                    <h3 className="font-bold text-green-400 mb-2">R&D Team</h3>
                     <p className="text-gray-200">Over 50 engineers</p>
                   </div>
                   <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-                    <h4 className="font-bold text-purple-400 mb-2">Export Markets</h4>
+                    <h3 className="font-bold text-purple-400 mb-2">Export Markets</h3>
                     <p className="text-gray-200">Over 50 countries</p>
                   </div>
                 </div>
                 
                 <div className="mt-6">
-                  <h4 className="font-bold text-gray-200 mb-2">Quality Certifications</h4>
+                  <h3 className="font-bold text-gray-200 mb-2">Quality Certifications</h3>
                   <p className="text-gray-300">We hold ISO 9001 certification and our products are CE, TÜV, EPA, DOT approved for international markets.</p>
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

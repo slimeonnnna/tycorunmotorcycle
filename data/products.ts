@@ -79,53 +79,53 @@ export const products: ProductContent[] = [
     images: [
       {
         id: 1,
+        src: '/images/products/a8-series-electric-moped-strong-load-capacity.webp',
+        alt: 'A8 series electric moped strong load capacity',
+      },
+      {
+        id: 2,
         src: '/images/products/a8-series-electric-moped-for-urban-delivery.webp',
         alt: 'A8 series electric moped for urban delivery',
       },
       {
-        id: 2,
+        id: 3,
         src: '/images/products/a8-series-electric-moped-1000w-power-version.webp',
         alt: 'A8 series electric moped 1000W power version',
       },
       {
-        id: 3,
+        id: 4,
         src: '/images/products/a8-series-electric-moped-high-efficiency-commuter.webp',
         alt: 'A8 series electric moped high efficiency commuter',
       },
       {
-        id: 4,
+        id: 5,
         src: '/images/products/a8-series-electric-moped-durable-commercial-use.webp',
         alt: 'A8 series electric moped durable commercial use',
       },
       {
-        id: 5,
+        id: 6,
         src: '/images/products/a8-series-electric-moped-compact-body-design.webp',
         alt: 'A8 series electric moped compact body design',
       },
       {
-        id: 6,
+        id: 7,
         src: '/images/products/a8-series-electric-moped-stable-ride-platform.webp',
         alt: 'A8 series electric moped stable ride platform',
       },
       {
-        id: 7,
+        id: 8,
         src: '/images/products/a8-series-electric-moped-fast-charging-support.webp',
         alt: 'A8 series electric moped fast charging support',
       },
       {
-        id: 8,
+        id: 9,
         src: '/images/products/a8-series-electric-moped-multi-battery-option.webp',
         alt: 'A8 series electric moped multi battery option',
       },
       {
-        id: 9,
+        id: 10,
         src: '/images/products/a8-series-electric-moped-48kmh-top-speed.webp',
         alt: 'A8 series electric moped 48 km/h top speed',
-      },
-      {
-        id: 10,
-        src: '/images/products/a8-series-electric-moped-strong-load-capacity.webp',
-        alt: 'A8 series electric moped strong load capacity',
       },
     ],
     highlights: [
