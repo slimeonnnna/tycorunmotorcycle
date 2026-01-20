@@ -29,6 +29,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
   const thumbnailDragRef = useRef({
     isDown: false,
     startX: 0,
+    startY: 0,
     startTime: 0,
     scrollLeft: 0,
     moved: false,
@@ -36,6 +37,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     startTarget: null as HTMLElement | null,
     dragDistance: 0,
     overscroll: 0,
+    lockAxis: null as 'x' | 'y' | null,
     resetTimer: 0 as number,
   });
   const mainAutoScrollRef = useRef(false);
@@ -143,8 +145,11 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
   const pricingData = product.pricing;
   const specData = product.highlights;
   const [activeTab, setActiveTab] = useState('specifications');
-  type ProductTab = 'specifications' | 'shipping' | 'company';
-  const tabOrder: ProductTab[] = ['specifications', 'shipping', 'company'];
+  const [isTabFading, setIsTabFading] = useState(false);
+  const tabFadeTimerRef = useRef(0 as number);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  type ProductTab = 'specifications' | 'shipping' | 'company' | 'faq';
+  const tabOrder: ProductTab[] = ['specifications', 'shipping', 'company', 'faq'];
   const activeTabIndex = Math.max(0, tabOrder.indexOf(activeTab as ProductTab));
   const tabSwipeRef = useRef({
     isDown: false,
@@ -155,6 +160,24 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
 
   const setActiveTabOnly = (nextTab: ProductTab) => {
     setActiveTab(nextTab);
+  };
+
+  const requestTabChange = (nextTab: ProductTab) => {
+    if (nextTab === activeTab) {
+      return;
+    }
+    const tabButton = tabNavRef.current?.querySelector<HTMLButtonElement>(
+      `button[data-tab="${nextTab}"]`,
+    );
+    window.clearTimeout(tabFadeTimerRef.current);
+    setIsTabFading(true);
+    tabFadeTimerRef.current = window.setTimeout(() => {
+      setActiveTabOnly(nextTab);
+      scrollTabIntoViewOnMobile(tabButton ?? null);
+      requestAnimationFrame(() => {
+        setIsTabFading(false);
+      });
+    }, 160);
   };
 
   const scrollTabIntoViewOnMobile = (target: HTMLElement | null) => {
@@ -175,14 +198,24 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
   };
 
   const handleTabClick = (tab: ProductTab, target: HTMLButtonElement) => {
-    setActiveTabOnly(tab);
+    requestTabChange(tab);
     scrollTabIntoViewOnMobile(target);
+  };
+
+  const handleFaqToggle = (index: number) => {
+    setOpenFaqIndex((current) => (current === index ? null : index));
   };
 
   useEffect(() => {
     setMotorPower(product.defaultPower);
     setBatteryType(product.defaultBattery);
   }, [product.defaultPower, product.defaultBattery]);
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(tabFadeTimerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const track = mainTrackRef.current;
@@ -283,10 +316,13 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     if (!track) {
       return;
     }
-    event.preventDefault();
+    if (event.pointerType !== 'touch') {
+      event.preventDefault();
+    }
     track.style.transition = 'none';
     thumbnailDragRef.current.isDown = true;
     thumbnailDragRef.current.startX = event.clientX;
+    thumbnailDragRef.current.startY = event.clientY;
     thumbnailDragRef.current.startTime = performance.now();
     thumbnailDragRef.current.scrollLeft = track.scrollLeft;
     thumbnailDragRef.current.moved = false;
@@ -294,6 +330,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     thumbnailDragRef.current.startTarget = event.target as HTMLElement;
     thumbnailDragRef.current.dragDistance = 0;
     thumbnailDragRef.current.overscroll = 0;
+    thumbnailDragRef.current.lockAxis = null;
     window.clearTimeout(thumbnailDragRef.current.resetTimer);
     mainDragRef.current.pointerId = event.pointerId;
   };
@@ -303,9 +340,20 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     if (!track || !thumbnailDragRef.current.isDown) {
       return;
     }
-    event.preventDefault();
     const delta = event.clientX - thumbnailDragRef.current.startX;
+    const deltaY = event.clientY - thumbnailDragRef.current.startY;
     const distance = Math.abs(delta);
+    const absY = Math.abs(deltaY);
+    if (!thumbnailDragRef.current.lockAxis) {
+      if (distance < 6 && absY < 6) {
+        return;
+      }
+      thumbnailDragRef.current.lockAxis = distance >= absY ? 'x' : 'y';
+    }
+    if (thumbnailDragRef.current.lockAxis === 'y') {
+      return;
+    }
+    event.preventDefault();
     if (distance > thumbnailDragRef.current.dragDistance) {
       thumbnailDragRef.current.dragDistance = distance;
     }
@@ -373,6 +421,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     thumbnailDragRef.current.moved = moved;
     thumbnailDragRef.current.startTarget = null;
     thumbnailDragRef.current.overscroll = 0;
+    thumbnailDragRef.current.lockAxis = null;
     if (moved) {
       window.setTimeout(() => {
         thumbnailDragRef.current.suppressClick = false;
@@ -401,6 +450,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     thumbnailDragRef.current.startTarget = null;
     thumbnailDragRef.current.dragDistance = 0;
     thumbnailDragRef.current.overscroll = 0;
+    thumbnailDragRef.current.lockAxis = null;
   };
 
   const handleMainPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -561,7 +611,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
         const direction = deltaX < 0 ? 1 : -1;
         const nextIndex = Math.min(tabOrder.length - 1, Math.max(0, currentIndex + direction));
         if (nextIndex !== currentIndex) {
-          setActiveTabOnly(tabOrder[nextIndex]);
+          requestTabChange(tabOrder[nextIndex]);
         }
       }
     }
@@ -767,7 +817,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
 
             <div>
             <h2 className="text-lg font-medium text-gray-100 mb-3">Battery Type</h2>
-              <div className="flex space-x-3">
+              <div className="grid grid-cols-2 gap-3 sm:flex sm:space-x-3">
                 {product.batteryOptions.map((battery) => (
                   <button
                     key={battery}
@@ -815,11 +865,12 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
         <div className="border-b border-gray-700">
           <nav
             ref={tabNavRef}
-            className="-mb-px flex space-x-8 overflow-x-auto pr-4 no-scrollbar"
+            className="-mb-px flex gap-4 overflow-x-auto no-scrollbar md:gap-0"
           >
             <button
+              data-tab="specifications"
               onClick={(event) => handleTabClick('specifications', event.currentTarget)}
-              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer md:w-1/4 md:text-center ${
                 activeTab === 'specifications'
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-500'
@@ -828,8 +879,9 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
               Full Specifications
             </button>
             <button
+              data-tab="shipping"
               onClick={(event) => handleTabClick('shipping', event.currentTarget)}
-              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer md:w-1/4 md:text-center ${
                 activeTab === 'shipping'
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-500'
@@ -838,8 +890,9 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
               Packaging & Shipping
             </button>
             <button
+              data-tab="company"
               onClick={(event) => handleTabClick('company', event.currentTarget)}
-              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer md:w-1/4 md:text-center ${
                 activeTab === 'company'
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-500'
@@ -847,11 +900,24 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
             >
               Company Profile
             </button>
+            <button
+              data-tab="faq"
+              onClick={(event) => handleTabClick('faq', event.currentTarget)}
+              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer md:w-1/4 md:text-center ${
+                activeTab === 'faq'
+                  ? 'border-blue-500 text-blue-400'
+                  : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-500'
+              }`}
+            >
+              FAQ
+            </button>
           </nav>
         </div>
 
         <div
-          className="tab-content-viewport py-8 scroll-mt-24"
+          className={`tab-content-viewport py-8 scroll-mt-24 transition-opacity duration-300 ease-out ${
+            isTabFading ? 'opacity-0' : 'opacity-100'
+          }`}
           style={{ touchAction: 'pan-y' }}
           onPointerDown={handleTabSwipePointerDown}
           onPointerMove={handleTabSwipePointerMove}
@@ -924,111 +990,47 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
               <div className="space-y-6 rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
                 <h2 className="text-xl font-bold text-gray-100">Packaging & Shipping Information</h2>
                 <div className="space-y-6">
-                  <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="h-4 w-1 rounded-full bg-blue-500/80"></span>
-                      <i className="fas fa-box text-blue-400 text-sm" aria-hidden="true"></i>
-                      <h3 className="font-bold text-gray-200">Packaging Details</h3>
+                  {product.shippingSections?.map((section, sectionIndex) => (
+                    <div
+                      key={`${section.title}-${sectionIndex}`}
+                      className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5"
+                    >
+                      <div className="mb-3 flex items-center gap-2">
+                        <span
+                          className={`h-4 w-1 rounded-full ${
+                            sectionIndex === 0
+                              ? "bg-blue-500/80"
+                              : sectionIndex === 1
+                                ? "bg-emerald-400/80"
+                                : "bg-blue-500/90"
+                          }`}
+                        ></span>
+                        <i
+                          className={`text-sm ${
+                            sectionIndex === 0
+                              ? "fas fa-box text-blue-400"
+                              : sectionIndex === 1
+                                ? "fas fa-truck-loading text-emerald-300"
+                                : "fas fa-shield-alt text-blue-500/90"
+                          }`}
+                          aria-hidden="true"
+                        ></i>
+                        <h3 className="font-bold text-gray-200">{section.title}</h3>
+                      </div>
+                      <table className="w-full border-collapse text-sm">
+                        <tbody>
+                          {section.items.map((item, itemIndex) => (
+                            <tr key={`${item.label}-${itemIndex}`} className="border-b border-gray-700">
+                              <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
+                                {item.label}
+                              </th>
+                              <td className="py-2 text-right text-gray-200">{item.value}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
-                    <table className="w-full border-collapse text-sm">
-                      <tbody>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Dimensions
-                          </th>
-                          <td className="py-2 text-right text-gray-200">180 × 70 × 110 cm (CBU Standard)</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Gross Weight
-                          </th>
-                          <td className="py-2 text-right text-gray-200">125 kg per unit</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Protection Level
-                          </th>
-                          <td className="py-2 text-right text-gray-200">Steel Frame + 7-layer Carton (Inside)</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Safety Features
-                          </th>
-                          <td className="py-2 text-right text-gray-200">Moisture-proof wrap & shock-absorbing foam</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="h-4 w-1 rounded-full bg-emerald-400/80"></span>
-                      <i className="fas fa-truck-loading text-emerald-300 text-sm" aria-hidden="true"></i>
-                      <h3 className="font-bold text-gray-200">Container Loading Efficiency</h3>
-                    </div>
-                    <table className="w-full border-collapse text-sm">
-                      <tbody>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            CBU Mode (Fully Assembled)
-                          </th>
-                          <td className="py-2 text-right text-gray-200">20GP: 20 Units</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            CBU Mode (Fully Assembled)
-                          </th>
-                          <td className="py-2 text-right text-blue-300">40HQ: 45 Units (Optimized)</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            SKD/CKD Mode (Cost Saving)
-                          </th>
-                          <td className="py-2 text-right text-gray-200">40HQ: 75+ Units (Contact for layout plan)</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5">
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="h-4 w-1 rounded-full bg-blue-500/90"></span>
-                      <i className="fas fa-shield-alt text-blue-500/90 text-sm" aria-hidden="true"></i>
-                      <h3 className="font-bold text-gray-200">Logistics & Compliance</h3>
-                    </div>
-                    <table className="w-full border-collapse text-sm">
-                      <tbody>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Lead Time
-                          </th>
-                          <td className="py-2 text-right text-gray-200">15-25 days (Production)</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Battery Compliance
-                          </th>
-                          <td className="py-2 text-right text-gray-200">MSDS / UN38.3 Certified</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Incoterms
-                          </th>
-                          <td className="py-2 text-right text-gray-200">EXW, FOB, CIF, DDP</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Loading Ports
-                          </th>
-                          <td className="py-2 text-right text-gray-200">Ningbo / Shanghai (Priority)</td>
-                        </tr>
-                        <tr className="border-b border-gray-700">
-                          <th scope="row" className="py-2 pr-4 text-left font-medium text-gray-300">
-                            Payment Terms
-                          </th>
-                          <td className="py-2 text-right text-gray-200">30% deposit, balance before shipment</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -1061,6 +1063,53 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                   <h3 className="font-bold text-gray-200 mb-2">Quality Certifications</h3>
                   <p className="text-gray-300">We hold ISO 9001 certification and our products are CE, TÜV, EPA, DOT approved for international markets.</p>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={activeTab === 'faq' ? 'block' : 'hidden'}>
+            <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
+              <h2 className="text-xl font-bold text-gray-100 mb-4">FAQ</h2>
+              <div className="space-y-5">
+                {product.faqs.map((faq, index) => (
+                  <div
+                    key={faq.question}
+                    onClick={() => handleFaqToggle(index)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        handleFaqToggle(index);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={openFaqIndex === index}
+                    className="group rounded-xl border border-gray-800/70 bg-gray-900/60 p-4 cursor-pointer transition duration-300 ease-out hover:-translate-y-0.5 hover:border-blue-500/50 hover:bg-gray-900/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+                  >
+                    <div className="flex w-full items-center justify-between text-left">
+                      <h3 className="text-base font-semibold text-gray-100 transition-colors duration-300 group-hover:text-blue-100">
+                        {faq.question}
+                      </h3>
+                      <div
+                        className={`ml-4 text-sm text-blue-300 transition-transform duration-300 ${
+                          openFaqIndex === index ? 'rotate-45' : 'rotate-0'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        +
+                      </div>
+                    </div>
+                    <div
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                        openFaqIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="mt-3 text-sm text-gray-300">{faq.answer}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
