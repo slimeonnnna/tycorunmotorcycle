@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { ProductContent } from '@/data/products';
 
 type ProductDetailPageProps = {
@@ -652,7 +653,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
           <span className="text-gray-300">{product.name}</span>
         </div>
         
-        <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl">
+        <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-[27px] font-semibold text-transparent md:text-5xl">
           {product.headline}
         </h1>
         <p className="text-lg text-gray-400 max-w-3xl mx-auto">
@@ -692,18 +693,26 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                 }}
                 onPointerCancel={handleMainPointerCancel}
               >
-                {loopImages.map((image, index) => (
-                  <div key={`${image.id}-${index}`} className="main-carousel-slide h-full w-full">
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className="main-carousel-image h-full w-full object-contain"
-                      loading={index === 0 ? "eager" : "lazy"}
-                      fetchPriority={index === 0 ? "high" : "auto"}
-                      draggable={false}
-                    />
-                  </div>
-                ))}
+                {loopImages.map((image, index) => {
+                  const isPrimary = index === productImages.length + currentIndex;
+                  return (
+                    <div key={`${image.id}-${index}`} className="main-carousel-slide h-full w-full">
+                      <div className="relative h-full w-full">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          sizes="(max-width: 768px) 90vw, 606px"
+                          className="main-carousel-image object-contain"
+                          priority={isPrimary}
+                          loading={isPrimary ? 'eager' : 'lazy'}
+                          fetchPriority={isPrimary ? 'high' : 'auto'}
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <div className="image-card__controls">
@@ -776,13 +785,16 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                     }`}
                     aria-hidden="true"
                   ></span>
-                  <img
+                  <Image
                     src={image.src}
                     alt={image.alt}
                     data-image-src={image.src}
+                    width={240}
+                    height={96}
+                    sizes="(max-width: 768px) 45vw, 120px"
                     loading="lazy"
                     draggable={false}
-                    className="w-full h-24 object-cover"
+                    className="h-24 w-full object-cover"
                   />
                 </div>
               ))}
@@ -952,7 +964,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
           onPointerCancel={handleTabSwipePointerCancel}
         >
           <div className={activeTab === 'specifications' ? 'block' : 'hidden'}>
-            <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-2 sm:p-6">
+            <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
               <div className="grid gap-8 lg:grid-cols-2">
               <div className="flex h-full flex-col justify-center">
                 <h2 className="text-xl font-bold text-gray-100 mb-3">Performance & Fleet Specs</h2>

@@ -94,14 +94,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
-          id="fa-stylesheet"
-          rel="stylesheet"
-          href="/fontawesome/css/all.min.css"
-          media="print"
-        />
         <Script id="fa-stylesheet-loader" strategy="afterInteractive">
-          {`(function(){var link=document.getElementById('fa-stylesheet');if(link){link.media='all';}})();`}
+          {`(function(){var load=function(){var link=document.createElement('link');link.rel='stylesheet';link.href='/fontawesome/css/all.min.css';document.head.appendChild(link);};if(document.readyState==='complete'){load();}else{window.addEventListener('load',load,{once:true});}})();`}
         </Script>
         <noscript>
           <link rel="stylesheet" href="/fontawesome/css/all.min.css" />
