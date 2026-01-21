@@ -1,7 +1,7 @@
 ﻿
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { ProductContent } from '@/data/products';
@@ -25,6 +25,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
   const thumbnailTrackRef = useRef<HTMLDivElement | null>(null);
   const mainTrackRef = useRef<HTMLDivElement | null>(null);
   const mainViewportRef = useRef<HTMLDivElement | null>(null);
+  const currentIndexRef = useRef(initialIndex);
   const tabNavRef = useRef<HTMLDivElement | null>(null);
   const thumbnailAutoScrollRef = useRef(false);
   const thumbnailDragRef = useRef({
@@ -101,11 +102,40 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     mainScrollRafRef.current = requestAnimationFrame(step);
   };
 
-  const scrollMainToIndex = (nextIndex: number) => {
+  const recenterMainTrack = () => {
     const track = mainTrackRef.current;
     if (!track) {
       return;
     }
+    const step = track.clientWidth;
+    if (!step) {
+      return;
+    }
+    const total = productImages.length;
+    const cycle = step * total;
+    if (!cycle) {
+      return;
+    }
+    const normalized = ((track.scrollLeft % cycle) + cycle) % cycle;
+    const target = normalized + cycle;
+    if (Math.abs(track.scrollLeft - target) <= 0.5) {
+      return;
+    }
+    mainAutoScrollRef.current = true;
+    const delta = target - track.scrollLeft;
+    track.scrollLeft = target;
+    mainSnapRef.current.origin += delta;
+    requestAnimationFrame(() => {
+      mainAutoScrollRef.current = false;
+    });
+  };
+
+  const scrollMainToIndex = (nextIndex: number, direction = 0) => {
+    const track = mainTrackRef.current;
+    if (!track) {
+      return;
+    }
+    cancelMainScrollAnimation();
     const step = track.clientWidth;
     if (!step) {
       return;
@@ -118,37 +148,62 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     const base = mainSnapRef.current.origin;
     const normalized = ((nextIndex % total) + total) % total;
     const currentFloat = (track.scrollLeft - base) / step;
-    const currentRaw = Math.round(currentFloat);
     const candidates = [normalized, normalized + total, normalized - total];
     let targetRaw = candidates[0];
-    let minDistance = Math.abs(targetRaw - currentRaw);
-    for (const candidate of candidates.slice(1)) {
-      const distance = Math.abs(candidate - currentRaw);
-      if (distance < minDistance) {
-        minDistance = distance;
-        targetRaw = candidate;
+    if (direction > 0) {
+      let minForward = Number.POSITIVE_INFINITY;
+      for (const candidate of candidates) {
+        const adjusted = candidate < currentFloat - 0.001 ? candidate + total : candidate;
+        const distance = adjusted - currentFloat;
+        if (distance >= 0 && distance < minForward) {
+          minForward = distance;
+          targetRaw = adjusted;
+        }
+      }
+    } else if (direction < 0) {
+      let minBackward = Number.POSITIVE_INFINITY;
+      for (const candidate of candidates) {
+        const adjusted = candidate > currentFloat + 0.001 ? candidate - total : candidate;
+        const distance = currentFloat - adjusted;
+        if (distance >= 0 && distance < minBackward) {
+          minBackward = distance;
+          targetRaw = adjusted;
+        }
+      }
+    } else {
+      let minDistance = Math.abs(targetRaw - currentFloat);
+      for (const candidate of candidates.slice(1)) {
+        const distance = Math.abs(candidate - currentFloat);
+        if (distance < minDistance) {
+          minDistance = distance;
+          targetRaw = candidate;
+        }
       }
     }
     const target = base + step * targetRaw;
-    animateMainScrollTo(target, 500, () => {
-      const settled = base + step * normalized;
-      if (Math.abs(track.scrollLeft - settled) > 0.5) {
-        mainAutoScrollRef.current = true;
-        track.scrollLeft = settled;
-        requestAnimationFrame(() => {
-          mainAutoScrollRef.current = false;
-        });
-      }
+    const slideDistance = Math.max(1, Math.abs(targetRaw - currentFloat));
+    const duration = Math.min(520, Math.max(180, 320 + slideDistance * 120));
+    animateMainScrollTo(target, duration, () => {
+      recenterMainTrack();
     });
+  };
+
+  const setCurrentIndexSafe = (nextIndex: number) => {
+    setCurrentIndex(nextIndex);
+    currentIndexRef.current = nextIndex;
   };
 
   const goToIndex = (nextIndex: number) => {
     if (!productImages.length) {
       return;
     }
+    if (mainAutoScrollRef.current) {
+      return;
+    }
     const normalized = ((nextIndex % productImages.length) + productImages.length) % productImages.length;
-    setCurrentIndex(normalized);
-    scrollMainToIndex(nextIndex);
+    const direction = Math.sign(nextIndex - currentIndexRef.current);
+    setCurrentIndexSafe(normalized);
+    scrollMainToIndex(nextIndex, direction);
   };
 
   const handleThumbnailSelect = (imageSrc: string) => {
@@ -244,7 +299,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const track = mainTrackRef.current;
     if (!track || !productImages.length) {
       return;
@@ -260,7 +315,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     );
     mainSnapRef.current.origin = cycle;
     track.scrollLeft = cycle + step * nextIndex;
-    setCurrentIndex(nextIndex);
+    setCurrentIndexSafe(nextIndex);
   }, [product.mainImage, productImages.length]);
 
   useEffect(() => {
@@ -581,8 +636,10 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
         const normalized =
           ((targetIndex % productImages.length) + productImages.length) % productImages.length;
         mainSnapRef.current.origin = target - normalized * step;
-        animateMainScrollTo(target, 500);
-        setCurrentIndex(normalized);
+        animateMainScrollTo(target, 500, () => {
+          recenterMainTrack();
+        });
+        setCurrentIndexSafe(normalized);
       }
     }
     mainDragRef.current.isDown = false;
@@ -723,6 +780,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
               >
                 {loopImages.map((image, index) => {
                   const isPrimary = index === productImages.length + currentIndex;
+                  const isFirstPrimary = isPrimary && currentIndex === initialIndex;
                   return (
                     <div key={`${image.id}-${index}`} className="main-carousel-slide h-full w-full">
                       <div className="relative h-full w-full">
@@ -730,11 +788,11 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                           src={image.src}
                           alt={image.alt}
                           fill
-                          sizes="(max-width: 768px) 90vw, 606px"
+                          sizes="(max-width: 640px) 75vw, (max-width: 1024px) 70vw, 606px"
                           className="main-carousel-image object-contain"
-                          priority={isPrimary}
+                          priority={isFirstPrimary}
                           loading={isPrimary ? 'eager' : 'lazy'}
-                          fetchPriority={isPrimary ? 'high' : 'auto'}
+                          fetchPriority={isFirstPrimary ? 'high' : 'auto'}
                           draggable={false}
                         />
                       </div>
@@ -743,7 +801,11 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                 })}
               </div>
             </div>
-            <div className="image-card__controls">
+            <div
+              className="image-card__controls"
+              onMouseEnter={handleMainMouseEnter}
+              onMouseLeave={handleMainMouseLeave}
+            >
               <button
                 type="button"
                 className="carousel-arrow-button"
@@ -805,7 +867,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                       '--thumb-border-color': mainImage === image.src ? '#3b82f6' : '#374151',
                     } as React.CSSProperties
                   }
-                  className="thumbnail-item group relative rounded-lg overflow-hidden transition-all"
+                  className="thumbnail-item group relative h-24 rounded-lg overflow-hidden transition-all"
                 >
                   <span
                     className={`pointer-events-none absolute inset-0 bg-black/40 transition-opacity ${
@@ -817,12 +879,11 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                     src={image.src}
                     alt={image.alt}
                     data-image-src={image.src}
-                    width={240}
-                    height={96}
+                    fill
                     sizes="(max-width: 768px) 45vw, 120px"
                     loading="lazy"
                     draggable={false}
-                    className="h-24 w-full object-cover"
+                    className="object-cover"
                   />
                 </div>
               ))}

@@ -3,6 +3,8 @@ import df1Product from "./products/df-1";
 import kxProduct from "./products/kx";
 import m11Product from "./products/m11";
 import m15Product from "./products/m15";
+import m16Product from "./products/m16";
+import q7Product from "./products/q7";
 
 export type ProductImage = {
   id: number;
@@ -68,7 +70,15 @@ export type ProductContent = {
   batteryOptions: string[];
 };
 
-export const products: ProductContent[] = [a8Product, df1Product, kxProduct, m11Product, m15Product];
+export const products: ProductContent[] = [
+  a8Product,
+  df1Product,
+  kxProduct,
+  m11Product,
+  m15Product,
+  m16Product,
+  q7Product,
+];
 
 export const getProductBySlug = (slug: string) =>
   products.find((product) => product.slug === slug);

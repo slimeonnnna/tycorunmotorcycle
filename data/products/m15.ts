@@ -1,30 +1,28 @@
 import type { ProductContent } from "../products";
 
 const m15Product: ProductContent = {
-  slug: "m15-series-1200w-sport-electric-scooter",
+  slug: "m15-series-1200w-sport-electric-moped",
   name: "M15 Series",
-  // 定位：强调灵动、运动、操控
-  headline: "M15 Series Sport Electric Scooter - 1200W Agile Urban Commuter",
+  headline: "M15 Series Sport Electric Moped - 1200W Agile Urban Commuter",
   
   description:
     "The perfect balance of power and agility. The M15 Series pairs a high-output 1200W motor with an ultra-lightweight 56kg chassis. With a low 710mm seat height, it offers superior accessibility and handling for diverse rider demographics.",
   
-  // 强调推重比和操控性
   specIntro:
     "Designed for dynamic urban riding. The M15 features a class-leading power-to-weight ratio, delivering punchy acceleration and effortless maneuverability in heavy traffic.",
   
   specBullets: [
-    "1200W motor on a 56kg frame for rapid acceleration.", // 核心卖点：大马拉小车
-    "Ultra-low 710mm seat height for inclusive rider accessibility.", // 核心卖点：不挑身高
+    "1200W motor on a 56kg frame for rapid acceleration.",
+    "Ultra-low 710mm seat height for inclusive rider accessibility.", 
     "Dual hydraulic disc brakes for sport-grade stopping power.",
-    "Short 1300mm wheelbase for tight cornering and U-turns.", // 强调转弯灵活
+    "Short 1300mm wheelbase for tight cornering and U-turns.", 
   ],
 
   scenarios: [
     {
       title: "Urban Commuting",
       subtitle: "Fast, agile daily transport.",
-      iconClass: "fa-solid fa-bolt", // 强调快
+      iconClass: "fa-solid fa-bolt", // 强调�?
     },
     {
       title: "Courier (Light)",
@@ -38,69 +36,69 @@ const m15Product: ProductContent = {
     },
   ],
 
-  // 假设图片路径为 m15 目录
-  mainImage: "/images/m15/m15-series-electric-scooter-view-01.webp",
-  sliderImage: "/images/m15/M15 Series Electric Scooter - Agile Sport.webp",
+  // 假设图片路径�?m15 目录
+  mainImage: "/images/m15/m15-series-electric-moped-view-01.webp",
+  sliderImage: "/images/m15/M15 Series Electric Moped - Agile Sport.webp",
   images: [
     {
       id: 1,
-      src: "/images/m15/m15-series-electric-scooter-view-01.webp",
-      alt: "M15 series electric scooter image 01",
+      src: "/images/m15/m15-series-electric-moped-view-01.webp",
+      alt: "M15 series electric moped image 01",
     },
     {
       id: 2,
-      src: "/images/m15/m15-series-electric-scooter-view-02.webp",
-      alt: "M15 series electric scooter image 02",
+      src: "/images/m15/m15-series-electric-moped-view-02.webp",
+      alt: "M15 series electric moped image 02",
     },
     {
       id: 3,
-      src: "/images/m15/m15-series-electric-scooter-view-03.webp",
-      alt: "M15 series electric scooter image 03",
+      src: "/images/m15/m15-series-electric-moped-view-03.webp",
+      alt: "M15 series electric moped image 03",
     },
     {
       id: 4,
-      src: "/images/m15/m15-series-electric-scooter-view-04.webp",
-      alt: "M15 series electric scooter image 04",
+      src: "/images/m15/m15-series-electric-moped-view-04.webp",
+      alt: "M15 series electric moped image 04",
     },
     {
       id: 5,
-      src: "/images/m15/m15-series-electric-scooter-view-05.webp",
-      alt: "M15 series electric scooter image 05",
+      src: "/images/m15/m15-series-electric-moped-view-05.webp",
+      alt: "M15 series electric moped image 05",
     },
     {
       id: 6,
-      src: "/images/m15/m15-series-electric-scooter-view-06.webp",
-      alt: "M15 series electric scooter image 06",
+      src: "/images/m15/m15-series-electric-moped-view-06.webp",
+      alt: "M15 series electric moped image 06",
     },
     {
       id: 7,
-      src: "/images/m15/m15-series-electric-scooter-view-07.webp",
-      alt: "M15 series electric scooter image 07",
+      src: "/images/m15/m15-series-electric-moped-view-07.webp",
+      alt: "M15 series electric moped image 07",
     },
     {
       id: 8,
-      src: "/images/m15/m15-series-electric-scooter-view-08.webp",
-      alt: "M15 series electric scooter image 08",
+      src: "/images/m15/m15-series-electric-moped-view-08.webp",
+      alt: "M15 series electric moped image 08",
     },
     {
       id: 9,
-      src: "/images/m15/m15-series-electric-scooter-view-09.webp",
-      alt: "M15 series electric scooter image 09",
+      src: "/images/m15/m15-series-electric-moped-view-09.webp",
+      alt: "M15 series electric moped image 09",
     },
     {
       id: 10,
-      src: "/images/m15/m15-series-electric-scooter-view-10.webp",
-      alt: "M15 series electric scooter image 10",
+      src: "/images/m15/m15-series-electric-moped-view-10.webp",
+      alt: "M15 series electric moped image 10",
     },
     {
       id: 11,
-      src: "/images/m15/m15-series-electric-scooter-view-11.webp",
-      alt: "M15 series electric scooter image 11",
+      src: "/images/m15/m15-series-electric-moped-view-11.webp",
+      alt: "M15 series electric moped image 11",
     },
   ],
 
   highlights: [
-    { iconClass: "fas fa-feather-alt", label: "56kg Ultra-Light" }, // 这里的核心卖点是轻
+    { iconClass: "fas fa-feather-alt", label: "56kg Ultra-Light" }, // 这里的核心卖点是�?
     { iconClass: "fas fa-tachometer-alt", label: "55 km/h Speed" },
     { iconClass: "fas fa-chair", label: "710mm Low Seat" }, // 独特的低座高卖点
     { iconClass: "fas fa-stop-circle", label: "Dual Disc Brakes" },
@@ -164,8 +162,8 @@ const m15Product: ProductContent = {
     {
       title: "Packaging Details",
       items: [
-        { label: "Dimensions", value: "175 × 45 × 85 cm (SKD)" }, // 比M11稍微窄一点
-        { label: "Gross Weight", value: "Approx. 95 kg" }, // 56kg车+35kg电池+包装
+        { label: "Dimensions", value: "175 × 45 × 85 cm (SKD)" }, // 比M11稍微窄一�?
+        { label: "Gross Weight", value: "Approx. 95 kg" }, // 56kg�?35kg电池+包装
         {
           label: "Protection Level",
           value: "Steel Frame + Carton",
@@ -208,3 +206,4 @@ const m15Product: ProductContent = {
 };
 
 export default m15Product;
+
