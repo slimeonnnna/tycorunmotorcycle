@@ -405,10 +405,7 @@ export function ProductSectionClient({
   }, [slides]);
 
   return (
-    <section
-      className={`product-slider${isLoading ? " product-slider--loading" : ""}`}
-      translate="no"
-    >
+    <section className={`product-slider${isLoading ? " product-slider--loading" : ""}`}>
       <div data-aos="fade-up" data-aos-delay={200} className="py-12 mx-auto max-w-6xl px-4 text-center relative z-10">
         <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
           <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">

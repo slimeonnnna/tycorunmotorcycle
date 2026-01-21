@@ -246,7 +246,7 @@ export default function ProductTcoCalculatorClient({
             <button
               type="button"
               onClick={() => setIncludeMaintenance((prev) => !prev)}
-              className={`relative inline-flex h-7 w-14 items-center rounded-full border transition-colors ${
+              className={`relative inline-flex h-7 w-14 min-w-[3.5rem] items-center rounded-full border transition-colors ${
                 includeMaintenance ? "border-blue-500 bg-blue-500/30" : "border-gray-700 bg-gray-900/60"
               }`}
             >
