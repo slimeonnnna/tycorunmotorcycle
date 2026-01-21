@@ -509,6 +509,19 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     event.preventDefault();
     mainDragRef.current.dragDistance = Math.max(mainDragRef.current.dragDistance, absX);
     track.scrollLeft = mainDragRef.current.scrollLeft - deltaX;
+    const step = track.clientWidth;
+    if (step > 0 && productImages.length > 0) {
+      const cycle = step * productImages.length;
+      if (cycle > 0) {
+        if (track.scrollLeft < cycle * 0.5 || track.scrollLeft > cycle * 1.5) {
+          const normalized = ((track.scrollLeft % cycle) + cycle) % cycle;
+          const target = normalized + cycle;
+          const delta = target - track.scrollLeft;
+          track.scrollLeft = target;
+          mainDragRef.current.scrollLeft += delta;
+        }
+      }
+    }
   };
 
   const handleMainPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -636,7 +649,9 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
           <span className="text-gray-300">{product.name}</span>
         </div>
         
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-2">{product.headline}</h1>
+        <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl">
+          {product.headline}
+        </h1>
         <p className="text-lg text-gray-400 max-w-3xl mx-auto">
           {product.description}
         </p>
@@ -666,7 +681,12 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                 onPointerDown={handleMainPointerDown}
                 onPointerMove={handleMainPointerMove}
                 onPointerUp={handleMainPointerUp}
-                onPointerLeave={handleMainPointerCancel}
+                onPointerLeave={(event) => {
+                  if (mainDragRef.current.pointerId === null) {
+                    return;
+                  }
+                  handleMainPointerCancel(event);
+                }}
                 onPointerCancel={handleMainPointerCancel}
               >
                 {loopImages.map((image, index) => (
@@ -1062,6 +1082,122 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                 <div className="mt-6">
                   <h3 className="font-bold text-gray-200 mb-2">Quality Certifications</h3>
                   <p className="text-gray-300">We hold ISO 9001 certification and our products are CE, TÜV, EPA, DOT approved for international markets.</p>
+                  <section className="border-t border-gray-800 pt-10 mt-10">
+                    <div className="mb-6">
+                      <h3 className="text-base font-bold text-white uppercase tracking-wider mb-1">
+                        Global Compliance Matrix
+                      </h3>
+                      <p className="text-base text-gray-400">
+                        Verified standards for international road legality and safety.
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                      <div className="relative bg-gray-900 border-l-2 border-blue-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">EU MARKET</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            VALID
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">EEC / E-Mark</div>
+                        <div className="text-base text-gray-400">L1e / L3e Homologation</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-blue-400 transition-colors">
+                          REF: (EU) No 168/2013
+                        </div>
+                      </div>
+                      <div className="relative bg-gray-900 border-l-2 border-blue-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">USA MARKET</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            VALID
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">DOT / EPA</div>
+                        <div className="text-base text-gray-400">NHTSA Registered</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-blue-400 transition-colors">
+                          REF: 49 CFR Part 571
+                        </div>
+                      </div>
+                      <div className="relative bg-gray-900 border-l-2 border-orange-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">LOGISTICS</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            SAFE
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">UN38.3 / MSDS</div>
+                        <div className="text-base text-gray-400">Lithium Transport Cert</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-orange-400 transition-colors">
+                          STD: UN Manual Tests 38.3
+                        </div>
+                      </div>
+                      <div className="relative bg-gray-900 border-l-2 border-purple-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">FACTORY</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            AUDITED
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">ISO 9001:2015</div>
+                        <div className="text-base text-gray-400">Quality Management</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-purple-400 transition-colors">
+                          STD: ISO 9001:2015
+                        </div>
+                      </div>
+                      <div className="relative bg-gray-900 border-l-2 border-blue-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">REGISTRATION</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            ACTIVE
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">CoC</div>
+                        <div className="text-base text-gray-400">Registration Doc</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-blue-400 transition-colors">
+                          DOC: COC-2024-01
+                        </div>
+                      </div>
+                      <div className="relative bg-gray-900 border-l-2 border-emerald-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">DURABILITY</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            TESTED
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">IP67</div>
+                        <div className="text-base text-gray-400">Waterproof Rating</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-emerald-400 transition-colors">
+                          RATING: IP67
+                        </div>
+                      </div>
+                      <div className="relative bg-gray-900 border-l-2 border-indigo-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">COMPLIANCE</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            ACTIVE
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">RoHS</div>
+                        <div className="text-base text-gray-400">Material Compliance</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-indigo-400 transition-colors">
+                          CERT: RH-2024-EU
+                        </div>
+                      </div>
+                      <div className="relative bg-gray-900 border-l-2 border-cyan-500 p-4 rounded-r-lg shadow-lg group hover:bg-gray-800 transition-colors cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="text-base text-gray-500 font-mono">IDENTITY</div>
+                          <div className="text-base bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded border border-green-500/30">
+                            ASSIGNED
+                          </div>
+                        </div>
+                        <div className="text-base font-bold text-white mb-1">WMI Code</div>
+                        <div className="text-base text-gray-400">World Manufacturer ID</div>
+                        <div className="mt-3 text-base text-gray-600 font-mono group-hover:text-cyan-400 transition-colors">
+                          REF: ISO 3780:2009
+                        </div>
+                      </div>
+                    </div>
+                  </section>
                 </div>
               </div>
             </div>

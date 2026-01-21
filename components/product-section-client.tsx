@@ -38,6 +38,7 @@ export function ProductSectionClient({
   const slideSubtitleRef = useRef<HTMLDivElement>(null);
   const slideTitleRef = useRef<HTMLDivElement>(null);
   const slideDescRef = useRef<HTMLParagraphElement>(null);
+  const slideCtaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (initializedRef.current || !sliderRef.current) return;
@@ -175,6 +176,7 @@ export function ProductSectionClient({
           animateText(slideSubtitleRef.current);
           animateText(slideTitleRef.current);
           animateText(slideDescRef.current);
+          animateText(slideCtaRef.current);
         });
       };
 
@@ -438,14 +440,16 @@ export function ProductSectionClient({
               <p id="product-slide-desc" ref={slideDescRef}>
                 {slides[activeSlide].description}
               </p>
-              <Link
-                className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
-                href={slides[activeSlide]?.href ?? ctaHref}
-              >
-                <span className="relative z-20">{ctaLabel}</span>
-                <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
-                <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
-              </Link>
+              <div ref={slideCtaRef}>
+                <Link
+                  className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                  href={slides[activeSlide]?.href ?? ctaHref}
+                >
+                  <span className="relative z-20">{ctaLabel}</span>
+                  <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
+                  <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
+                </Link>
+              </div>
             </div>
           </div>
 
