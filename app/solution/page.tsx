@@ -3,7 +3,6 @@ import PageIllustration from "@/components/page-illustration";
 import SolutionPage from "@/components/solution-page";
 import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../css/solution.css";
 
 export const metadata = {

@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 
 import Header from "@/components/ui/header";
+import Script from "next/script";
 import AOSInit from "@/components/aos-init";
 import LenisInit from "@/components/lenis-init";
 
@@ -92,6 +93,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          id="fa-stylesheet"
+          rel="stylesheet"
+          href="/fontawesome/css/all.min.css"
+          media="print"
+        />
+        <Script id="fa-stylesheet-loader" strategy="afterInteractive">
+          {`(function(){var link=document.getElementById('fa-stylesheet');if(link){link.media='all';}})();`}
+        </Script>
+        <noscript>
+          <link rel="stylesheet" href="/fontawesome/css/all.min.css" />
+        </noscript>
+      </head>
       <body
         className={`${inter.variable} ${nacelle.variable} bg-gray-950 font-inter text-base text-gray-200 antialiased`}
       >

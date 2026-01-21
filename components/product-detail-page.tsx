@@ -351,6 +351,9 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
       thumbnailDragRef.current.lockAxis = distance >= absY ? 'x' : 'y';
     }
     if (thumbnailDragRef.current.lockAxis === 'y') {
+      thumbnailDragRef.current.isDown = false;
+      thumbnailDragRef.current.dragDistance = 0;
+      thumbnailDragRef.current.lockAxis = null;
       return;
     }
     event.preventDefault();
@@ -695,6 +698,8 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                       src={image.src}
                       alt={image.alt}
                       className="main-carousel-image h-full w-full object-contain"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
                       draggable={false}
                     />
                   </div>
@@ -775,6 +780,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                     src={image.src}
                     alt={image.alt}
                     data-image-src={image.src}
+                    loading="lazy"
                     draggable={false}
                     className="w-full h-24 object-cover"
                   />

@@ -664,7 +664,7 @@
   grid-auto-columns: calc((100% - (var(--thumb-gap) * (var(--thumb-cols) - 1))) / var(--thumb-cols));
   column-gap: var(--thumb-gap);
   cursor: grab;
-  touch-action: pan-x;
+  touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
 }

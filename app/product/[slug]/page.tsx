@@ -1,5 +1,4 @@
 import "../../css/product.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import PageIllustration from "@/components/page-illustration";
 import ProductDetailPage from "@/components/product-detail-page";
 import CompanyProfile from "@/components/company-profile";
