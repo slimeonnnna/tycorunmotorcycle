@@ -60,6 +60,11 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
   });
   const mainHoverRef = useRef(false);
 
+  const getMainStep = (track: HTMLDivElement) => {
+    const width = track.getBoundingClientRect().width;
+    return width ? Math.round(width) : 0;
+  };
+
   const cancelMainScrollAnimation = () => {
     window.clearTimeout(mainScrollTimerRef.current);
     if (mainScrollRafRef.current) {
@@ -89,11 +94,11 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
       const elapsed = now - startTime;
       const progress = Math.min(1, elapsed / duration);
       const eased = easeInOut(progress);
-      track.scrollLeft = start + delta * eased;
+      track.scrollLeft = Math.round(start + delta * eased);
       if (progress < 1) {
         mainScrollRafRef.current = requestAnimationFrame(step);
       } else {
-        track.scrollLeft = target;
+        track.scrollLeft = Math.round(target);
         mainAutoScrollRef.current = false;
         mainScrollRafRef.current = 0;
         onComplete?.();
@@ -107,7 +112,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     if (!track) {
       return;
     }
-    const step = track.clientWidth;
+    const step = getMainStep(track);
     if (!step) {
       return;
     }
@@ -123,7 +128,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     }
     mainAutoScrollRef.current = true;
     const delta = target - track.scrollLeft;
-    track.scrollLeft = target;
+    track.scrollLeft = Math.round(target);
     mainSnapRef.current.origin += delta;
     requestAnimationFrame(() => {
       mainAutoScrollRef.current = false;
@@ -136,7 +141,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
       return;
     }
     cancelMainScrollAnimation();
-    const step = track.clientWidth;
+    const step = getMainStep(track);
     if (!step) {
       return;
     }
@@ -304,7 +309,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     if (!track || !productImages.length) {
       return;
     }
-    const step = track.clientWidth;
+    const step = getMainStep(track);
     if (!step) {
       return;
     }
@@ -324,7 +329,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
       return;
     }
 
-    const getStep = () => track.clientWidth;
+    const getStep = () => getMainStep(track);
 
     const onScroll = () => {
       if (mainAutoScrollRef.current || mainDragRef.current.isDown) {
@@ -341,7 +346,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
       if (track.scrollLeft < cycle * 0.5 || track.scrollLeft > cycle * 1.5) {
         mainAutoScrollRef.current = true;
         const normalized = ((track.scrollLeft % cycle) + cycle) % cycle;
-        const target = normalized + cycle;
+        const target = Math.round(normalized + cycle);
         const delta = target - track.scrollLeft;
         mainSnapRef.current.origin += delta;
         requestAnimationFrame(() => {
@@ -594,13 +599,13 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     event.preventDefault();
     mainDragRef.current.dragDistance = Math.max(mainDragRef.current.dragDistance, absX);
     track.scrollLeft = mainDragRef.current.scrollLeft - deltaX;
-    const step = track.clientWidth;
+    const step = getMainStep(track);
     if (step > 0 && productImages.length > 0) {
       const cycle = step * productImages.length;
       if (cycle > 0) {
         if (track.scrollLeft < cycle * 0.5 || track.scrollLeft > cycle * 1.5) {
           const normalized = ((track.scrollLeft % cycle) + cycle) % cycle;
-          const target = normalized + cycle;
+          const target = Math.round(normalized + cycle);
           const delta = target - track.scrollLeft;
           track.scrollLeft = target;
           mainDragRef.current.scrollLeft += delta;
@@ -621,7 +626,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
       track.releasePointerCapture(mainDragRef.current.pointerId);
     }
     if (track) {
-      const step = track.clientWidth;
+      const step = getMainStep(track);
       if (step > 0 && productImages.length) {
         const base = mainSnapRef.current.origin;
         const offset = track.scrollLeft - base;
@@ -632,7 +637,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
         if (Math.abs(scrollDelta) > threshold) {
           targetIndex = scrollDelta > 0 ? Math.ceil(currentFloat) : Math.floor(currentFloat);
         }
-        const target = base + targetIndex * step;
+        const target = Math.round(base + targetIndex * step);
         const normalized =
           ((targetIndex % productImages.length) + productImages.length) % productImages.length;
         mainSnapRef.current.origin = target - normalized * step;
@@ -870,7 +875,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                   className="thumbnail-item group relative h-24 rounded-lg overflow-hidden transition-all"
                 >
                   <span
-                    className={`pointer-events-none absolute inset-0 bg-black/40 transition-opacity ${
+                    className={`pointer-events-none absolute inset-0 z-10 bg-black/40 transition-opacity ${
                       mainImage === image.src ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'
                     }`}
                     aria-hidden="true"
@@ -883,7 +888,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                     sizes="(max-width: 768px) 45vw, 120px"
                     loading="lazy"
                     draggable={false}
-                    className="object-cover"
+                    className="object-cover z-0"
                   />
                 </div>
               ))}

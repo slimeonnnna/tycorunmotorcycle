@@ -711,6 +711,8 @@
 
 .main-carousel-track {
   display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
   cursor: grab;
   touch-action: pan-x;
   user-select: none;
@@ -723,8 +725,8 @@
 
 .main-carousel-slide {
   flex: 0 0 100%;
+  min-width: 100%;
 }
 
 .main-carousel-image {
-  will-change: transform;
 }
