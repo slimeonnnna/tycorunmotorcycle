@@ -68,7 +68,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     mainAutoScrollRef.current = false;
   };
 
-  const animateMainScrollTo = (target: number, duration = 500) => {
+  const animateMainScrollTo = (target: number, duration = 500, onComplete?: () => void) => {
     const track = mainTrackRef.current;
     if (!track) {
       return;
@@ -77,6 +77,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     const start = track.scrollLeft;
     const delta = target - start;
     if (!delta) {
+      onComplete?.();
       return;
     }
     mainAutoScrollRef.current = true;
@@ -94,6 +95,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
         track.scrollLeft = target;
         mainAutoScrollRef.current = false;
         mainScrollRafRef.current = 0;
+        onComplete?.();
       }
     };
     mainScrollRafRef.current = requestAnimationFrame(step);
@@ -108,12 +110,36 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     if (!step) {
       return;
     }
-    const cycle = step * productImages.length;
+    const total = productImages.length;
+    const cycle = step * total;
     if (!mainSnapRef.current.origin) {
       mainSnapRef.current.origin = cycle;
     }
-    const target = mainSnapRef.current.origin + step * nextIndex;
-    animateMainScrollTo(target, 500);
+    const base = mainSnapRef.current.origin;
+    const normalized = ((nextIndex % total) + total) % total;
+    const currentFloat = (track.scrollLeft - base) / step;
+    const currentRaw = Math.round(currentFloat);
+    const candidates = [normalized, normalized + total, normalized - total];
+    let targetRaw = candidates[0];
+    let minDistance = Math.abs(targetRaw - currentRaw);
+    for (const candidate of candidates.slice(1)) {
+      const distance = Math.abs(candidate - currentRaw);
+      if (distance < minDistance) {
+        minDistance = distance;
+        targetRaw = candidate;
+      }
+    }
+    const target = base + step * targetRaw;
+    animateMainScrollTo(target, 500, () => {
+      const settled = base + step * normalized;
+      if (Math.abs(track.scrollLeft - settled) > 0.5) {
+        mainAutoScrollRef.current = true;
+        track.scrollLeft = settled;
+        requestAnimationFrame(() => {
+          mainAutoScrollRef.current = false;
+        });
+      }
+    });
   };
 
   const goToIndex = (nextIndex: number) => {
@@ -122,7 +148,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     }
     const normalized = ((nextIndex % productImages.length) + productImages.length) % productImages.length;
     setCurrentIndex(normalized);
-    scrollMainToIndex(normalized);
+    scrollMainToIndex(nextIndex);
   };
 
   const handleThumbnailSelect = (imageSrc: string) => {
@@ -523,6 +549,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
           const delta = target - track.scrollLeft;
           track.scrollLeft = target;
           mainDragRef.current.scrollLeft += delta;
+          mainSnapRef.current.origin += delta;
         }
       }
     }
@@ -553,6 +580,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
         const target = base + targetIndex * step;
         const normalized =
           ((targetIndex % productImages.length) + productImages.length) % productImages.length;
+        mainSnapRef.current.origin = target - normalized * step;
         animateMainScrollTo(target, 500);
         setCurrentIndex(normalized);
       }
