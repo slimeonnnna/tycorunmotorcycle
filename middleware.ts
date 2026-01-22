@@ -24,6 +24,7 @@ const BLOCKED_PATHS_REGEX = new RegExp(
     "^/\\.git",
     "^/phpmyadmin",
     "^/actuator",
+    "^/\\.well-known/appspecific/com\\.chrome\\.devtools\\.json",
     "\\.sql$",
     "\\.bak$",
   ].join("|"),

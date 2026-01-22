@@ -15,9 +15,9 @@ export function Product() {
   return (
     <ProductSectionClient
       slides={productSlides}
-      kicker="Commercial Partnership Frameworks"
-      title="Manufacturing Aligned With Your Profit Model"
-      description="Global markets operate on diverse regulatory and fiscal frameworks. TYCORUN structures production not just to export vehicles, but to integrate with your specific business strategy—whether that requires total brand control, tariff mitigation, or rapid market entry."
+      kicker="Product Lineup"
+      title="Find the Right Platform for Every Route"
+      description="Browse our commercial electric motorcycle lineup by payload, range, and service duty. Each platform is tuned for uptime, rider comfort, and predictable fleet ROI."
       ctaLabel="View Product"
       ctaHref="/contact"
     />

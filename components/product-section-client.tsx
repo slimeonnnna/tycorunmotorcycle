@@ -415,7 +415,7 @@ export function ProductSectionClient({
         <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
           {title}
         </h2>
-        <p className="mt-3 text-base text-gray-500">{description}</p>
+        <p className="mt-3 text-lg text-gray-400">{description}</p>
       </div>
       <div data-aos="fade-up" data-aos-delay={400} className="product-bubbles" aria-hidden="true">
         <ul className="product-bubbles__list">

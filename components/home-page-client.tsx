@@ -993,6 +993,7 @@ function ProcessTimeline() {
               integrate with your specific business strategy—whether that requires
               total brand control, tariff mitigation, or rapid market entry.
             </p>
+            <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
             <div className="mt-6 flex items-center justify-center gap-3">
               <button
                 type="button"
@@ -1035,7 +1036,6 @@ function ProcessTimeline() {
                 </div>
               </button>
             </div>
-            <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
           </div>
           <div
             className="relative mx-auto w-full max-w-none overflow-visible"
