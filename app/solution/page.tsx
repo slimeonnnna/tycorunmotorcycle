@@ -1,8 +1,8 @@
 
-import PageIllustration from "@/components/page-illustration";
-import SolutionPage from "@/components/solution-page";
-import Cta from "@/components/cta";
-import Footer from "@/components/ui/footer";
+import PageIllustration from "@/components/global/page-illustration";
+import SolutionPage from "@/components/pages/solution/solution-page";
+import Cta from "@/components/global/cta";
+import Footer from "@/components/global/ui/footer";
 import "../css/solution.css";
 
 export const metadata = {

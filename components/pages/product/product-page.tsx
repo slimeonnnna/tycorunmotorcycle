@@ -3,7 +3,7 @@ import ProductCoreAdvantageSwiper from "./product-core-advantage-swiper";
 import ProductTcoCalculator from "./product-tco-calculator";
 import ProductSpotlight from "./product-spotlight";
 import { Product } from "./product-section";
-import { Testimonials } from "./home-page-client";
+import { Testimonials } from "@/components/pages/home/home-page-client";
 
 function ProductHero() {
   return (

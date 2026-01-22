@@ -1,9 +1,9 @@
 import "../../css/product.css";
-import PageIllustration from "@/components/page-illustration";
-import ProductDetailPage from "@/components/product-detail-page";
-import CompanyProfile from "@/components/company-profile";
-import Cta from "@/components/cta";
-import Footer from "@/components/ui/footer";
+import PageIllustration from "@/components/global/page-illustration";
+import ProductDetailPage from "@/components/pages/product/product-detail-page";
+import CompanyProfile from "@/components/pages/product/company-profile";
+import Cta from "@/components/global/cta";
+import Footer from "@/components/global/ui/footer";
 import { getProductBySlug, products } from "@/data/products";
 import { getBaseUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";

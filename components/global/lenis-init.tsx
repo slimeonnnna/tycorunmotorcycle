@@ -11,8 +11,8 @@ export default function LenisInit() {
   useEffect(() => {
     let cancelled = false;
     let rafId = 0;
+    let initialized = false;
     const originalRestoration = history.scrollRestoration;
-    history.scrollRestoration = "manual";
     const handleAnchorClick = (event: MouseEvent) => {
       if (!lenisRef.current) return;
       const target = event.target as HTMLElement | null;
@@ -32,8 +32,11 @@ export default function LenisInit() {
     };
 
     const init = async () => {
+      if (initialized || cancelled) return;
+      initialized = true;
       const { default: Lenis } = await import("lenis");
       if (cancelled) return;
+      history.scrollRestoration = "manual";
       lenisRef.current = new Lenis({
         duration: 1.1,
         smoothWheel: true,
@@ -52,10 +55,25 @@ export default function LenisInit() {
       rafId = requestAnimationFrame(raf);
     };
 
-    init();
+    const triggerInit = () => {
+      void init();
+      window.removeEventListener("wheel", triggerInit);
+      window.removeEventListener("touchstart", triggerInit);
+      window.removeEventListener("pointerdown", triggerInit);
+      window.removeEventListener("keydown", triggerInit);
+    };
+
+    window.addEventListener("wheel", triggerInit, { passive: true });
+    window.addEventListener("touchstart", triggerInit, { passive: true });
+    window.addEventListener("pointerdown", triggerInit);
+    window.addEventListener("keydown", triggerInit);
 
     return () => {
       cancelled = true;
+      window.removeEventListener("wheel", triggerInit);
+      window.removeEventListener("touchstart", triggerInit);
+      window.removeEventListener("pointerdown", triggerInit);
+      window.removeEventListener("keydown", triggerInit);
       document.removeEventListener("click", handleAnchorClick);
       cancelAnimationFrame(rafId);
       lenisRef.current?.destroy();

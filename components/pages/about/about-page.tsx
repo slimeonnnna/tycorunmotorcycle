@@ -7,8 +7,8 @@ import { Autoplay, EffectCube } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-cube";
 
-import AboutAuthHero from "./about/about-auth-hero";
-import RoadmapSection from "./about/roadmap-section";
+import AboutAuthHero from "./about-auth-hero";
+import RoadmapSection from "./roadmap-section";
 
 function WhoWeAreSection() {
   const sectionRef = useRef<HTMLElement | null>(null);

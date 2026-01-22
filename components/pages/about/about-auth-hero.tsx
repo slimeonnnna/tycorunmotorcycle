@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { cities } from "../cities-data";
+import { cities } from "./cities-data";
 
 export default function AboutAuthHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

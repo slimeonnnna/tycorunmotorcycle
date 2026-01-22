@@ -1,7 +1,7 @@
-import PageIllustration from "@/components/page-illustration";
-import ContactPage from "@/components/contact-page";
-import Cta from "@/components/cta";
-import Footer from "@/components/ui/footer";
+import PageIllustration from "@/components/global/page-illustration";
+import ContactPage from "@/components/pages/contact/contact-page";
+import Cta from "@/components/global/cta";
+import Footer from "@/components/global/ui/footer";
 
 export const metadata = {
   title: "Contact | OEM/ODM Partnerships",

@@ -1,7 +1,7 @@
 import "../../css/blog.css";
-import PageIllustration from "@/components/page-illustration";
-import Cta from "@/components/cta";
-import BlogIndex from "@/components/blog/blog-index";
+import PageIllustration from "@/components/global/page-illustration";
+import Cta from "@/components/global/cta";
+import BlogIndex from "@/components/pages/blog/blog-index";
 import { getBlogList } from "@/lib/blog";
 
 export const metadata = {

@@ -4,8 +4,8 @@ export const metadata = {
   description: "Factory-direct OEM/ODM electric motorcycles with SKD/CKD options and compliance support.",
 };
 
-import HomePage from "@/components/home-page";
-import Cta from "@/components/cta";
+import HomePage from "@/components/pages/home/home-page";
+import Cta from "@/components/global/cta";
 
 export default function Home() {
   return (

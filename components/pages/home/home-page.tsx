@@ -7,8 +7,8 @@ import {
   ProcessTimeline,
   Spotlight,
   Testimonials,
-} from "@/components/home-page-client";
-import { Product } from "@/components/product-section";
+} from "@/components/pages/home/home-page-client";
+import { Product } from "@/components/pages/product/product-section";
 
 // --- Sub-Component: HeroCard ---
 function HeroCard() {
@@ -307,11 +307,13 @@ function Workflows() {
             </p>
             <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent z-10" />
           </div>
-          <Spotlight className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3">
+          <Spotlight
+            data-aos="fade-up"
+            data-aos-delay={200}
+            className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3"
+          >
             {/* Card 1 */}
             <a
-              data-aos="fade-up"
-              data-aos-delay={200}
               className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
@@ -390,8 +392,6 @@ function Workflows() {
             </a>
             {/* Card 2 */}
             <a
-              data-aos="fade-up"
-              data-aos-delay={200}
               className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >
@@ -465,8 +465,6 @@ function Workflows() {
             </a>
             {/* Card 3 */}
             <a
-              data-aos="fade-up"
-              data-aos-delay={200}
               className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-32 after:-top-32 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-blue-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
               href="#0"
             >

@@ -4,10 +4,9 @@ import "aos/dist/aos.css";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 
-import Header from "@/components/ui/header";
-import Script from "next/script";
-import AOSInit from "@/components/aos-init";
-import LenisInit from "@/components/lenis-init";
+import Header from "@/components/global/ui/header";
+import AOSInit from "@/components/global/aos-init";
+import LenisInit from "@/components/global/lenis-init";
 import { getBaseUrl } from "@/lib/site-url";
 
 const siteUrl = getBaseUrl();
@@ -89,12 +88,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script id="fa-stylesheet-loader" strategy="afterInteractive">
-          {`(function(){var load=function(){var link=document.createElement('link');link.rel='stylesheet';link.href='/fontawesome/css/all.min.css';document.head.appendChild(link);};if(document.readyState==='complete'){load();}else{window.addEventListener('load',load,{once:true});}})();`}
-        </Script>
-        <noscript>
-          <link rel="stylesheet" href="/fontawesome/css/all.min.css" />
-        </noscript>
       </head>
       <body
         className={`${inter.variable} ${nacelle.variable} bg-gray-950 font-inter text-base text-gray-200 antialiased`}

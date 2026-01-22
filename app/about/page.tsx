@@ -1,9 +1,9 @@
 
 "use client";
 
-import AboutPage from "@/components/about-page";
-import Cta from "@/components/cta";
-import Footer from "@/components/ui/footer";
+import AboutPage from "@/components/pages/about/about-page";
+import Cta from "@/components/global/cta";
+import Footer from "@/components/global/ui/footer";
 
 export default function About() {
   return (

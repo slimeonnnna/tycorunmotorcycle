@@ -4,7 +4,7 @@ import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import html from "remark-html";
 
-import PageIllustration from "@/components/page-illustration";
+import PageIllustration from "@/components/global/page-illustration";
 import {
   formatDateLabel,
   getBlogList,

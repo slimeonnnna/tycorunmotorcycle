@@ -1752,6 +1752,10 @@
   display: none;
 }
 
+.product-slider:not(.product-slider--ready) #product-slider img:first-of-type {
+  display: block;
+}
+
 #product-slider canvas {
   filter: drop-shadow(4px 4px 0 rgba(59, 130, 246, 0.14))
     drop-shadow(8px 8px 0 rgba(59, 130, 246, 0.08))
