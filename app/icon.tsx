@@ -1,5 +1,5 @@
 // Route segment config
-export const runtime = "edge";
+export const dynamic = "force-static";
 
 // Image metadata
 export const size = {

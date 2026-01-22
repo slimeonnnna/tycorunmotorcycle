@@ -4,7 +4,7 @@ import ProductDetailPage from "@/components/product-detail-page";
 import CompanyProfile from "@/components/company-profile";
 import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
-import { getProductBySlug } from "@/data/products";
+import { getProductBySlug, products } from "@/data/products";
 import { notFound } from "next/navigation";
 
 function resolveSiteUrl() {
@@ -32,6 +32,12 @@ export async function generateMetadata({ params }: ProductDetailPageProps) {
     title: `${product.headline} | TYCORUN`,
     description: product.description,
   };
+}
+
+export function generateStaticParams() {
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
 }
 
 export default async function ProductDetail({ params }: ProductDetailPageProps) {
