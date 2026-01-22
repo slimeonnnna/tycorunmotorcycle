@@ -32,20 +32,17 @@ export function ProductSectionClient({
   ctaHref,
 }: ProductSectionClientProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const initializedRef = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
-  const slideSubtitleRef = useRef<HTMLDivElement>(null);
-  const slideTitleRef = useRef<HTMLDivElement>(null);
-  const slideDescRef = useRef<HTMLParagraphElement>(null);
-  const slideCtaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (initializedRef.current || !sliderRef.current) return;
 
     initializedRef.current = true;
     const parent = sliderRef.current;
-    const images = Array.from(parent.querySelectorAll("img"));
+    const images = Array.from(parent.querySelectorAll("img")) as HTMLImageElement[];
 
     let cleanup = () => {};
     const displacementSlider = (opts: {
@@ -173,10 +170,16 @@ export function ProductSectionClient({
       const applySlideContent = (slideId: number) => {
         setActiveSlide(slideId);
         requestAnimationFrame(() => {
-          animateText(slideSubtitleRef.current);
-          animateText(slideTitleRef.current);
-          animateText(slideDescRef.current);
-          animateText(slideCtaRef.current);
+          const container = contentRef.current;
+          if (!container) return;
+          const active = container.querySelector(
+            `[data-slide="${slideId}"]`,
+          ) as HTMLElement | null;
+          if (!active) return;
+          animateText(active.querySelector(".product-slide__subtitle"));
+          animateText(active.querySelector(".product-slide__title"));
+          animateText(active.querySelector(".product-slide__desc"));
+          animateText(active.querySelector(".product-slide__cta"));
         });
       };
 
@@ -427,26 +430,34 @@ export function ProductSectionClient({
       <div data-aos="fade-up" data-aos-delay={400} className="mx-auto max-w-6xl px-4 sm:px-6">
         <div id="product-slider" ref={sliderRef}>
           <div className="slider-inner">
-            <div id="product-slider-content">
-              <div id="product-slide-subtitle" ref={slideSubtitleRef}>
-                {slides[activeSlide].subtitle}
-              </div>
-              <div id="product-slide-title" ref={slideTitleRef} className="process-card-heading text-white">
-                {slides[activeSlide].title}
-              </div>
-              <p id="product-slide-desc" ref={slideDescRef}>
-                {slides[activeSlide].description}
-              </p>
-              <div ref={slideCtaRef}>
-                <Link
-                  className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
-                  href={slides[activeSlide]?.href ?? ctaHref}
+            <div id="product-slider-content" ref={contentRef}>
+              {slides.map((slide, index) => (
+                <div
+                  key={`slide-content-${slide.href}`}
+                  className={`product-slide${index === activeSlide ? " is-active" : ""}`}
+                  data-slide={index}
                 >
-                  <span className="relative z-20">{ctaLabel}</span>
-                  <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
-                  <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
-                </Link>
-              </div>
+                  <div className="product-slide__subtitle">
+                    {slide.subtitle}
+                  </div>
+                  <h3 className="product-slide__title process-card-heading text-white">
+                    {slide.title}
+                  </h3>
+                  <p className="product-slide__desc">
+                    {slide.description}
+                  </p>
+                  <div className="product-slide__cta">
+                    <Link
+                      className="group relative z-10 mt-[15px] inline-flex h-12 w-44 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 text-sm font-semibold text-gray-300 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-blue-300/60 hover:bg-white/15 hover:text-white focus:outline focus:outline-2 focus:outline-white/60 focus:outline-offset-4"
+                      href={slide.href ?? ctaHref}
+                    >
+                      <span className="relative z-20">{ctaLabel}</span>
+                      <span className="pointer-events-none absolute right-1 top-1 z-10 h-12 w-12 rounded-full bg-blue-500/40 blur-lg transition-all duration-500 group-hover:right-10 group-hover:-bottom-6"></span>
+                      <span className="pointer-events-none absolute right-6 top-2 z-10 h-16 w-16 rounded-full bg-blue-300/35 blur-lg transition-all duration-500 group-hover:-right-6"></span>
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
