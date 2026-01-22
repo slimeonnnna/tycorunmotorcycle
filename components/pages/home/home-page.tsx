@@ -308,8 +308,8 @@ function Workflows() {
             <div className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-blue-200/60 to-transparent z-10" />
           </div>
           <Spotlight
-            data-aos="fade-up"
-            data-aos-delay={200}
+            dataAos="fade-up"
+            dataAosDelay={200}
             className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3"
           >
             {/* Card 1 */}

@@ -35,9 +35,16 @@ function useMousePosition(): MousePosition {
 type SpotlightProps = {
   children: React.ReactNode;
   className?: string;
+  dataAos?: string;
+  dataAosDelay?: number;
 };
 
-function Spotlight({ children, className = "" }: SpotlightProps) {
+function Spotlight({
+  children,
+  className = "",
+  dataAos,
+  dataAosDelay,
+}: SpotlightProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePosition = useMousePosition();
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -95,7 +102,12 @@ function Spotlight({ children, className = "" }: SpotlightProps) {
   };
 
   return (
-    <div className={className} ref={containerRef}>
+    <div
+      className={className}
+      ref={containerRef}
+      data-aos={dataAos}
+      data-aos-delay={dataAosDelay}
+    >
       {children}
     </div>
   );

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import imagesLoaded from "imagesloaded";
 import { TweenMax } from "gsap";
-import * as THREE from "three";
 
 type ProductSlide = {
   subtitle: string;
@@ -46,7 +45,11 @@ export function ProductSectionClient({
     initializedRef.current = true;
     const parent = sliderRef.current;
     const images = Array.from(parent.querySelectorAll("img")) as HTMLImageElement[];
-    let cleanup = () => {};
+    const cleanupTasks: Array<() => void> = [];
+    const addCleanup = (task: () => void) => {
+      cleanupTasks.push(task);
+    };
+    let disposed = false;
     const markLoaded = () => {
       sliderInitializedOnce = true;
       setIsLoading(false);
@@ -54,8 +57,18 @@ export function ProductSectionClient({
 
     if (images.length === 0) {
       markLoaded();
-      return () => cleanup();
+      return () => {};
     }
+
+    const init = async () => {
+      const threeModule = await import("three");
+      const THREE =
+        (threeModule as unknown as { default?: typeof import("three") }).default ??
+        (threeModule as unknown as typeof import("three"));
+      if (!THREE?.WebGLRenderer) {
+        markLoaded();
+        return;
+      }
 
       const displacementSlider = (opts: {
         parent: HTMLElement;
@@ -128,6 +141,13 @@ export function ProductSectionClient({
         };
         setRendererSize();
         opts.parent.appendChild(renderer.domElement);
+        addCleanup(() => {
+          disposed = true;
+          renderer.dispose();
+          if (renderer.domElement.parentElement) {
+            renderer.domElement.parentElement.removeChild(renderer.domElement);
+          }
+        });
 
         const loader = new THREE.TextureLoader();
         loader.crossOrigin = "anonymous";
@@ -372,7 +392,7 @@ export function ProductSectionClient({
           setProgress(0);
           rafId = requestAnimationFrame(tick);
 
-          cleanup = () => {
+          addCleanup(() => {
             hoverTarget.removeEventListener("pointerenter", handlePointerEnter);
             hoverTarget.removeEventListener("pointerleave", handlePointerLeave);
             hoverTarget.removeEventListener("pointerdown", handlePointerDown);
@@ -381,7 +401,7 @@ export function ProductSectionClient({
             window.removeEventListener("pointercancel", handleDragEnd);
             observer.disconnect();
             cancelAnimationFrame(rafId);
-          };
+          });
         };
 
         addEvents();
@@ -403,27 +423,39 @@ export function ProductSectionClient({
         };
         handleResize();
         window.addEventListener("resize", handleResize);
-        cleanup = () => window.removeEventListener("resize", handleResize);
+        addCleanup(() => window.removeEventListener("resize", handleResize));
 
         const animate = () => {
+          if (disposed) return;
           requestAnimationFrame(animate);
           renderer.render(scene, camera);
         };
         animate();
       };
 
-    const loadingTimeout = window.setTimeout(() => {
-      markLoaded();
-    }, 4000);
+      const loadingTimeout = window.setTimeout(() => {
+        markLoaded();
+      }, 4000);
+      addCleanup(() => window.clearTimeout(loadingTimeout));
 
-    imagesLoaded(images, () => {
-      window.clearTimeout(loadingTimeout);
+      imagesLoaded(images, () => {
+        window.clearTimeout(loadingTimeout);
+        markLoaded();
+        displacementSlider({ parent, images: images as HTMLImageElement[] });
+        setIsSliderReady(true);
+      });
+    };
+
+    void init().catch(() => {
       markLoaded();
-      displacementSlider({ parent, images: images as HTMLImageElement[] });
-      setIsSliderReady(true);
     });
 
-    return () => cleanup();
+    return () => {
+      disposed = true;
+      for (let i = cleanupTasks.length - 1; i >= 0; i -= 1) {
+        cleanupTasks[i]?.();
+      }
+    };
   }, [slides]);
 
   return (

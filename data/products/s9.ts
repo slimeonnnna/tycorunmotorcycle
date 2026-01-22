@@ -3,147 +3,161 @@
 const s9Product: ProductContent = {
   slug: "s9-series-2000w-electric-motorcycle",
   name: "S9 Series",
-  // 定位：强调跨城、高速、旗舰
-  headline: "S9 Series High-Speed Electric Motorcycle - 2000W Inter-City Cruiser",
+  // 定位：旗舰级、高速、运动型
+  headline: "S9 Series High-Speed Electric Motorcycle - 2000W Flagship Sport Cruiser",
   
   description:
-    "The pinnacle of performance in our lineup. The S9 Series features a massive 2000W powertrain capable of 78 km/h, engineered for suburban commuters and express couriers who need to dominate arterial roads and highways.",
+    "The pinnacle of performance in our lineup. The S9 Series combines a high-output 2000W motor with a flexible 60V/72V architecture. Capable of 78 km/h, it is engineered for suburban commuters and express couriers demanding highway-grade speed and stability.",
   
-  // 强调12寸大轮毂带来的稳定性，这是它区别于前几款车的最大特征
+  // 强调全尺寸底盘和高速稳定性
   specIntro:
-    "Built for the open road. With a full-size 1920mm chassis and staggered 12-inch sport tires, the S9 delivers motorcycle-grade stability and cornering confidence at high speeds.",
+    "Built for the open road. With a substantial 1370mm wheelbase and staggered 12-inch sport tires, the S9 delivers motorcycle-grade handling confidence at high speeds.",
   
   specBullets: [
-    "2000W high-output motor for highway-capable acceleration.", // 强调能上快速路
-    "78 km/h top speed to keep pace with urban automotive traffic.", // 强调跟车流不掉队
-    "12-inch staggered tire setup (F:90/80 R:110/70) for sport handling.", // 强调轮胎规格
-    "Heavy-duty 86kg chassis prevents wind buffeting at speed.", // 将重包装为“抗风/稳”
+    "2000W high-output motor for 78 km/h top speed.",
+    "Flexible voltage architecture supports both 60V and 72V configurations.", // 明确提及双电压支持
+    "Staggered tire setup (F:90/80-12 R:110/70-12) for sport cornering.",
+    "Dual hydraulic disc brakes for maximum stopping power.",
   ],
 
   scenarios: [
     {
       title: "Suburban Commute",
-      subtitle: "Long-distance cross-town travel.",
-      iconClass: "fa-solid fa-road-spikes", // 强调公路属性
+      subtitle: "Highway-capable travel.",
+      iconClass: "fa-solid fa-road-spikes",
     },
     {
       title: "Express Logistics",
-      subtitle: "Time-critical urgent delivery.",
-      iconClass: "fa-solid fa-truck-fast", // 强调快送
+      subtitle: "Urgent cross-town delivery.",
+      iconClass: "fa-solid fa-truck-fast",
     },
     {
-      title: "Police & Patrol",
+      title: "Police Patrol",
       subtitle: "High-speed rapid response.",
-      iconClass: "fa-solid fa-shield-cat", // 强调安保 (fontawesome 6 有 police-box, 或者 shield)
+      iconClass: "fa-solid fa-shield-cat",
     },
   ],
 
-  mainImage: "/images/s9/s9-series-2000w-electric-motorcycle-side.webp",
-  sliderImage: "/images/s9/S9 Series Electric Motorcycle - 2000W Flagship.webp",
+  mainImage: "/images/s9/s9-series-2000w-electric-motorcycle-view-01.webp",
+  sliderImage: "/images/s9/s9-series-2000w-electric-motorcycle-view-slider.webp",
   images: [
     {
       id: 1,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-side.webp",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-01.webp",
       alt: "S9 flagship electric motorcycle side profile 2000W",
     },
     {
       id: 2,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-front.webp",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-02.webp",
       alt: "Aggressive front design with 12-inch sport tires",
     },
     {
       id: 3,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-motor.webp",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-03.webp",
       alt: "2000W high speed brushless motor hub detail",
     },
     {
       id: 4,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-dashboard.webp",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-04.webp",
       alt: "Full LCD digital dashboard displaying 78kmh",
     },
     {
       id: 5,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-brakes.webp",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-05.webp",
       alt: "Large diameter hydraulic disc brakes front and rear",
     },
     {
       id: 6,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-seat.webp",
-      alt: "Spacious seat for rider and passenger comfort",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-06.webp",
+      alt: "760mm height sport seat for rider comfort",
     },
     {
       id: 7,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-suspension.webp",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-07.webp",
       alt: "Reinforced hydraulic shock absorbers",
     },
     {
       id: 8,
-      src: "/images/s9/s9-series-2000w-electric-motorcycle-night.webp",
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-08.webp",
       alt: "S9 electric motorcycle LED lighting system at night",
+    },
+    {
+      id: 9,
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-09.webp",
+      alt: "S9 electric motorcycle close-up detailing view 09",
+    },
+    {
+      id: 10,
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-10.webp",
+      alt: "S9 electric motorcycle close-up detailing view 10",
+    },
+    {
+      id: 11,
+      src: "/images/s9/s9-series-2000w-electric-motorcycle-view-11.webp",
+      alt: "S9 electric motorcycle close-up detailing view 11",
     },
   ],
 
   highlights: [
-    { iconClass: "fas fa-bolt", label: "2000W Max Power" }, // 顶级动力
-    { iconClass: "fas fa-gauge-high", label: "78 km/h Fast" }, // 顶级速度
-    { iconClass: "fas fa-circle-notch", label: "12-inch Tires" }, // 顶级轮毂
-    { iconClass: "fas fa-battery-full", label: "72V High Voltage" }, // 顶级电压
+    { iconClass: "fas fa-bolt", label: "2000W Max Power" },
+    { iconClass: "fas fa-gauge-high", label: "78 km/h Top Speed" },
+    { iconClass: "fas fa-battery-half", label: "60V/72V Options" }, // 亮点中强调多电压选项
+    { iconClass: "fas fa-circle-notch", label: "12-inch Sport Tires" },
   ],
 
-  // 价格策略：因为是旗舰，单价高，MOQ 门槛可以适当调整文案，强调“Container Mix”
   pricing: [
-    { moq: "MOQ 5+", tag: "Sample Order", price: "Standard" }, // 高端车允许更小的试单
+    { moq: "MOQ 5+", tag: "Sample Order", price: "Standard" }, // 旗舰车起订量可稍低
     { moq: "MOQ 24+", tag: "20ft Container", price: "Save 5%" },
-    { moq: "MOQ 48+", tag: "40ft HQ", price: "Save 12%" }, // 大车装得少，折扣力度需核算
+    { moq: "MOQ 48+", tag: "40ft HQ", price: "Save 12%" },
     { moq: "MOQ 100+", tag: "Distributor", price: "Save 18%" },
   ],
 
+  // 严谨还原规格表
   specs: [
-    { label: "Rated Power", value: "2000W High-Performance" },
-    { label: "Top Speed", value: "78 km/h (Highway Capable)" },
+    { label: "Rated Power", value: "2000W Brushless DC" },
+    { label: "Top Speed", value: "78 km/h" },
     { label: "Battery Type", value: "Lead-acid / Lithium" },
-    { label: "System Voltage", value: "72V (Recommended)" }, // 2000W 必须推 72V
-    { label: "Charging", value: "110V-220V" },
-    // 修正：前后轮胎尺寸不一样，这是运动车型的特征
-    { label: "Front Tire", value: "90/80-12 Tubeless" },
-    { label: "Rear Tire", value: "110/70-12 Tubeless (Wide)" },
-    { label: "Braking", value: "F/R Large Disc Brakes" },
+    { label: "Battery Voltage", value: "60V / 72V (Selectable)" }, // 明确 60V 和 72V 都支持
+    { label: "Charging Voltage", value: "110V / 220V Dual Support" },
+    { label: "Tire (Front)", value: "90/80-12 Tubeless" }, // 分开写前后胎，体现运动属性
+    { label: "Tire (Rear)", value: "110/70-12 Tubeless" },
+    { label: "Brake System", value: "F/R Hydraulic Disk/Disk" },
     { label: "Seat Height", value: "760 mm" },
-    { label: "Dimensions", value: "1920 × 690 × 1150 mm" }, // 全尺寸
-    { label: "Wheelbase", value: "1370 mm (Long)" },
-    { label: "Net Weight", value: "86.8 kg (Stable Chassis)" },
+    { label: "Dimensions", value: "1920 × 690 × 1150 mm" },
+    { label: "Wheelbase", value: "1370 mm" },
+    { label: "Net Weight", value: "86.8 kg (w/o Battery)" },
   ],
 
   faqs: [
     {
-      question: "Do I need a license to ride the S9 (78km/h)?",
+      question: "What is the performance difference between 60V and 72V versions?",
       answer:
-        "Yes. In most regions (EU, US), the S9 falls under the L3e (Motorcycle) category due to its speed (>45km/h). Riders typically require a valid motorcycle license and registration.",
+        "The 60V version is cost-effective for standard commuting, while the 72V version unlocks the full 2000W potential, achieving higher top speeds (78km/h) and better acceleration.",
     },
     {
-      question: "Why does the S9 use 12-inch tires instead of 10-inch?",
+      question: "Do I need a license to ride the S9?",
       answer:
-        "At speeds approaching 80km/h, 12-inch tires provide significantly better gyroscopic stability, pothole clearance, and cornering grip compared to smaller scooter tires.",
+        "Yes. With a top speed of 78 km/h, the S9 typically falls under the L3e (Motorcycle) category in Europe and requires a valid motorcycle license.",
     },
     {
-      question: "What is the range at full speed (78km/h)?",
+      question: "Why does the S9 use staggered tires (90/80-12 & 110/70-12)?",
       answer:
-        "High-speed riding consumes more energy. With a 72V 35Ah Lithium pack, expect 60-70km range. For longer routes, we can upgrade to higher capacity custom battery packs.",
+        "The wider rear tire (110/70) provides better traction for the 2000W motor, while the narrower front tire ensures agile steering response, a standard setup for sport motorcycles.",
     },
     {
-      question: "Can the S9 be used for highway commuting?",
+      question: "Can I use 110V charging?",
       answer:
-        "Yes. The 2000W motor and robust chassis allow the S9 to safely merge with faster traffic flows on urban expressways and ring roads.",
+        "Yes. The charger supports both 110V and 220V input voltages, making it compatible with power grids globally without adapters.",
     },
     {
-      question: "Is the charging time longer for the 72V system?",
+      question: "Is the S9 suitable for highway use?",
       answer:
-        "Standard charging takes 6-8 hours. However, we offer optional Fast Chargers (5A/8A) for Lithium versions to reduce downtime by 50%.",
+        "Yes. The 78 km/h top speed and heavy-duty chassis (86.8kg) provide the stability and power reserve needed to safely merge with urban highway traffic.",
     },
     {
-      question: "How many S9 units fit in a container?",
+      question: "What is the container loading quantity?",
       answer:
-        "The S9 is a full-size motorcycle. A 40HQ container holds approx. 48 units (CBU) or 80 units (SKD). We optimize packing to keep freight costs competitive.",
+        "Due to its full-size dimensions (1920mm length), a 40HQ container typically holds around 48 units (CBU) or 80+ units (SKD).",
     },
   ],
 
@@ -151,15 +165,15 @@ const s9Product: ProductContent = {
     {
       title: "Packaging Details",
       items: [
-        { label: "Dimensions", value: "185 × 55 × 85 cm (SKD)" }, // 大车包装尺寸
-        { label: "Gross Weight", value: "Approx. 150 kg" }, // 86kg净重 + 电池 + 重型铁架
+        { label: "Dimensions", value: "185 × 55 × 85 cm (SKD)" }, // 针对1920mm车身的包装
+        { label: "Gross Weight", value: "Approx. 140 kg" }, // 86.8kg车身 + 电池 + 铁架
         {
           label: "Protection Level",
-          value: "Heavy-Duty Iron Crate + Carton", // 必须用重型铁架
+          value: "Heavy-Duty Steel Frame + Carton",
         },
         {
           label: "In the Box",
-          value: "Vehicle, Fast Charger (Opt), Mirrors, VIN Plate",
+          value: "Vehicle, Charger, Mirrors, Keys, Manual",
         },
       ],
     },
@@ -173,14 +187,14 @@ const s9Product: ProductContent = {
         },
         {
           label: "CKD Capacity (Parts)",
-          value: "80-90 Units (Assembly Line Req.)", // CKD 需要组装线
+          value: "80-90 Units (Assembly Required)",
         },
       ],
     },
     {
       title: "Logistics & Compliance",
       items: [
-        { label: "Lead Time", value: "25-30 days (High QC Req.)" }, // 高速车QC更严，时间留长点
+        { label: "Lead Time", value: "25-30 days (Production)" },
         { label: "Battery Compliance", value: "MSDS / UN38.3 Certified" },
         { label: "Incoterms", value: "EXW, FOB, CIF" },
         { label: "Loading Ports", value: "Ningbo / Shanghai" },
@@ -191,7 +205,7 @@ const s9Product: ProductContent = {
   defaultPower: "2000W",
   powerOptions: ["2000W"],
   defaultBattery: "72V Lead-acid",
-  batteryOptions: ["72V Lead-acid", "72V Lithium", "72V Lithium (Long Range)"], // 增加长续航选项
+  batteryOptions: ["60V Lead-acid", "60V Lithium", "72V Lead-acid", "72V Lithium"], // 完整列出所有选项
 };
 
 export default s9Product;
