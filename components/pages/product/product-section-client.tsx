@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { withBasePath } from "@/lib/base-path";
-import imagesLoaded from "imagesloaded";
 import { TweenMax } from "gsap";
 import * as THREE from "three";
 
@@ -42,12 +41,12 @@ export function ProductSectionClient({
 
     initializedRef.current = true;
     const parent = sliderRef.current;
-    const images = Array.from(parent.querySelectorAll("img"));
+    const imageUrls = slides.map((slide) => withBasePath(slide.image));
 
     let cleanup = () => {};
     const displacementSlider = (opts: {
       parent: HTMLElement;
-      images: HTMLImageElement[];
+      imageUrls: string[];
     }) => {
       const vertex = `
         varying vec2 vUv;
@@ -76,7 +75,10 @@ export function ProductSectionClient({
         }
       `;
 
-      const sliderImages: any[] = [];
+      type SliderTexture = any;
+      const sliderImages: Array<SliderTexture | null> = new Array(
+        opts.imageUrls.length,
+      ).fill(null);
       const baseWidth = 500;
       const baseHeight = 500;
       let renderW = baseWidth;
@@ -120,12 +122,28 @@ export function ProductSectionClient({
       const loader = new THREE.TextureLoader();
       loader.crossOrigin = "anonymous";
 
-      images.forEach((img) => {
-        const image = loader.load(`${img.getAttribute("src")}?v=${Date.now()}`);
-        image.magFilter = image.minFilter = THREE.LinearFilter;
-        image.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        sliderImages.push(image);
-      });
+      const loadTexture = (index: number) =>
+        new Promise<SliderTexture>((resolve, reject) => {
+          const cached = sliderImages[index];
+          if (cached) {
+            resolve(cached);
+            return;
+          }
+          const url = opts.imageUrls[index];
+          const image = loader.load(
+            `${url}?v=${Date.now()}`,
+            (texture: SliderTexture) => {
+              texture.magFilter = texture.minFilter = THREE.LinearFilter;
+              texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+              sliderImages[index] = texture;
+              resolve(texture);
+            },
+            undefined,
+            (error: unknown) => reject(error),
+          );
+          image.magFilter = image.minFilter = THREE.LinearFilter;
+          image.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        });
 
       const scene = new THREE.Scene();
       scene.background = null;
@@ -142,14 +160,24 @@ export function ProductSectionClient({
       const mat = new THREE.ShaderMaterial({
         uniforms: {
           dispFactor: { type: "f", value: 0.0 },
-          currentImage: { type: "t", value: sliderImages[0] },
-          nextImage: { type: "t", value: sliderImages[1] },
+          currentImage: { type: "t", value: null },
+          nextImage: { type: "t", value: null },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
         transparent: true,
         opacity: 1.0,
       });
+      const nextIndex = opts.imageUrls.length > 1 ? 1 : 0;
+      Promise.all([loadTexture(0), loadTexture(nextIndex)]).then(
+        ([currentTexture, nextTexture]) => {
+          setIsLoading(false);
+          mat.uniforms.currentImage.value = currentTexture;
+          mat.uniforms.nextImage.value = nextTexture;
+          mat.uniforms.currentImage.needsUpdate = true;
+          mat.uniforms.nextImage.needsUpdate = true;
+        },
+      );
 
       const geometry = new THREE.PlaneGeometry(baseWidth, baseHeight, 1, 1);
       const object = new THREE.Mesh(geometry, mat);
@@ -226,41 +254,68 @@ export function ProductSectionClient({
           }
         };
 
+        let isLoadingTexture = false;
+        let pendingSlideId: number | null = null;
         const goToSlide = (slideId: number, startFactor = 0) => {
           if (isAnimating || slideId === currentIndex) return;
-          isAnimating = true;
+          const runTransition = () => {
+            isAnimating = true;
 
-          const active = pagination.querySelector(".active");
-          if (active) active.className = "";
-          pagButtons[slideId].className = "active";
+            const active = pagination.querySelector(".active");
+            if (active) active.className = "";
+            pagButtons[slideId].className = "active";
 
-          currentIndex = slideId;
-          setProgress(0);
+            currentIndex = slideId;
+            setProgress(0);
 
-          mat.uniforms.nextImage.value = sliderImages[slideId];
-          mat.uniforms.nextImage.needsUpdate = true;
-          if (startFactor > 0) {
-            mat.uniforms.dispFactor.value = startFactor;
+            const nextTexture = sliderImages[slideId];
+            if (!nextTexture) return;
+            mat.uniforms.nextImage.value = nextTexture;
+            mat.uniforms.nextImage.needsUpdate = true;
+            if (startFactor > 0) {
+              mat.uniforms.dispFactor.value = startFactor;
+            }
+
+            TweenMax.to(
+              mat.uniforms.dispFactor,
+              Math.max(0.2, 1 - startFactor),
+              {
+                value: 1,
+                ease: "expo.inOut",
+                onComplete: () => {
+                  mat.uniforms.currentImage.value = nextTexture;
+                  mat.uniforms.currentImage.needsUpdate = true;
+                  mat.uniforms.dispFactor.value = 0.0;
+                  isAnimating = false;
+                  startTime = performance.now();
+                  setProgress(0);
+                },
+              },
+            );
+
+            applySlideContent(slideId);
+          };
+
+          if (sliderImages[slideId]) {
+            runTransition();
+            return;
           }
 
-          TweenMax.to(
-            mat.uniforms.dispFactor,
-            Math.max(0.2, 1 - startFactor),
-            {
-              value: 1,
-              ease: "expo.inOut",
-              onComplete: () => {
-                mat.uniforms.currentImage.value = sliderImages[slideId];
-                mat.uniforms.currentImage.needsUpdate = true;
-                mat.uniforms.dispFactor.value = 0.0;
-                isAnimating = false;
-                startTime = performance.now();
-                setProgress(0);
-              },
-            },
-          );
-
-          applySlideContent(slideId);
+          pendingSlideId = slideId;
+          if (isLoadingTexture) return;
+          isLoadingTexture = true;
+          loadTexture(slideId)
+            .then(() => {
+              isLoadingTexture = false;
+              const nextPending = pendingSlideId;
+              pendingSlideId = null;
+              if (nextPending === null) return;
+              if (nextPending === currentIndex) return;
+              goToSlide(nextPending);
+            })
+            .catch(() => {
+              isLoadingTexture = false;
+            });
         };
 
         pagButtons.forEach((el) => {
@@ -406,10 +461,8 @@ export function ProductSectionClient({
       animate();
     };
 
-    imagesLoaded(images, () => {
-      setIsLoading(false);
-      displacementSlider({ parent, images: images as HTMLImageElement[] });
-    });
+    if (!imageUrls.length) return;
+    displacementSlider({ parent, imageUrls });
     return () => cleanup();
   }, [slides]);
 
@@ -465,13 +518,15 @@ export function ProductSectionClient({
             </div>
           </div>
 
-          {slides.map((slide) => (
+          {slides[0] ? (
             <img
-              key={slide.image}
-              src={withBasePath(slide.image)}
-              alt={`${slide.title} photo`}
+              src={withBasePath(slides[0].image)}
+              alt={`${slides[0].title} photo`}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
-          ))}
+          ) : null}
 
           <div id="product-pagination">
             {slides.map((_, index) => (
