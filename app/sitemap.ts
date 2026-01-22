@@ -1,17 +1,12 @@
 import { MetadataRoute } from "next";
 
 import { getBlogList } from "@/lib/blog";
+import { getBaseUrl } from "@/lib/site-url";
 
 export const dynamic = "force-static";
 
-function resolveSiteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return "http://localhost:3000";
-}
-
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = resolveSiteUrl();
+  const baseUrl = getBaseUrl();
   const now = new Date();
 
   const staticRoutes = [

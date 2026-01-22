@@ -5,13 +5,8 @@ import CompanyProfile from "@/components/company-profile";
 import Cta from "@/components/cta";
 import Footer from "@/components/ui/footer";
 import { getProductBySlug, products } from "@/data/products";
+import { getBaseUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
-
-function resolveSiteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return "http://localhost:3000";
-}
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -46,7 +41,7 @@ export default async function ProductDetail({ params }: ProductDetailPageProps) 
   if (!product) {
     notFound();
   }
-  const siteUrl = resolveSiteUrl();
+  const siteUrl = getBaseUrl();
   const productUrl = new URL(`/product/${product.slug}`, siteUrl).toString();
   const imageUrls = product.images.map((image) => new URL(image.src, siteUrl).toString());
   const jsonLd = [

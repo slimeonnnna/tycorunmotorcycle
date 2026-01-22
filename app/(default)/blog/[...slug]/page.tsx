@@ -10,6 +10,7 @@ import {
   getBlogList,
   getBlogPostBySlug,
 } from "@/lib/blog";
+import { getBaseUrl } from "@/lib/site-url";
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -22,12 +23,6 @@ type TocItem = {
   text: string;
   id: string;
 };
-
-function resolveSiteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return "http://localhost:3000";
-}
 
 function slugifyHeading(value: string) {
   return value
@@ -216,7 +211,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
-  const siteUrl = resolveSiteUrl();
+  const siteUrl = getBaseUrl();
   const postUrl = new URL(`/blog/${post.slug.join("/")}`, siteUrl).toString();
   const imageUrl = new URL(post.cover ?? "/tycorun-logo.webp", siteUrl).toString();
 
@@ -255,7 +250,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const siteUrl = resolveSiteUrl();
+  const siteUrl = getBaseUrl();
   const postUrl = new URL(`/blog/${post.slug.join("/")}`, siteUrl).toString();
   const imageUrl = new URL(post.cover ?? "/tycorun-logo.webp", siteUrl).toString();
   const jsonLd = {
