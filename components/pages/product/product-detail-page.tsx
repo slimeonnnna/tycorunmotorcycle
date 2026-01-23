@@ -744,9 +744,13 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
       {/* 页面标题 */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center space-x-2 text-sm text-gray-400 mb-4">
-          <Link href="/" className="hover:text-blue-400 transition-colors">Home</Link>
+          <Link href="/" prefetch={false} className="hover:text-blue-400 transition-colors">
+            Home
+          </Link>
           <span>/</span>
-          <Link href="/product" className="hover:text-blue-400 transition-colors">Product</Link>
+          <Link href="/product" prefetch={false} className="hover:text-blue-400 transition-colors">
+            Product
+          </Link>
           <span>/</span>
           <span className="text-gray-300">{product.name}</span>
         </div>

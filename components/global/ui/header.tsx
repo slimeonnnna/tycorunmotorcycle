@@ -3,9 +3,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logo from "./logo";
 
 export default function Header() {
+  const pathname = usePathname();
+  const disablePrefetch =
+    !!pathname && pathname.startsWith("/product/") && pathname !== "/product";
   const [isVisible, setIsVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -104,13 +108,25 @@ export default function Header() {
               <Link href="/about" className="hover:text-blue-500 transition-colors">
                 About
               </Link>
-              <Link href="/product" className="hover:text-blue-500 transition-colors">
+              <Link
+                href="/product"
+                prefetch={!disablePrefetch}
+                className="hover:text-blue-500 transition-colors"
+              >
                 Product
               </Link>
-              <Link href="/solution" className="hover:text-blue-500 transition-colors">
+              <Link
+                href="/solution"
+                prefetch={!disablePrefetch}
+                className="hover:text-blue-500 transition-colors"
+              >
                 Solution
               </Link>
-              <Link href="/blog" className="hover:text-blue-500 transition-colors">
+              <Link
+                href="/blog"
+                prefetch={!disablePrefetch}
+                className="hover:text-blue-500 transition-colors"
+              >
                 Blog
               </Link>
             </div>
@@ -120,6 +136,7 @@ export default function Header() {
           <div className="hidden flex-1 items-center justify-end gap-3 md:flex">
             <Link
               href="/contact"
+              prefetch={!disablePrefetch}
               className="btn-sm bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] py-[5px] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
             >
               Contact
@@ -188,6 +205,7 @@ export default function Header() {
               <div className="space-y-3">
                 <Link
                   href="/"
+                  prefetch={!disablePrefetch}
                   className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -195,6 +213,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/about"
+                  prefetch={!disablePrefetch}
                   className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -202,6 +221,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/product"
+                  prefetch={!disablePrefetch}
                   className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -209,6 +229,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/solution"
+                  prefetch={!disablePrefetch}
                   className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -216,6 +237,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/blog"
+                  prefetch={!disablePrefetch}
                   className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -226,6 +248,7 @@ export default function Header() {
             <div className="border-t border-gray-800 pt-4">
               <Link
                 href="/contact"
+                prefetch={!disablePrefetch}
                 className="btn w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
                 onClick={() => setMobileMenuOpen(false)}
               >
