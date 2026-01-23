@@ -55,25 +55,19 @@ export default function LenisInit() {
       rafId = requestAnimationFrame(raf);
     };
 
-    const triggerInit = () => {
+    const handleLoad = () => {
       void init();
-      window.removeEventListener("wheel", triggerInit);
-      window.removeEventListener("touchstart", triggerInit);
-      window.removeEventListener("pointerdown", triggerInit);
-      window.removeEventListener("keydown", triggerInit);
     };
 
-    window.addEventListener("wheel", triggerInit, { passive: true });
-    window.addEventListener("touchstart", triggerInit, { passive: true });
-    window.addEventListener("pointerdown", triggerInit);
-    window.addEventListener("keydown", triggerInit);
+    if (document.readyState === "complete") {
+      void init();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
 
     return () => {
       cancelled = true;
-      window.removeEventListener("wheel", triggerInit);
-      window.removeEventListener("touchstart", triggerInit);
-      window.removeEventListener("pointerdown", triggerInit);
-      window.removeEventListener("keydown", triggerInit);
+      window.removeEventListener("load", handleLoad);
       document.removeEventListener("click", handleAnchorClick);
       cancelAnimationFrame(rafId);
       lenisRef.current?.destroy();

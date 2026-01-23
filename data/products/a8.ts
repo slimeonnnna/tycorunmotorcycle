@@ -32,7 +32,7 @@ const a8Product: ProductContent = {
     },
   ],
   mainImage: "/images/a8/a8-series-electric-moped-strong-load-capacity.webp",
-  sliderImage: "/images/a8/A8 Series Electric Moped - 1000W City Commuter.webp",
+  sliderImage: "/images/a8/a8-series-electric-moped-1000w-city-commuter.webp",
   images: [
     {
       id: 1,

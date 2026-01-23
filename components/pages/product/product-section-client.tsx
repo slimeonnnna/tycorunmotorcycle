@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { withBasePath } from "@/lib/base-path";
 import { TweenMax } from "gsap";
@@ -36,12 +37,33 @@ export function ProductSectionClient({
   const [isLoading, setIsLoading] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
 
+  const getOptimizedImageUrl = (src: string, width = 1024, quality = 75) => {
+    if (process.env.NODE_ENV !== "production") {
+      return src;
+    }
+    if (src.startsWith("https://") || src.startsWith("http://")) {
+      return src;
+    }
+    const folder =
+      process.env.nextImageExportOptimizer_exportFolderName ||
+      "nextImageExportOptimizer";
+    return `/${folder}${src}?width=${width}&quality=${quality}`;
+  };
+
+  const getTextureUrl = (src: string) => {
+    const normalized = withBasePath(src);
+    if (process.env.NODE_ENV !== "production") {
+      return `${normalized}?v=${Date.now()}`;
+    }
+    return getOptimizedImageUrl(normalized);
+  };
+
   useEffect(() => {
     if (initializedRef.current || !sliderRef.current) return;
 
     initializedRef.current = true;
     const parent = sliderRef.current;
-    const imageUrls = slides.map((slide) => withBasePath(slide.image));
+    const imageUrls = slides.map((slide) => getTextureUrl(slide.image));
 
     let cleanup = () => {};
     const displacementSlider = (opts: {
@@ -131,7 +153,7 @@ export function ProductSectionClient({
           }
           const url = opts.imageUrls[index];
           const image = loader.load(
-            `${url}?v=${Date.now()}`,
+            url,
             (texture: SliderTexture) => {
               texture.magFilter = texture.minFilter = THREE.LinearFilter;
               texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -519,12 +541,14 @@ export function ProductSectionClient({
           </div>
 
           {slides[0] ? (
-            <img
+            <Image
               src={withBasePath(slides[0].image)}
               alt={`${slides[0].title} photo`}
+              width={500}
+              height={500}
               loading="eager"
-              decoding="async"
-              fetchPriority="high"
+              priority
+              className="h-auto w-full"
             />
           ) : null}
 

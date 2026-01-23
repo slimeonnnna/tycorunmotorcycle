@@ -40,7 +40,7 @@ const kxProduct: ProductContent = {
 
   // 假设图片路径已更新为 kx 目录，请根据实际情况调整文件名
   mainImage: "/images/kx/kx-series-500w-electric-moped-view-04.webp",
-  sliderImage: "/images/kx/KX Series Electric Moped - 500W Compact.webp",
+  sliderImage: "/images/kx/kx-series-electric-moped-500w-compact.webp",
   images: [
     {
       id: 1,

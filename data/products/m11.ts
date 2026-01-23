@@ -40,7 +40,7 @@ const m11Product: ProductContent = {
 
   // 图片路径假设为 m11 目录
   mainImage: "/images/m11/m11-series-electric-motorcycle-view-01.webp",
-  sliderImage: "/images/m11/M11 Series Electric Motorcycle - 1200W Performance.webp",
+  sliderImage: "/images/m11/m11-series-electric-motorcycle-1200w-performance.webp",
   images: [
     {
       id: 1,

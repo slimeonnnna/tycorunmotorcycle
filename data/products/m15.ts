@@ -38,7 +38,7 @@ const m15Product: ProductContent = {
 
   // 假设图片路径�?m15 目录
   mainImage: "/images/m15/m15-series-electric-moped-view-01.webp",
-  sliderImage: "/images/m15/M15 Series Electric Moped - Agile Sport.webp",
+  sliderImage: "/images/m15/m15-series-electric-moped-agile-sport.webp",
   images: [
     {
       id: 1,

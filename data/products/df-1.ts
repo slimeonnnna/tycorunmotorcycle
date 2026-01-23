@@ -33,7 +33,7 @@ const df1Product: ProductContent = {
     },
   ],
   mainImage: "/images/df-1/df-1-series-500w-electric-moped-view-01.webp",
-  sliderImage: "/images/df-1/DF-1 Series Electric Moped - 500W City Platform.webp",
+  sliderImage: "/images/df-1/df-1-series-electric-moped-500w-city-platform.webp",
   images: [
     {
       id: 1,
