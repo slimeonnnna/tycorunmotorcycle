@@ -1,7 +1,7 @@
 ﻿
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { ProductContent } from '@/data/products';
@@ -13,14 +13,66 @@ type ProductDetailPageProps = {
 };
 
 const ProductDetailPage = ({ product, shippingContent, companyContent }: ProductDetailPageProps) => {
-  const productImages = product.images;
+  const productImages = product.images ?? [];
   const loopImages = [...productImages, ...productImages, ...productImages];
+  const colorPalette = [
+    { key: 'yellow', label: 'Yellow', hex: '#d9ba35' },
+    { key: 'white', label: 'White', hex: '#fffffe' },
+    { key: 'red', label: 'Red', hex: '#972c2b' },
+    { key: 'gray', label: 'Gray', hex: '#3d3d3d' },
+    { key: 'green', label: 'Green', hex: '#3b9a2e' },
+    { key: 'black', label: 'Black', hex: '#111827' },
+    { key: 'silver', label: 'Silver', hex: '#d1d5db' },
+    { key: 'blue', label: 'Blue', hex: '#3b82f6' },
+  ];
+  const resolveColorKey = (image: { src: string; alt: string }) => {
+    const text = `${image.src} ${image.alt}`.toLowerCase();
+    if (text.includes('grey')) {
+      return 'gray';
+    }
+    return colorPalette.find((color) => text.includes(color.key))?.key ?? null;
+  };
+
+  const colorOptions = useMemo(() => {
+    const options = new Map<string, { key: string; label: string; hex: string; index: number }>();
+    productImages.forEach((image, index) => {
+      const key = resolveColorKey(image);
+      if (!key || options.has(key)) {
+        return;
+      }
+      const paletteEntry = colorPalette.find((color) => color.key === key);
+      if (!paletteEntry) {
+        return;
+      }
+      options.set(key, { ...paletteEntry, index });
+    });
+    return Array.from(options.values());
+  }, [productImages]);
+  const showColorSelector =
+    product.slug === 'e57-mid-drive-electric-motorcycle-battery-swapping' &&
+    colorOptions.length > 0;
+
+  const colorByIndex = useMemo(() => {
+    const map = new Map<number, string>();
+    let activeKey: string | null = null;
+    productImages.forEach((image, index) => {
+      const key = resolveColorKey(image);
+      if (key) {
+        activeKey = key;
+      }
+      if (activeKey) {
+        map.set(index, activeKey);
+      }
+    });
+    return map;
+  }, [productImages]);
 
   const initialIndex = Math.max(
     0,
     productImages.findIndex((image) => image.src === product.mainImage),
   );
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [activeColor, setActiveColor] = useState<string | null>(null);
   const mainImage = productImages[currentIndex]?.src ?? product.mainImage;
   const mainImageAlt =
     productImages.find((image) => image.src === product.mainImage)?.alt ??
@@ -230,11 +282,26 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     goToIndex(currentIndex + 1);
   };
 
+  const handleColorSelect = (key: string) => {
+    setActiveColor(key);
+    const target = colorOptions.find((option) => option.key === key)?.index;
+    if (typeof target === 'number') {
+      goToIndex(target);
+    }
+  };
+
   const [motorPower, setMotorPower] = useState(product.defaultPower);
   const [batteryType, setBatteryType] = useState(product.defaultBattery);
   const [quantity, setQuantity] = useState(10);
-  const pricingData = product.pricing;
-  const specData = product.highlights;
+  const pricingData = product.pricing ?? [];
+  const specData = product.highlights ?? [];
+  const specBullets = product.specBullets ?? [];
+  const scenarios = product.scenarios ?? [];
+  const specs = product.specs ?? [];
+  const faqs = product.faqs ?? [];
+  const shippingSections = product.shippingSections ?? [];
+  const powerOptions = product.powerOptions ?? [];
+  const batteryOptions = product.batteryOptions ?? [];
   const [activeTab, setActiveTab] = useState('specifications');
   const [isTabFading, setIsTabFading] = useState(false);
   const tabFadeTimerRef = useRef(0 as number);
@@ -305,6 +372,14 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
   useEffect(() => {
     setIsHydrated(true);
   }, []);
+
+  useEffect(() => {
+    const imageIndex = productImages.findIndex((entry) => entry.src === mainImage);
+    if (imageIndex < 0) {
+      return;
+    }
+    setActiveColor(colorByIndex.get(imageIndex) ?? null);
+  }, [mainImage, productImages, colorByIndex]);
 
   useEffect(() => {
     return () => {
@@ -878,6 +953,29 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                 </div>
               </button>
             </div>
+            {showColorSelector && (
+              <div className="pointer-events-none absolute inset-x-0 bottom-3 z-20 flex items-center justify-center">
+                <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-gray-700/70 bg-gray-900/70 px-3 py-2 backdrop-blur">
+                  {colorOptions.map((option) => {
+                    const isActive = activeColor === option.key;
+                    return (
+                      <button
+                        key={option.key}
+                        type="button"
+                        className={`relative h-3.5 w-3.5 rounded-full transition-transform ${
+                          isActive ? 'scale-125 ring-2 ring-blue-400/80' : 'ring-1 ring-gray-500/70'
+                        }`}
+                        style={{ backgroundColor: option.hex }}
+                        aria-label={`Select ${option.label} color`}
+                        aria-pressed={isActive}
+                        onClick={() => handleColorSelect(option.key)}
+                        onPointerDown={(event) => event.stopPropagation()}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 缩略图网格 */}
@@ -959,7 +1057,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
             <div>
             <h2 className="text-lg font-medium text-gray-100 mb-3">Motor Power</h2>
               <div className="flex space-x-3">
-                {product.powerOptions.map((power) => (
+                {powerOptions.map((power) => (
                   <button
                     key={power}
                     onClick={() => setMotorPower(power)}
@@ -978,7 +1076,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
             <div>
             <h2 className="text-lg font-medium text-gray-100 mb-3">Battery Type</h2>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:space-x-3">
-                {product.batteryOptions.map((battery) => (
+                {batteryOptions.map((battery) => (
                   <button
                     key={battery}
                     onClick={() => setBatteryType(battery)}
@@ -1094,12 +1192,12 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                   {product.specIntro}
                 </p>
                 <ul className="mt-4 space-y-2 text-sm text-gray-400">
-                  {product.specBullets.map((item) => (
+                  {specBullets.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
                 <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  {product.scenarios.map((scenario) => (
+                  {scenarios.map((scenario) => (
                     <div
                       key={scenario.title}
                       className="relative overflow-hidden rounded-xl border border-gray-800 bg-gray-900/50 p-4"
@@ -1126,7 +1224,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
                     <div className="text-blue-300/70">Calibration-grade metrics, verified on every batch.</div>
                     <table className="mt-3 w-full border-collapse">
                       <tbody>
-                        {product.specs.map((spec) => (
+                        {specs.map((spec) => (
                           <tr key={spec.label} className="border-b border-blue-500/10">
                             <th
                               scope="row"
@@ -1150,7 +1248,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
               <div className="space-y-6 rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
                 <h2 className="text-xl font-bold text-gray-100">Packaging & Shipping Information</h2>
                 <div className="space-y-6">
-                  {product.shippingSections?.map((section, sectionIndex) => (
+                  {shippingSections.map((section, sectionIndex) => (
                     <div
                       key={`${section.title}-${sectionIndex}`}
                       className="rounded-2xl border border-gray-700/70 bg-gray-900/60 p-5"
@@ -1347,7 +1445,7 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
             <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-5">
               <h2 className="text-xl font-bold text-gray-100 mb-4">FAQ</h2>
               <div className="space-y-5">
-                {product.faqs.map((faq, index) => (
+                {faqs.map((faq, index) => (
                   <div
                     key={faq.question}
                     onClick={() => handleFaqToggle(index)}
