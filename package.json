@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "postbuild": "next-image-export-optimizer",
     "export": "next export",
     "start": "next start",
     "lint": "next lint"
