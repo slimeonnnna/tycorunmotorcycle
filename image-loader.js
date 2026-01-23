@@ -7,5 +7,22 @@ export default function myImageLoader({ src, width, quality }) {
   if (src.startsWith("https://") || src.startsWith("http://")) {
     return src;
   }
-  return `/${process.env.nextImageExportOptimizer_exportFolderName}${src}?width=${width}&quality=${quality || 75}`;
+  const exportFolderName =
+    process.env.nextImageExportOptimizer_exportFolderName ||
+    "nextImageExportOptimizer";
+  const parts = src.split("/");
+  const filenameWithExtension = parts.pop() || "";
+  const path = parts.join("/") + "/";
+  const extension = filenameWithExtension.split(".").pop() || "";
+  const filename = filenameWithExtension.slice(
+    0,
+    Math.max(0, filenameWithExtension.lastIndexOf(".")),
+  );
+  const useWebp =
+    process.env.nextImageExportOptimizer_storePicturesInWEBP === "true";
+  const processedExtension =
+    useWebp && ["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())
+      ? "WEBP"
+      : extension.toUpperCase();
+  return `/${path}${exportFolderName}/${filename}-opt-${width}.${processedExtension}`;
 }
