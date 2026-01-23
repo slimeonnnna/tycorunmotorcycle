@@ -6,6 +6,7 @@ import m15Product from "./products/m15";
 import m16Product from "./products/m16";
 import q7Product from "./products/q7";
 import s9Product from "./products/s9";
+import s690Product from "./products/s690";
 
 export type ProductImage = {
   id: number;
@@ -80,6 +81,7 @@ export const products: ProductContent[] = [
   m16Product,
   q7Product,
   s9Product,
+  s690Product,
 ];
 
 export const getProductBySlug = (slug: string) =>
