@@ -297,6 +297,7 @@ export function ProductSectionClient({
           pagination.querySelectorAll<HTMLButtonElement>("button"),
         );
         let isAnimating = false;
+        let pendingTransitionId: number | null = null;
         let currentIndex = 0;
         let startTime = performance.now();
         let pausedAt: number | null = null;
@@ -330,7 +331,11 @@ export function ProductSectionClient({
         let isLoadingTexture = false;
         let pendingSlideId: number | null = null;
         const goToSlide = (slideId: number, startFactor = 0) => {
-          if (isAnimating || slideId === currentIndex) return;
+          if (slideId === currentIndex) return;
+          if (isAnimating) {
+            pendingTransitionId = slideId;
+            return;
+          }
           const runTransition = () => {
             isAnimating = true;
 
@@ -362,6 +367,16 @@ export function ProductSectionClient({
                   isAnimating = false;
                   startTime = performance.now();
                   setProgress(0);
+                  if (
+                    pendingTransitionId !== null &&
+                    pendingTransitionId !== currentIndex
+                  ) {
+                    const nextPending = pendingTransitionId;
+                    pendingTransitionId = null;
+                    goToSlide(nextPending);
+                  } else {
+                    pendingTransitionId = null;
+                  }
                 },
               },
             );
@@ -400,31 +415,31 @@ export function ProductSectionClient({
 
         const hoverTarget = opts.parent.parentElement || opts.parent;
         let isTouchMode = false;
+        const isPaginationEvent = (event: PointerEvent) => {
+          const target = event.target as HTMLElement | null;
+          return Boolean(target?.closest?.("#product-pagination"));
+        };
+
         const handlePointerEnter = (event: PointerEvent) => {
           if (event.pointerType === "touch") return;
+          if (isPaginationEvent(event)) return;
+          if (isDragging) return;
           pause();
         };
         const handlePointerLeave = (event: PointerEvent) => {
           if (event.pointerType === "touch" || isTouchMode) return;
+          if (isPaginationEvent(event)) return;
+          if (isDragging) return;
           resume();
-        };
-        const handlePointerDown = (event: PointerEvent) => {
-          if (event.pointerType !== "touch") return;
-          isTouchMode = true;
-          if (pausedAt === null) {
-            pause();
-          } else {
-            resume();
-          }
         };
         hoverTarget.addEventListener("pointerenter", handlePointerEnter);
         hoverTarget.addEventListener("pointerleave", handlePointerLeave);
-        hoverTarget.addEventListener("pointerdown", handlePointerDown);
 
         let dragStartX = 0;
         let dragStartY = 0;
         let isDragging = false;
         const dragThreshold = 30;
+        const tapThreshold = 6;
 
         const handleDragEnd = (event: PointerEvent) => {
           if (!isDragging) return;
@@ -434,6 +449,14 @@ export function ProductSectionClient({
           isDragging = false;
           window.removeEventListener("pointerup", handleDragEnd);
           window.removeEventListener("pointercancel", handleDragEnd);
+          if (absX < tapThreshold && absY < tapThreshold) {
+            if (pausedAt === null) {
+              pause();
+            } else {
+              resume();
+            }
+            return;
+          }
           if (absX < dragThreshold || absX < absY * 1.73) return;
           const goNext = deltaX < 0;
           const nextIndex = goNext
@@ -454,6 +477,9 @@ export function ProductSectionClient({
           isDragging = true;
           dragStartX = event.clientX;
           dragStartY = event.clientY;
+          if (event.pointerType === "touch") {
+            isTouchMode = true;
+          }
           if (event.pointerType === "touch") {
             event.preventDefault();
           }
@@ -497,7 +523,6 @@ export function ProductSectionClient({
         cleanup = () => {
           hoverTarget.removeEventListener("pointerenter", handlePointerEnter);
           hoverTarget.removeEventListener("pointerleave", handlePointerLeave);
-          hoverTarget.removeEventListener("pointerdown", handlePointerDown);
           opts.parent.removeEventListener("pointerdown", handleDragStart);
           window.removeEventListener("pointerup", handleDragEnd);
           window.removeEventListener("pointercancel", handleDragEnd);
@@ -591,7 +616,7 @@ export function ProductSectionClient({
             </div>
           </div>
 
-          {slides[0] ? (
+          {slides[0] && isLoading ? (
             <Image
               src={withBasePath(slides[0].image)}
               alt={`${slides[0].title} photo`}

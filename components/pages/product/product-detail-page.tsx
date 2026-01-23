@@ -22,6 +22,10 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
   );
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const mainImage = productImages[currentIndex]?.src ?? product.mainImage;
+  const mainImageAlt =
+    productImages.find((image) => image.src === product.mainImage)?.alt ??
+    product.name;
+  const [isHydrated, setIsHydrated] = useState(false);
   const thumbnailTrackRef = useRef<HTMLDivElement | null>(null);
   const mainTrackRef = useRef<HTMLDivElement | null>(null);
   const mainViewportRef = useRef<HTMLDivElement | null>(null);
@@ -297,6 +301,10 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
     setMotorPower(product.defaultPower);
     setBatteryType(product.defaultBattery);
   }, [product.defaultPower, product.defaultBattery]);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -761,51 +769,67 @@ const ProductDetailPage = ({ product, shippingContent, companyContent }: Product
 
           {/* 主图 */}
           <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 aspect-square flex items-center justify-center border border-gray-700 shadow-lg">
-            <div
-              ref={mainViewportRef}
-              className="relative h-full w-full overflow-hidden"
-              style={{ touchAction: 'pan-y' }}
-              onMouseEnter={handleMainMouseEnter}
-              onMouseLeave={handleMainMouseLeave}
-            >
-              <div
-                ref={mainTrackRef}
-                className="no-scrollbar main-carousel-track h-full w-full overflow-x-auto"
-                style={{ touchAction: 'pan-y' }}
-                onPointerDown={handleMainPointerDown}
-                onPointerMove={handleMainPointerMove}
-                onPointerUp={handleMainPointerUp}
-                onPointerLeave={(event) => {
-                  if (mainDragRef.current.pointerId === null) {
-                    return;
-                  }
-                  handleMainPointerCancel(event);
-                }}
-                onPointerCancel={handleMainPointerCancel}
-              >
-                {loopImages.map((image, index) => {
-                  const isPrimary = index === productImages.length + currentIndex;
-                  const isFirstPrimary = isPrimary && currentIndex === initialIndex;
-                  return (
-                    <div key={`${image.id}-${index}`} className="main-carousel-slide h-full w-full">
-                      <div className="relative h-full w-full">
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          fill
-                          sizes="(max-width: 640px) 75vw, (max-width: 1024px) 70vw, 606px"
-                          className="main-carousel-image object-contain"
-                          priority={isFirstPrimary}
-                          loading={isPrimary ? 'eager' : 'lazy'}
-                          fetchPriority={isFirstPrimary ? 'high' : 'auto'}
-                          draggable={false}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
+            {!isHydrated ? (
+              <div className="relative h-full w-full">
+                <Image
+                  src={product.mainImage}
+                  alt={mainImageAlt}
+                  fill
+                  sizes="(max-width: 640px) 75vw, (max-width: 1024px) 70vw, 606px"
+                  className="main-carousel-image object-contain"
+                  priority
+                  loading="eager"
+                  fetchPriority="high"
+                  draggable={false}
+                />
               </div>
-            </div>
+            ) : (
+              <div
+                ref={mainViewportRef}
+                className="relative h-full w-full overflow-hidden"
+                style={{ touchAction: 'pan-y' }}
+                onMouseEnter={handleMainMouseEnter}
+                onMouseLeave={handleMainMouseLeave}
+              >
+                <div
+                  ref={mainTrackRef}
+                  className="no-scrollbar main-carousel-track h-full w-full overflow-x-auto"
+                  style={{ touchAction: 'pan-y' }}
+                  onPointerDown={handleMainPointerDown}
+                  onPointerMove={handleMainPointerMove}
+                  onPointerUp={handleMainPointerUp}
+                  onPointerLeave={(event) => {
+                    if (mainDragRef.current.pointerId === null) {
+                      return;
+                    }
+                    handleMainPointerCancel(event);
+                  }}
+                  onPointerCancel={handleMainPointerCancel}
+                >
+                  {loopImages.map((image, index) => {
+                    const isPrimary = index === productImages.length + currentIndex;
+                    const isFirstPrimary = isPrimary && currentIndex === initialIndex;
+                    return (
+                      <div key={`${image.id}-${index}`} className="main-carousel-slide h-full w-full">
+                        <div className="relative h-full w-full">
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            fill
+                            sizes="(max-width: 640px) 75vw, (max-width: 1024px) 70vw, 606px"
+                            className="main-carousel-image object-contain"
+                            priority={isFirstPrimary}
+                            loading={isPrimary ? 'eager' : 'lazy'}
+                            fetchPriority={isFirstPrimary ? 'high' : 'auto'}
+                            draggable={false}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
             <div
               className="image-card__controls"
               onMouseEnter={handleMainMouseEnter}
