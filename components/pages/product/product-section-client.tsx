@@ -159,28 +159,57 @@ export function ProductSectionClient({
       const loader = new THREE.TextureLoader();
       loader.crossOrigin = "anonymous";
 
-      const loadTexture = (index: number) =>
-        new Promise<SliderTexture>((resolve, reject) => {
-          const cached = sliderImages[index];
-          if (cached) {
-            resolve(cached);
-            return;
-          }
-          const url = opts.imageUrls[index];
-          const image = loader.load(
-            url,
-            (texture: SliderTexture) => {
-              texture.magFilter = texture.minFilter = THREE.LinearFilter;
-              texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-              sliderImages[index] = texture;
-              resolve(texture);
-            },
-            undefined,
-            (error: unknown) => reject(error),
-          );
-          image.magFilter = image.minFilter = THREE.LinearFilter;
-          image.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        });
+      const textureAttempts = new Map<number, number>();
+      const texturePromises = new Map<number, Promise<SliderTexture>>();
+      const maxTextureAttempts = 3;
+      const retryDelayMs = 10_000;
+
+      const loadTexture = (index: number) => {
+        const cached = sliderImages[index];
+        if (cached) {
+          return Promise.resolve(cached);
+        }
+        const existingPromise = texturePromises.get(index);
+        if (existingPromise) {
+          return existingPromise;
+        }
+
+        const promise = new Promise<SliderTexture>((resolve, reject) => {
+          const attemptLoad = () => {
+            const attemptCount = textureAttempts.get(index) ?? 0;
+            if (attemptCount >= maxTextureAttempts) {
+              reject(new Error(`Texture load failed after ${maxTextureAttempts} attempts.`));
+              return;
+            }
+            textureAttempts.set(index, attemptCount + 1);
+
+            const url = opts.imageUrls[index];
+            const image = loader.load(
+              url,
+              (texture: SliderTexture) => {
+                texture.magFilter = texture.minFilter = THREE.LinearFilter;
+                texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+                sliderImages[index] = texture;
+                resolve(texture);
+              },
+              undefined,
+              () => {
+                setTimeout(attemptLoad, retryDelayMs);
+              },
+            );
+            image.magFilter = image.minFilter = THREE.LinearFilter;
+            image.anisotropy = renderer.capabilities.getMaxAnisotropy();
+          };
+
+          attemptLoad();
+        })
+          .finally(() => {
+            texturePromises.delete(index);
+          });
+
+        texturePromises.set(index, promise);
+        return promise;
+      };
 
       const scene = new THREE.Scene();
       scene.background = null;
@@ -206,8 +235,15 @@ export function ProductSectionClient({
         opacity: 1.0,
       });
       const nextIndex = opts.imageUrls.length > 1 ? 1 : 0;
-      Promise.all([loadTexture(0), loadTexture(nextIndex)]).then(
-        ([currentTexture, nextTexture]) => {
+      Promise.allSettled([loadTexture(0), loadTexture(nextIndex)]).then(
+        (results) => {
+          const currentTexture =
+            results[0].status === "fulfilled" ? results[0].value : null;
+          const nextTexture =
+            results[1].status === "fulfilled"
+              ? results[1].value
+              : currentTexture;
+          if (!currentTexture) return;
           setIsLoading(false);
           mat.uniforms.currentImage.value = currentTexture;
           mat.uniforms.nextImage.value = nextTexture;
