@@ -47,9 +47,10 @@ export function ProductSectionClient({
     const exportFolderName =
       process.env.nextImageExportOptimizer_exportFolderName ||
       "nextImageExportOptimizer";
-    const parts = src.split("/");
+    const normalizedSrc = src.startsWith("/") ? src.slice(1) : src;
+    const parts = normalizedSrc.split("/");
     const filenameWithExtension = parts.pop() || "";
-    const path = parts.join("/") + "/";
+    const path = parts.length ? `${parts.join("/")}/` : "";
     const extension = filenameWithExtension.split(".").pop() || "";
     const filename = filenameWithExtension.slice(
       0,
