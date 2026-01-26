@@ -2,9 +2,15 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function AOSInit() {
+  const pathname = usePathname();
+
   useEffect(() => {
+    if (pathname?.startsWith("/product/")) {
+      return;
+    }
     let cancelled = false;
     const init = async () => {
       const { default: AOS } = await import("aos");
@@ -20,7 +26,7 @@ export default function AOSInit() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }
