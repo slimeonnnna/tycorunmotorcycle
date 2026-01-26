@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "postbuild": "next-image-export-optimizer",
+    "postbuild": "next-image-export-optimizer && node scripts/generate-sitemap.mjs",
     "export": "next export",
     "start": "next start",
     "lint": "next lint"
