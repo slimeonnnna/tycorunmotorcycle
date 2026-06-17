@@ -1,6 +1,7 @@
 Next.js Electric Vehicle Website Template
 A free, open-source website template for electric motorcycle / moped brands — built with Next.js App Router, React, and Tailwind CSS. Fork it, customize it, ship it.
 Live Demo: https://tycorunmotorcycle.pages.dev/
+
 ⚠️ This template was developed with AI assistance and manually reviewed, but may still contain issues. Use at your own discretion.
 
 Tech Stack
