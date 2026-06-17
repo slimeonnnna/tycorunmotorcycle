@@ -2,9 +2,9 @@
 
 A free, open-source website template for electric motorcycle / moped brands — built with Next.js App Router, React, and Tailwind CSS. Fork it, customize it, ship it.
 
-> ⚠️ This template was developed with AI assistance and manually reviewed, but may still contain issues. Use at your own discretion.
+**Live Demo:** [tycorunmotorcycle.pages.dev](https://tycorunmotorcycle.pages.dev/)
 
-Live Demo: https://tycorunmotorcycle.pages.dev/
+> ⚠️ This template was developed with AI assistance and manually reviewed by a non-developer. It works, but may contain quirky implementations, unconventional patterns, or things that make senior devs cry. You've been warned.
 
 ## Tech Stack
 
