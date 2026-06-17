@@ -5,6 +5,8 @@ A free, open-source website template for electric motorcycle / moped brands — 
 **Live Demo:** [tycorunmotorcycle.pages.dev](https://tycorunmotorcycle.pages.dev/)
 
 > ⚠️ This template was developed with AI assistance and manually reviewed by a non-developer. It works, but may contain quirky implementations, unconventional patterns, or things that make senior devs cry. You've been warned.
+>
+> 🚧 **This is a work-in-progress and may never be "finished".** I'm likely not going to maintain or update this repo. Please don't watch it expecting updates — just fork it and make it your own.
 
 ## Tech Stack
 
