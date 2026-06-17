@@ -1,33 +1,32 @@
-# TYCORUN Electric Motorcycles
+Next.js Electric Vehicle Website Template
+A free, open-source website template for electric motorcycle / moped brands — built with Next.js App Router, React, and Tailwind CSS. Fork it, customize it, ship it.
+Live Demo: https://tycorunmotorcycle.pages.dev/
+⚠️ This template was developed with AI assistance and manually reviewed, but may still contain issues. Use at your own discretion.
 
-Official marketing website for TYCORUN electric motorcycle and moped platforms, covering product lineup, specs, and company capabilities.
+Tech Stack
 
-## Tech Stack
-- Next.js (App Router)
-- React
-- Tailwind CSS
+Next.js (App Router)
+React
+Tailwind CSS
 
-## Local Development
-```bash
-pnpm install
+Getting Started
+bashpnpm install
 pnpm dev
-```
-
-Open `http://localhost:3000`.
-
-## Build
-```bash
-pnpm build
+Open http://localhost:3000.
+Build
+bashpnpm build
 pnpm start
-```
+Project Structure
+app/         # App Router pages and layouts
+components/  # UI components
+data/        # Product and content data
+public/      # Static assets
+app/css/     # Global CSS files
+Customization
 
-## Project Structure
-- `app/` App Router pages and layouts
-- `components/` UI components
-- `data/` Product and content data
-- `public/` Static assets
-- `app/css/` Global CSS files
+Replace product data in data/products/* with your own
+Swap images in public/images/*
+Update brand colors and typography in app/css/
 
-## Notes
-- Product data lives in `data/products/*`.
-- Images are served from `public/images/*`.
+License
+MIT — free to use, modify, and distribute.
